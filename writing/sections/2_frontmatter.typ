@@ -45,3 +45,9 @@
 // Abstract
 #include "./2.1_abstract.typ"
 #pagebreak()
+
+#include "./2.2_acknowledgements.typ"
+#pagebreak()
+
+#include "2.3_ai_ethics_statements.typ"
+#pagebreak()

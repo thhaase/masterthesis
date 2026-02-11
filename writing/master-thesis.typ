@@ -10,7 +10,47 @@
   )
 )
 
-#include "sections/0_setup.typ"
+// Base Text Setting
+#set text(
+  font: "New Computer Modern",
+  size: 12pt,
+  lang: "en"
+)
+
+// Paragraph settings
+#set par(
+  justify: true,
+  leading: 0.65em,
+  first-line-indent: 0em
+)
+
+// --- Headings ---
+#set heading(numbering: "1.1")
+
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  v(1em)
+  text(size: 16pt, weight: "bold")[#counter(heading).display() #it.body]
+  v(0.5em)
+}
+
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  text(size: 14pt, weight: "bold")[
+    #counter(heading).display() #it.body
+  ]
+  v(0.4em)
+}
+
+#show heading.where(level: 3): it => {
+  v(0.6em)
+  text(size: 12pt, weight: "bold")[
+    #counter(heading).display() #it.body
+  ]
+  v(0.3em)
+}
+
+#show link: it => underline(text(fill: blue)[#it])
 
 #let long-caption(width: 80%, body) = {
   align(center)[
@@ -22,6 +62,7 @@
   ]
 }
 
+
 // ===== TITLE PAGE =====
 #include "sections/1_titlepage.typ"
 
@@ -29,10 +70,55 @@
 #include "sections/2_frontmatter.typ"
 
 // ===== MAIN BODY =====
-#include "sections/3_main_body_setup.typ"
+#set page(
+  numbering: "1",
+  header: context {
+    // Get current heading
+    let elems = query(selector(heading.where(level: 1)).before(here()))
+    let current-heading = if elems.len() > 0 {
+      elems.last().body
+    } else {
+      []
+    }
+    
+    let page-num = here().page()
+    set text(size: 10pt)
+    
+    if calc.odd(page-num) {
+      align(right)[#emph(current-heading)] // Odd pages: heading on right
+    } else {
+      align(left)[#emph(current-heading)]  // Even pages: heading on left
+    }
+    
+    v(0.3em)
+    line(length: 100%, stroke: 0.5pt)
+  },
+  footer: context {
+    let page-num = here().page()
+    if calc.odd(page-num) {
+      align(right)[#counter(page).display()]  // Odd: right
+    } else {
+      align(left)[#counter(page).display()]   // Even: left
+    }
+  }
+)
 
-// ===== CONTENT STARTS HERE =====
+#counter(page).update(1)
+
+
+// =================================================
+// ===== C O N T E N T   S T A R T S   H E R E =====
+// =================================================
+
 = Introduction
+// REQUIREMENTS:
+// - Overview of information presented in thesis
+// - Summary of other sections in order (lit review, methods, findings, conclusions)
+//    - What are key literatures/theoretical perspectives
+//    - Which methods are used?
+//    - What are main findings and conclusions?
+// - Start broad with relevance statement 
+// - Narrow to specific research question & findings
 
 #figure(
   image("../images/outsect.jpg", width: 30%),
@@ -40,46 +126,118 @@
 )<fig:label>
 #long-caption[#lorem(30)]
 
-== Background
 
-#lorem(80)
+= Literature Review
+// REQUIREMENTS:
+// - Demonstrate deep knowledge of and clear contribution to a topical social science field
+// - Overview of field: whether, how and to what extent previous research addressed your research question
+// - How thesis contributes to existing work in field (identify gap)
+// - Start broad
+//    - theoretical paradigms
+// - Narrow down
+//    - student's hypothesis to be tested
+// - Introduce relevant variables as concepts
+// - Describe case study in detail
 
-= Theory
 
-== Introduction
+
+
+= Data and Methods
+// REQUIREMENTS:
+// - Description of data
+//    - how it was obtained, populations, sampling strategies
+// - Link variables to concepts
+// - Shortcomings of data with impacts on results
+// - Tables of descriptive statistics derived from data
+// - Overview of methods used
+//    - Logic behind choice of method (why is it the best way to answer the question?)
+//    - Discussion of method's weaknesses
+//    - Model specifications (equations, algorithms)
+//    - Figures that clarify approach
+//    - Cite packages used
+
+
+#figure(
+  table(
+    columns: 4,
+    [Variable], [Mean], [SD], [N],
+    [Age], [34.5], [12.3], [1,234],
+    [Income], [45,000], [15,000], [1,234],
+  ),
+  caption: [Descriptive Statistics of Key Variables]
+)
+
+
+= Results
+// REQUIREMENTS:
+// - Describe output of each stage
+// - Analog to lab notes: stating each stage of analysis + results with relevant figures/tables
+// - Simple direct interpretations of each analysis
+//    - Explain how each relates to the relevant hypothesis or research question
+//    - Note any disagreements
+
+
+= Discussion
+// REQUIREMENTS:
+// - How do findings taken together provide support/evidence for hypothesis/theoretical perspectives
+// - Speaks to approaches of literature review section
+//    - How was the gap filled?
+//    - What side do the results support? Is there more than one side?
+//    - What future work needs to be done
+
+
+= Conclusion
+// REQUIREMENTS:
+// - Inverse of introduction: 
+//    - starts narrow (answering the final question)
+//    - broadens to larger social or scientific relevance
+// - Should contain a discussion of broader meaning and significance of findings
+
+
+
+
+
+
+
+
+// =================================================
+#pagebreak()
+
+// ===== APPENDICES =====
+#set heading(numbering: none)
+
+= Appendix A: Additional Tables and Figures
 
 #lorem(50)
 
-== The background to academic capitalism
+#pagebreak()
 
-#lorem(100)
+= Appendix B: Code
+// REQUIRED: Must contain code used to process datasets for examination
 
-= State of Research
+```python
+# Example: Data cleaning code
+import pandas as pd
+import numpy as np
 
-#lorem(80)
+# Load data
+df = pd.read_csv('data.csv')
 
-= Method
-
-#lorem(120)
-
-= Results
-
-#lorem(150)
-
-= Discussion and Conclusion
-
-#lorem(130)
+# Data processing steps
+# ...
+```
 
 #pagebreak()
 
-// ===== APPENDIX =====
-#set heading(numbering: none)
-
-= Appendix
+= Appendix C: Prompts
+// Example: If you used surveys, include the questionnaire
 
 #lorem(100)
 
 #pagebreak()
 
 // ===== BIBLIOGRAPHY =====
-#bibliography("My Library.bib")
+#bibliography(
+  "My Library.bib", 
+  style: "american-sociological-association"
+)
