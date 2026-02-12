@@ -156,17 +156,13 @@
 //    - Figures that clarify approach
 //    - Cite packages used
 
+The used data was scraped via the Twitter API in 2 instances. Accounts of German Parliamentary Members #text(fill: red)[(Parliamentary members in what time?)] were tracked and all tweets saved. Additionally the politicians followers were  
 
-#figure(
-  table(
-    columns: 4,
-    [Variable], [Mean], [SD], [N],
-    [Age], [34.5], [12.3], [1,234],
-    [Income], [45,000], [15,000], [1,234],
-  ),
-  caption: [Descriptive Statistics of Key Variables]
-)
+- Hat armin den Datensatz schonmal irgendwo verwendet, sodass ich ihn zitieren könnte?
 
+1. First write this data collection section, send to armin for refinement and clarification purposes.
+2. write a refined proposal that focuses on politicians as egonets
+==> look in data where politicians are in reply network. make sure to filter first ofr ONLY the trees coming from politicians
 
 = Results
 // REQUIREMENTS:
