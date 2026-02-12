@@ -13,19 +13,13 @@ library(bit64)
 
 data_path = "/home/thhaase/Documents/synosys_masterthesis"
 
+setDTthreads(0)
+#getDTthreads()
 
 # === load data ===
 
-raw <- rbind(read_csv(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_tweets.csv")),
-             read_csv(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_tweets.csv"))) |> 
-  setDT()
-
-# make IDs to charachter
-ids <- c("id", "to_tweetid", "retweeted_id", "quoted_id", 
-          "user_id", "to_userid", "retweeted_user_id", "quoted_user_id")
-
-raw[, (ids) := lapply(.SD, as.character), .SDcols = ids]
-rm(ids)
+raw <- read_parquet(paste0(data_path,"/raw.parquet")) |> setDT()
+# raw <- read_parquet(paste0(data_path,"/rawbit64.parquet")) |> setDT()
 
 # add politicians info
 raw <- merge(
@@ -122,22 +116,20 @@ d[lapply(seq_along(threadid_lookup),
 
 d$thread_id |> head()
 
-# summarize threadstats per thread, enrich with usernames and merge them to d based on thread_id
+# Step 1: Create threadinfo with ONE row per thread (not per node!)
 threadinfo <- lapply(threads, function(thread) {
   list(
-    id      = names(V(thread)),
     size    = vcount(thread),
     leaf_pc = sum(igraph::degree(thread) == 1) / vcount(thread),
     id_root = names(which(igraph::degree(thread, mode = "out") == 0))
   )
 }) |> rbindlist(idcol = "thread_id")
 
+# Step 2: Enrich with root user info (same as before)
 threadinfo[d, on = .(id_root = id), `:=`(
   user_name = i.user_name,
   user_screen_name = i.user_screen_name,
   party = i.party,
-  
-  
   user_followers = i.user_followers,
   user_friends = i.user_friends,
   user_likes = i.user_likes,
@@ -147,10 +139,11 @@ threadinfo[d, on = .(id_root = id), `:=`(
   reply_count = i.reply_count
 )]
 
-threadinfo$party |> table()
+# Step 3: Set keys and join efficiently
+setkey(d, thread_id)
+setkey(threadinfo, thread_id)
 
 d[threadinfo, 
-  on = "thread_id", 
   c("thread_size", "thread_leaf_pc", "thread_root_id", "thread_root_user_name", 
     "thread_root_user_screen_name", "thread_root_party",
     "thread_root_user_followers", "thread_root_user_friends", 
@@ -161,30 +154,35 @@ d[threadinfo,
       i.user_followers, i.user_friends, i.user_likes, i.user_tweets,
       i.like_count, i.retweet_count, i.reply_count)]
 
+
 # = Depth of Tweet in Trees =
-# flag _thread_tweet (tweetspecific) vs. _thread_root(roottweet specific)
 tweet_depth <- threads |>
   lapply(\(thread) {
-    root_nodes <- thread |>
-      igraph::degree(mode = "out") |>
-      {\(x) names(x[x == 0])}()
+    # Find root (out-degree = 0)
+    out_degrees <- igraph::degree(thread, mode = "out")
+    root_id <- which(out_degrees == 0)[1]  
     
-    thread |>
-      igraph::distances(to = root_nodes, mode = "out") |>
-      apply(1, min) |>
-      {\(d) data.table(id = names(d), depth = d)}()
+    # find depth (traverse graph)
+    bfs_result <- igraph::bfs(
+      thread, 
+      root = root_id, 
+      mode = "in",  # Follow edges backward (from root to leaves)
+      unreachable = FALSE
+    )
+
+    data.table(
+      id = names(V(thread)),
+      depth = as.numeric(bfs_result$dist)
+    )
   }) |>
   rbindlist()
+
 d[tweet_depth, on = "id", thread_tweet_depth := i.depth]
 rm(tweet_depth)
 
 
 # === === === === === === === === === === === === === === === === === === === == 
 # Create final user network
-
-
-
-d$collected_via |> table()
 
 
 # schreiben was tweet und was kante ist
