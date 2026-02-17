@@ -59,58 +59,41 @@ igraph::degree(gu) |>
   _[, .N, by = .(degree = V1)] |>
   ggplot(aes(x = degree, y = N)) +
   geom_point() +
-  theme_bw() +
-  scale_x_log10(labels = scales::label_number()) +
-  scale_y_log10(labels = scales::label_number()) +
-  labs(x = "Degree", y = "Frequency",
-       title = "Full Reply Network: (USER) —replies—> (USER)",
-       subtitle = "Frequency of Node Degrees",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies")
-ggsave("../images/1-gu-degree-frequency.png", bg="white", width = 9, height = 6, dpi=300)
+  theme_minimal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = "Degree", y = "Frequency")
 
 igraph::degree(gt) |> 
   as.data.table() |> 
   _[, .N, by = .(degree = V1)] |>
   ggplot(aes(x = degree, y = N)) +
   geom_point() +
-  theme_bw() +
-  scale_x_log10(labels = scales::label_number()) +
-  scale_y_log10(labels = scales::label_number()) +
-  labs(x = "Degree", y = "Frequency",
-       title = "Full Reply Network: (TWEET) —replies—> (TWEET)",
-       subtitle = "Frequency of Node Degrees",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies")
-ggsave("../images/1-gt-degree-frequency.png", bg="white", width = 9, height = 6, dpi=300)
-
+  theme_minimal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = "Degree", y = "Frequency")
 
 igraph::components(gu)$csize |>
   as.data.table() |>
   _[, .N, by = .(size = V1)] |>
   ggplot(aes(x = size, y = N)) +
-  geom_point(size = 2) +
-  theme_bw() +
-  scale_x_log10(labels = scales::label_number()) +
-  scale_y_log10(labels = scales::label_number()) +
-  labs(x = "Component Size", y = "Frequency",
-       title = "Full Reply Network: (USER) —replies—> (USER)",
-       subtitle = "Frequency of Component Sizes",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies")
-ggsave("../images/1-gu-componentsize-frequency.png", bg="white", width = 9, height = 6, dpi=300)
-
+  geom_point() +
+  theme_minimal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = "Component Size", y = "Frequency")
 
 igraph::components(gt)$csize |>
   as.data.table() |>
   _[, .N, by = .(size = V1)] |>
   ggplot(aes(x = size, y = N)) +
   geom_point() +
-  theme_bw() +
-  scale_x_log10(labels = scales::label_number()) +
-  scale_y_log10(labels = scales::label_number()) +
-  labs(x = "Component Size", y = "Frequency",
-       title = "Full Reply Network: (TWEET) —replies—> (TWEET)",
-       subtitle = "Frequency of Component Sizes",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies")
-ggsave("../images/1-gt-componentsize-frequency.png", bg="white", width = 9, height = 6, dpi=300)
+  theme_minimal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(x = "Component Size", y = "Frequency")
+
 
 # FILTERING THREADS DEACTIVATED
 # REASON: Did not change anything meaningful for the descriptive statistics of the 2_describe_network.R descriptive statistics 
@@ -148,7 +131,7 @@ threadinfo <- lapply(gt_threads, function(thread) {
   )
 }) |> rbindlist(idcol = "thread_id")
 
-# Step 2: Enrich with root user info
+# Step 2: Enrich with root user info (same as before)
 threadinfo[d, on = .(id_root = id), `:=`(
   user_name = i.user_name,
   user_screen_name = i.user_screen_name,
@@ -204,6 +187,14 @@ tweet_depth <- gt_threads |>
 d[tweet_depth, on = "id", thread_tweet_depth := i.depth]
 rm(tweet_depth)
 
+ggplot(threadinfo, aes(x = size)) + 
+  geom_point(stat = "count") +
+  scale_x_log10() +
+  scale_y_log10() +
+  theme_bw() +
+  labs(title = "Nodes per Discussion-Thread in Replynetwork",
+       subtitle = "Nodes: Tweets, Links encode Reply",
+       x="Thread Size (n Nodes)", y="Count of Threads")
 
 threadinfo[, .(
   thread_id = thread_id[which.max(size)],
@@ -224,7 +215,6 @@ threadinfo[, .(
 # - Just one answer does not count as a discussion
 # === === ===
 
-# FAILED APPROACHES OF CREATING gu
 # # Option 1: Use graph_from_data_frame() (recommended)
 # gu <- d[!is.na(user_id) & !is.na(to_userid),
 #                        .(user_id, to_userid, id)] |> 
@@ -247,11 +237,8 @@ gu <- d[!is.na(user_id) & !is.na(to_userid),
 
 gu |> is_directed()
 gu |> is_weighted()
-gu |> str()
-V(gu)$name |> head()
-E(gu)$weight |> head()
-E(gu)$first_tweet_id |> head()
-E(gu)$tweet_ids
+gu
+
 
 igraph::components(gu)$csize |>
   as.data.table() |>
@@ -259,14 +246,14 @@ igraph::components(gu)$csize |>
   ggplot(aes(x = size, y = N)) +
   geom_point() +
   theme_bw() +
-  scale_x_log10(labels = scales::label_number(),
-                breaks = scales::breaks_log(n = 10, base = 10)) +
-  scale_y_log10(labels = scales::label_number()) +
+  scale_x_log10(
+    labels = scales::comma,
+    breaks = scales::breaks_log(n = 10, base = 10)
+  ) +
+  scale_y_log10() +
   labs(x = "Component Size", y = "Frequency",
-       title = "Full Reply Network: (USER) —replies—> (USER)",
-       subtitle = "Frequency of Component Sizes",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies")
-ggsave("../images/1-gu-componentsize-frequency.png", bg="white", width = 12, height = 7, dpi=300)
+       title = "Retweet Network\n(User) ––Retweet––> (User)",
+       subtitle = "Frequency of Components with specific sizes")
 
 
 total_nodes <- igraph::vcount(gu)

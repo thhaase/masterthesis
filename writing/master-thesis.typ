@@ -156,7 +156,8 @@
 //    - Figures that clarify approach
 //    - Cite packages used
 
-The used data was scraped via the Twitter API in 2 instances. Accounts of German Parliamentary Members #text(fill: red)[(Parliamentary members in what time?)] were tracked and all tweets saved. Additionally the politicians followers were  
+Data were collected via Twitter's streaming API using two parallel strategies to capture reply interactions involving German MPs. The follow stream tracked replies to MP-generated tweets. The track stream captured tweets mentioning MP handles (e.g., "\@username"), including direct replies and nested replies to reconstruct complete conversation threads. Protected accounts were excluded. Both datasets were combined and deduplicated to create the final reply dataset.
+
 
 - Hat armin den Datensatz schonmal irgendwo verwendet, sodass ich ihn zitieren könnte?
 
