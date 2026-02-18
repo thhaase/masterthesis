@@ -116,7 +116,6 @@ ggsave("../images/3-centrality-measures.png", bg = "white", width = 13, height =
 
 
 
-# Blockmodel
 
 
 

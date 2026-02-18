@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+for md_file in "$DIR"/*.md; do
+    [ -f "$md_file" ] || continue
+    typ_file="${md_file%.md}.typ"
+    echo "Converting: $(basename "$md_file") → $(basename "$typ_file")"
+    pandoc "$md_file" -t typst -o "$typ_file"
+done
+
+echo "Done."
