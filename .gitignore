@@ -1,3 +1,4 @@
 writing/sections/**/*.pdf
 analysis/**/*.parquet
 analysis/**/*.rds
+analysis/archive
