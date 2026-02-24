@@ -2,3 +2,7 @@ writing/sections/**/*.pdf
 analysis/**/*.parquet
 analysis/**/*.rds
 analysis/archive
+analysis/hf_models
+analysis/.Rhistory
+analysis/.Rhistory
+analysis/.Rhistory
