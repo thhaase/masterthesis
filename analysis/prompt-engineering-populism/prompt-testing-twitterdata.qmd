@@ -1,0 +1,255 @@
+```{python}
+import pandas as pd
+#import pyreadr
+import os
+import random
+import io
+import json
+import time
+from openai import OpenAI
+
+os.chdir(os.path.expanduser("~/Github/masterthesis/analysis/hpc_code_tweets/")) 
+data_path = "/home/thhaase/Documents/synosys_internship"
+my_api_key = open(os.path.join(data_path, "scadsaillm.txt"), "r").readline().strip()
+```
+
+```{python}
+bt_follow_reftweets = pd.read_csv("bt_follow_2022-02-07_2022-02-14_reftweets_dedup.csv")
+bt_follow_tweets = pd.read_csv("bt_follow_2022-02-07_2022-02-14_tweets.csv")
+bt_track_reftweets = pd.read_csv("bt_track_2022-02-07_2022-02-14_reftweets_dedup.csv")
+bt_track_tweets = pd.read_csv("bt_track_2022-02-07_2022-02-14_tweets.csv")
+
+d = pd.concat([bt_follow_reftweets, bt_follow_tweets, bt_track_reftweets, bt_track_tweets], ignore_index=True)
+d = d.drop_duplicates(subset="id")
+```
+
+# Get Example Posts
+```{python}
+temp_sample = d.sample(n=100)[["id", "text"]].reset_index(drop=True)
+
+print("\n")
+for index, row in temp_sample.iterrows():
+    print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+    print(f"ID: {row['id']}")
+    print(f"{row['text']}")
+
+print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n")
+
+del row, index
+```
+
+# ScaDS.AI API
+```{python}
+# read prompt file
+with open("prompt-populism2.md", "r", encoding="utf-8") as f:
+  prompt_instruct = f.read()
+
+# initiate model
+client = OpenAI(base_url = "https://llm.scads.ai/v1", api_key = my_api_key)
+model_name = "Qwen/Qwen3-Coder-30B-A3B-Instruct"
+```
+
+
+## Process Single Post
+```{python}
+# full_message = prompt_instruct + "\n\n" + dd["text"][0]
+
+# response = client.chat.completions.create(
+#     messages = [
+#         {"role": "user", "content": full_message}
+#     ],
+#     model = model_name
+# )
+
+# answer = response.choices[0].message.content
+# print(answer)
+
+# answer_json = answer[answer.find("{"):answer.rfind("}") + 1]
+# data = json.loads(answer_json)
+```
+
+
+## Process Multiple Posts
+
+```{python}
+d_results = []
+
+temp_sample = d.sample(n=100)[["id", "text"]].reset_index(drop=True)
+
+for row in temp_sample.itertuples():
+    prompt = prompt_instruct + "\n\n" + row.text 
+    
+    print(f"Processing {row.Index + 1}/{len(temp_sample)} | ID: {row.id}...")
+    time.sleep(2) 
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "user", "content": prompt}
+        ],
+        model=model_name
+    )
+
+    answer = response.choices[0].message.content
+    
+    try:
+        answer_json_str = answer[answer.find("{"):answer.rfind("}") + 1]
+        answer_data = json.loads(answer_json_str)
+        
+        row_result = {
+            "id": row.id, 
+            **answer_data
+        }
+        
+        d_results.append(row_result)
+        
+    except (json.JSONDecodeError, ValueError) as e:
+        print(f"Error parsing JSON for ID {row.id}: {e}")
+        d_results.append({"id": row.id, "xid": row.xid, "error": "JSON Parse Error"})
+
+d = pd.DataFrame(d_results)
+
+print(d.head())
+```
+
+
+# Calculate Final Score
+
+$\text{final_score} = (\text{populist_score} - \text{elitist_score}) \cdot \text{intensity_score}$
+- Max: $(3 - (-3)) \cdot 6 = 6 \cdot 6 = 36$
+- Min: $(-3 - (3)) \cdot 6 = 6 \cdot 6 = -36$
+
+If there is no divide or strong language (intensity = 0) there will be no populist rethoric
+
+The normalized score is calculated through
+$\text{final_score_normalized} = \frac{\text{final_score} + 36}{72}$
+```{python}
+d["final_score"] = (d["people_score"] - d["elite_score"]) * d["antagonism_score"]
+d["final_score_normalized"] = (d["final_score"] + 36) / 72
+```
+
+```{python}
+# Merge text, name, and party from original data
+d_original = pd.concat([bt_follow_reftweets, bt_follow_tweets, bt_track_reftweets, bt_track_tweets], ignore_index=True)
+d_original = d_original.drop_duplicates(subset="id")
+d = d.merge(d_original[["id", "text", "user_name"]], on="id", how="left")
+
+d.to_csv('scadsaitest_populism.csv', index=False)
+```
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set theme
+sns.set_theme(style="whitegrid")
+
+# Create a figure with two subplots side-by-side
+fig, axes = plt.subplots(1, 2, figsize=(9, 6), gridspec_kw={'width_ratios': [3, 1]})
+
+# --- Left Panel: Component Scores ---
+sns.boxplot(
+    data=d[["populist_score", "elitist_score", "intensity_score"]], 
+    ax=axes[0], 
+    palette=["#9b9b9b", "#ef926e", "#8da0cb"], 
+    linewidth=2.5,
+    showfliers=True
+)
+
+sns.stripplot(
+    data=d[["populist_score", "elitist_score", "intensity_score"]], 
+    ax=axes[0], 
+    color='yellow', 
+    alpha=0.4, 
+    jitter=0.25,
+    size=5
+)
+
+# loc='left' aligns the title to the left edge of the plot area
+axes[0].set_title("Component Scores", loc='left', fontsize=14, fontweight='bold')
+axes[0].set_ylim(-3.5, 3.5)
+
+# --- Right Panel: Final Score ---
+sns.boxplot(
+    data=d[["final_score"]], 
+    ax=axes[1], 
+    color="skyblue", 
+    linewidth=2.5
+)
+
+sns.stripplot(
+    data=d[["final_score"]], 
+    ax=axes[1], 
+    color='yellow', 
+    alpha=0.4, 
+    jitter=0.25,
+    size=5
+)
+
+# loc='left' aligns the title to the left edge of the plot area
+axes[1].set_title("Final Score", loc='left', fontsize=14, fontweight='bold')
+axes[1].set_ylim(-19, 19)
+
+plt.tight_layout()
+```
+
+
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Set theme
+sns.set_theme(style="whitegrid")
+
+# Create a figure with two subplots side-by-side
+fig, axes = plt.subplots(1, 2, figsize=(9, 6), gridspec_kw={'width_ratios': [3, 1]})
+
+# --- Left Panel: Component Scores ---
+sns.barplot(
+    data=d[["populist_score", "elitist_score", "intensity_score"]], 
+    ax=axes[0], 
+    palette=["#ef926e", "#ef926e", "#8da0cb"], 
+    linewidth=2.5,
+    edgecolor=".2",    # Adds a dark edge to the bars
+    capsize=0.1        # Adds caps to the error bars (Confidence Interval)
+)
+
+sns.stripplot(
+    data=d[["populist_score", "elitist_score", "intensity_score"]], 
+    ax=axes[0], 
+    color="#000000", 
+    alpha=0.6, 
+    jitter=0.15,
+    size=7
+)
+
+# loc='left' aligns the title to the left edge of the plot area
+axes[0].set_title("Component Scores - Barplots", loc='left', fontsize=14, fontweight='bold')
+axes[0].set_ylim(-3.5, 3.5)
+
+# --- Right Panel: Final Score ---
+sns.barplot(
+    data=d[["final_score"]], 
+    ax=axes[1], 
+    color="skyblue", 
+    linewidth=2.5,
+    edgecolor=".2",
+    capsize=0.1
+)
+
+sns.stripplot(
+    data=d[["final_score"]], 
+    ax=axes[1], 
+    color="#000000", 
+    alpha=0.6, 
+    jitter=0.15,
+    size=7
+)
+
+# loc='left' aligns the title to the left edge of the plot area
+axes[1].set_title("Final Score", loc='left', fontsize=14, fontweight='bold')
+axes[1].set_ylim(-19, 19)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+

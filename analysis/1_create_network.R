@@ -18,12 +18,24 @@ setDTthreads(0)
 
 # === load data ===
 # Load both raw and reftweets, then combine
+# WITH OLD_0... FILE RUN THIS:
+# raw <- rbind(
+#   read_parquet(paste0(data_path,"/raw.parquet")),
+#   read_parquet(paste0(data_path,"/reftweets.parquet"))
+# ) |> 
+#   distinct(id, .keep_all = TRUE) %>%  # Deduplicate by tweet ID
+#   setDT()
+
 raw <- rbind(
-  read_parquet(paste0(data_path,"/raw.parquet")),
-  read_parquet(paste0(data_path,"/reftweets.parquet"))
-) |> 
-  distinct(id, .keep_all = TRUE) %>%  # Deduplicate by tweet ID
-  setDT()
+  read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_tweets_annotated_populism.parquet"),
+           col_types = col_spec_char),
+  read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_tweets_annotated_populism.parquet"),
+           col_types = col_spec_char),
+  read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
+           col_types = col_spec_char),
+  read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
+           col_types = col_spec_char)
+)
 
 # add politicians info
 raw <- merge(

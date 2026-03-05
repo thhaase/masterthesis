@@ -127,7 +127,10 @@ stopifnot(nrow(edge_attrs_dt) == length(edge_tweet_ids))
 stopifnot(all(names(edge_attrs_dt) %in% edge_attr_names(g)))
 
 
-saveRDS(g, "g.rds")
 
-rm(list = ls())
-.rs.restartR()
+
+
+#saveRDS(g, "g.rds")
+
+#rm(list = ls())
+#.rs.restartR()
