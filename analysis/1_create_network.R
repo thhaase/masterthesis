@@ -26,30 +26,48 @@ setDTthreads(0)
 #   distinct(id, .keep_all = TRUE) %>%  # Deduplicate by tweet ID
 #   setDT()
 
-raw <- rbind(
-  read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_tweets_annotated_populism.parquet"),
-           col_types = col_spec_char),
-  read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_tweets_annotated_populism.parquet"),
-           col_types = col_spec_char),
-  read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
-           col_types = col_spec_char),
-  read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
-           col_types = col_spec_char)
-)
+
+follow_tweets <- read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_tweets_annotated_populism.parquet"),
+           col_types = col_spec_char) |> setDT()
+
+track_tweets_1 <- read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_tweets_1_annotated_populism.parquet"),
+           col_types = col_spec_char) |> setDT()
+
+track_tweets_2 <- read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_tweets_2_annotated_populism.parquet"),
+               col_types = col_spec_char) |> setDT()
+  
+follow_reftweets <- read_parquet(paste0(data_path,"/bt_follow_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
+           col_types = col_spec_char) |> setDT()
+  
+track_reference_tweets <- read_parquet(paste0(data_path,"/bt_track_2022-02-07_2022-02-14_reftweets_dedup_annotated_populism.parquet"),
+           col_types = col_spec_char) |> setDT()
+
+
+raw <- rbindlist(list(follow_tweets, track_tweets_1, track_tweets_2,
+                    follow_reftweets, track_reference_tweets),
+               fill = TRUE) |>
+  # convert id columns to character
+  (\(dt) dt[, (grep("^id|id$", names(dt), value = TRUE)) := 
+              lapply(.SD, as.character), 
+            .SDcols = grep("^id|id$", names(dt), value = TRUE)])() |>
+  # drop columns that are entirely NA
+  (\(dt) dt[, which(unlist(dt[, lapply(.SD, \(x) !all(is.na(x)))])), with = FALSE])()
+
+rm(follow_tweets, track_tweets_1, track_tweets_2, follow_reftweets, track_reference_tweets)
+# === === === === === === === === === === === === === === === === === === === ==
 
 # add politicians info
-raw <- merge(
+d <- merge(
   raw,
   read_parquet(file.path(data_path, "politicians.parquet.gzip")) |>
     setDT() |>
     _[, user_screen_name := gsub("https://x.com/|/$", "", x_url)],
   by = "user_screen_name",
   all.x = TRUE
-)
-
-# filter double rows so that IDs become the dataset KEY
-setorder(raw, -timestamp_utc)
-d <- unique(raw, by = "id")
+) |>
+  (\(dt) setorder(dt, -timestamp_utc))() |>
+  unique(by = "id") |>
+  setkey(id)
 
 # filter for all tweets that are part of the reply network (replying or replied to)
 d_reply <- d[id %in% d[!is.na(to_tweetid), unique(c(id, to_tweetid))]]
@@ -318,7 +336,7 @@ vcount(gu_largest)
 igraph::components(gu_largest)$no
 
 
-saveRDS(gu_largest, "largest_component.rds")
-write_parquet(d, "d.parquet")
+saveRDS(gu_largest, "../data/largest_component.rds")
+write_parquet(d, "../data/d.parquet")
 
 rm(list = ls())

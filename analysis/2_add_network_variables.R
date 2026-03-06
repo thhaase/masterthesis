@@ -15,8 +15,8 @@ setDTthreads(0)
 # === === === === === === === === === === === === === === === === === === === == 
 # === Load Data ===
 # Load both raw and reftweets, then combine
-d <- read_parquet("d.parquet")
-g <- readRDS("largest_component.rds")
+d <- read_parquet("../data/d.parquet")
+g <- readRDS("../data/largest_component.rds")
 
 # === === === === === === === === === === === === === === === === === === === == 
 # === Add Network Variables ===
