@@ -2,14 +2,14 @@ Table:
 
 |Metric                          |      Value|
 |:-------------------------------|----------:|
-|Nodes                           | 34314.0000|
-|Links                           | 91607.0000|
+|Nodes                           | 11693.0000|
+|Links                           | 16254.0000|
 |Density                         |     0.0001|
-|Mean Degree                     |     5.3393|
-|SD Degree                       |    54.3251|
-|Reciprocity                     |     0.1092|
-|Assortativity (Degree)          |    -0.1509|
-|Average Shortest Path (sampled) |     4.0561|
-|Diameter (sampled)              |    29.0000|
-|Clustering Coefficient          |     0.1367|
-|Max K-Core                      |    15.0000|
+|Mean Degree                     |     2.7801|
+|SD Degree                       |    35.4872|
+|Reciprocity                     |     0.0028|
+|Assortativity (Degree)          |    -0.0964|
+|Average Shortest Path (sampled) |     5.0129|
+|Diameter (sampled)              |   102.0000|
+|Clustering Coefficient          |     0.0377|
+|Max K-Core                      |     6.0000|
