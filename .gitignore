@@ -7,3 +7,6 @@ analysis/.Rhistory
 analysis/.Rhistory
 analysis/.Rhistory
 data
+*.RData
+.xsession-errors
+hf_models/
