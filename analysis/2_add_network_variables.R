@@ -26,6 +26,7 @@ g <- readRDS("../data/largest_component.rds")
 # Aggregate to user level (take first/most recent values per user)
 vertex_lookup <- d[, .SD[1], by = user_id, .SDcols = c(
   "user_name",
+  "user_screen_name",
   "user_description", 
   "user_tweets",
   "user_followers",
@@ -60,26 +61,104 @@ d[, populism_score := fifelse(
           people_score - elite_score),
   0
 )]
+
+
 # d$people_score |> table() |> barplot(log = "y")
 # d$elite_score |> table() |> barplot(log = "y")
 # d$antagonism_score |> table() |> barplot(log = "y")
 # d$populism_score |> table() |> barplot(log = "y")
 
-# add to nodes
-score_cols <- c("people_score", "elite_score", "antagonism_score", "populism_score")
+# CONSTRUCT USERLEVEL POPULISM
+# since populism is defined by how strongly a tweet performed at one axis we need to aggregate each dimension separately to again construct a userlevel populism score.
+# since this consists of multiple tweets its error
+user_level_populism <- user_level_populism <- d[, .(
+  n_tweets = .N,
+  people_neg_3 = sum(people_score == -3, na.rm = TRUE),
+  people_neg_2 = sum(people_score == -2, na.rm = TRUE),
+  people_neg_1 = sum(people_score == -1, na.rm = TRUE),
+  people_0     = sum(people_score == 0, na.rm = TRUE),
+  people_pos_1 = sum(people_score == 1, na.rm = TRUE),
+  people_pos_2 = sum(people_score == 2, na.rm = TRUE),
+  people_pos_3 = sum(people_score == 3, na.rm = TRUE),
+  elite_neg_3 = sum(elite_score == -3, na.rm = TRUE),
+  elite_neg_2 = sum(elite_score == -2, na.rm = TRUE),
+  elite_neg_1 = sum(elite_score == -1, na.rm = TRUE),
+  elite_0     = sum(elite_score == 0, na.rm = TRUE),
+  elite_pos_1 = sum(elite_score == 1, na.rm = TRUE),
+  elite_pos_2 = sum(elite_score == 2, na.rm = TRUE),
+  elite_pos_3 = sum(elite_score == 3, na.rm = TRUE),
+  
+  antagonism_0     = sum(antagonism_score == 0, na.rm = TRUE),
+  antagonism_1     = sum(antagonism_score == 1, na.rm = TRUE),
+  antagonism_2     = sum(antagonism_score == 2, na.rm = TRUE),
+  antagonism_3     = sum(antagonism_score == 3, na.rm = TRUE),
+  antagonism_4     = sum(antagonism_score == 4, na.rm = TRUE),
+  antagonism_5     = sum(antagonism_score == 5, na.rm = TRUE),
+  antagonism_6     = sum(antagonism_score == 6, na.rm = TRUE)
+), by = .(user_id, user_screen_name, party, thread_root_party)][, `:=`(
+  
+  people_score = (people_neg_3 * -3 + people_neg_2 * -2 + people_neg_1 * -1 +
+                    people_pos_1 *  1 + people_pos_2 *  2 + people_pos_3 *  3) / n_tweets,
+  people_sd    = sqrt(
+    (people_neg_3 * 9 + people_neg_2 * 4 + people_neg_1 * 1 +
+       people_pos_1 * 1 + people_pos_2 * 4 + people_pos_3 * 9) / n_tweets -
+      ((people_neg_3 * -3 + people_neg_2 * -2 + people_neg_1 * -1 +
+          people_pos_1 *  1 + people_pos_2 *  2 + people_pos_3 *  3) / n_tweets)^2
+  ),
+  
+  elite_score  = (elite_neg_3 * -3 + elite_neg_2 * -2 + elite_neg_1 * -1 +
+                    elite_pos_1 *  1 + elite_pos_2 *  2 + elite_pos_3 *  3) / n_tweets,
+  elite_sd     = sqrt(
+    (elite_neg_3 * 9 + elite_neg_2 * 4 + elite_neg_1 * 1 +
+       elite_pos_1 * 1 + elite_pos_2 * 4 + elite_pos_3 * 9) / n_tweets -
+      ((elite_neg_3 * -3 + elite_neg_2 * -2 + elite_neg_1 * -1 +
+          elite_pos_1 *  1 + elite_pos_2 *  2 + elite_pos_3 *  3) / n_tweets)^2
+  ),
+  
+  antag_score  = (antagonism_1 * 1 + antagonism_2 * 2 + antagonism_3 * 3 +
+                    antagonism_4 * 4 + antagonism_5 * 5 + antagonism_6 * 6) / n_tweets,
+  antag_sd     = sqrt(
+    (antagonism_1 * 1 + antagonism_2 * 4 + antagonism_3 * 9 +
+       antagonism_4 * 16 + antagonism_5 * 25 + antagonism_6 * 36) / n_tweets -
+      ((antagonism_1 * 1 + antagonism_2 * 2 + antagonism_3 * 3 +
+          antagonism_4 * 4 + antagonism_5 * 5 + antagonism_6 * 6) / n_tweets)^2
+  )
+)][, `:=`(
+  # Standard errors of the means
+  people_se = people_sd / sqrt(n_tweets),
+  elite_se  = elite_sd  / sqrt(n_tweets),
+  antag_se  = antag_sd  / sqrt(n_tweets)
+)][, populism_score := fifelse(
+  people_score > 0 & elite_score < 0,
+  fifelse(antag_score > 0,
+          (people_score - elite_score) * antag_score,
+          people_score - elite_score),
+  0
+)][, populism_se := fifelse(
+  people_score > 0 & elite_score < 0,
+  fifelse(antag_score > 0,
+          # SE for (a - b) * c
+          sqrt(
+            antag_score^2 * (people_se^2 + elite_se^2) +
+              (people_score - elite_score)^2 * antag_se^2
+          ),
+          # SE for (a - b)
+          sqrt(people_se^2 + elite_se^2)),
+  0
+)]
+write_parquet(user_level_populism, "../data/user_level_populism.parquet")
 
-score_stats <- d[, unlist(lapply(.SD, function(x) {
-  list(mean = mean(x, na.rm = TRUE),
-       median = median(x, na.rm = TRUE),
-       sd = sd(x, na.rm = TRUE))
-}), recursive = FALSE), by = user_id, .SDcols = score_cols]
 
-score_data <- score_stats[match(V(g)$name, score_stats$user_id)]
+pop_matched <- user_level_populism[match(V(g)$name, user_level_populism$user_id)]
 
-for (col in names(score_data)) {
-  if (col == "user_id") next
-  g <- set_vertex_attr(g, col, value = score_data[[col]])
+for (col in c("people_score", "people_se", "elite_score", "elite_se",
+              "antag_score", "antag_se", "populism_score", "populism_se")) {
+  g <- set_vertex_attr(g, col, value = pop_matched[[col]])
 }
+
+
+
+
 # === === === === === === === === 
 # === Add Edge Attributes ===
 # NOTE: Edges are weighted - each edge can represent multiple tweets
@@ -152,26 +231,7 @@ g <- Reduce(
   init = g
 )
 
-# add additional aggregates for populism dimensions values
-edge_score_stats <- rbindlist(lapply(score_cols, function(col) {
-  values <- edge_attr(g, col)
-  splits <- strsplit(values, "\\|", fixed = TRUE)
-  dt <- data.table(
-    edge_idx = rep(seq_along(splits), lengths(splits)),
-    val      = as.numeric(unlist(splits)),
-    col_name = col
-  )
-  dt
-}))[, .(mean = mean(val, na.rm = TRUE),
-        median = median(val, na.rm = TRUE),
-        sd     = {s <- sd(val, na.rm = TRUE); fifelse(is.na(s), 0, s)}),
-    by = .(col_name, edge_idx)]
-for (col in score_cols) {
-  subset <- edge_score_stats[col_name == col][order(edge_idx)]
-  g <- set_edge_attr(g, paste0(col, "_mean"),   value = subset$mean)
-  g <- set_edge_attr(g, paste0(col, "_median"), value = subset$median)
-  g <- set_edge_attr(g, paste0(col, "_sd"),     value = subset$sd)
-}
+
 # Sanitychecks
 # Match rate
 message(sprintf("Match rate: %.1f%%", 100 * sum(edge_lookup$tweet_id %in% d$id) / nrow(edge_lookup)))
@@ -181,14 +241,7 @@ stopifnot(nrow(edge_attrs_dt) == length(edge_tweet_ids))
 stopifnot(all(names(edge_attrs_dt) %in% edge_attr_names(g)))
 
 # Vertex attributes (the aggregated stats)
-V(g)$populism_score.mean |> mean(na.rm=T)
-V(g)$populism_score.median |> mean(na.rm=T)
-V(g)$populism_score.sd |> mean(na.rm=T)
-
-# Edge attributes (pipe-separated per-tweet values)
-E(g)$populism_score_mean |> mean(na.rm=T)
-E(g)$populism_score_median |> mean(na.rm=T)
-E(g)$populism_score_sd |> table()
+V(g)$populism_score |> mean(na.rm=T)
 
 # === === === === === === === === === === === === === === === === === === === ==
 # Filter to only keep trees underneath politicians tweets
