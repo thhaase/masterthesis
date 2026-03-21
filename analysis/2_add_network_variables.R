@@ -8,6 +8,8 @@ library(intergraph)
 library(network)
 library(sna)
 library(kableExtra)
+library(tidyvader)
+
 setwd("~/Github/masterthesis/analysis")
 data_path = "/home/thhaase/Documents/synosys_masterthesis"
 setDTthreads(0)
@@ -23,6 +25,18 @@ g <- readRDS("../data/largest_component.rds")
 
 # === === === === === === === === 
 # === Add Vertex Attributes (User-level data)
+
+# === Add Vader Scores ===
+d |> 
+  head() |> 
+  tidyvader::vader(text) |> 
+  select(compound, pos, neu, neg) |> 
+  pull(compound)
+
+d$vader_sentiment <- d |> 
+  tidyvader::vader(text) |> 
+  pull(compound)
+
 # Aggregate to user level (take first/most recent values per user)
 vertex_lookup <- d[, .SD[1], by = user_id, .SDcols = c(
   "user_name",
@@ -51,7 +65,7 @@ for (col in names(vertex_data)) {
   g <- set_vertex_attr(g, attr_name, value = vertex_data[[col]])
 }
 
-# ADD POPULISM LABELS
+# ADD POPULISM LABELS & Sentiment scores
 # final populism score is higher when people score is bigger and elite score is smaller, 
 # if then the antagonism score is above 0 it is used as a weight
 d[, populism_score := fifelse(
@@ -94,7 +108,10 @@ user_level_populism <- user_level_populism <- d[, .(
   antagonism_3     = sum(antagonism_score == 3, na.rm = TRUE),
   antagonism_4     = sum(antagonism_score == 4, na.rm = TRUE),
   antagonism_5     = sum(antagonism_score == 5, na.rm = TRUE),
-  antagonism_6     = sum(antagonism_score == 6, na.rm = TRUE)
+  antagonism_6     = sum(antagonism_score == 6, na.rm = TRUE),
+  
+  vader_sentiment_mean  = mean(vader_sentiment),
+  vader_sentiment_sd  = sd(vader_sentiment)
 ), by = .(user_id, user_screen_name, party, thread_root_party)][, `:=`(
   
   people_score = (people_neg_3 * -3 + people_neg_2 * -2 + people_neg_1 * -1 +
@@ -127,7 +144,9 @@ user_level_populism <- user_level_populism <- d[, .(
   # Standard errors of the means
   people_se = people_sd / sqrt(n_tweets),
   elite_se  = elite_sd  / sqrt(n_tweets),
-  antag_se  = antag_sd  / sqrt(n_tweets)
+  antag_se  = antag_sd  / sqrt(n_tweets),
+  vader_sentiment_se  = vader_sentiment_sd / sqrt(n_tweets)
+  
 )][, populism_score := fifelse(
   people_score > 0 & elite_score < 0,
   fifelse(antag_score > 0,
@@ -152,10 +171,10 @@ write_parquet(user_level_populism, "../data/user_level_populism.parquet")
 pop_matched <- user_level_populism[match(V(g)$name, user_level_populism$user_id)]
 
 for (col in c("people_score", "people_se", "elite_score", "elite_se",
-              "antag_score", "antag_se", "populism_score", "populism_se")) {
+              "antag_score", "antag_se", "populism_score", "populism_se",
+              "vader_sentiment_mean", "vader_sentiment_se")) {
   g <- set_vertex_attr(g, col, value = pop_matched[[col]])
 }
-
 
 
 
@@ -253,6 +272,3 @@ g <- delete_edges(g, which(is.na(E(g)$thread_root_party)))
 g <- delete_vertices(g, which(igraph::degree(g) == 0))
 
 saveRDS(g, "../data/g.rds")
-
-rm(list = ls())
-.rs.restartR()

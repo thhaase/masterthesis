@@ -120,11 +120,22 @@
 // - Start broad with relevance statement 
 // - Narrow to specific research question & findings
 
-#figure(
-  image("../images/outsect.jpg", width: 30%),
-  caption: [Outsect],
-)<fig:label>
-#long-caption[#lorem(30)]
+Question:
+How does the usage of populist rhetoric by german Members of Parliament on Twitter affect the politicians engagement communities?
+
+H1: German MPs who use populist rhetoric have more strongly interconnected alters in their reply ego networks than those who do not.
+  - linguistic construction of in/outgroup 
+  - hyping the ingroup --> selfselection effect keeps only engaged users with knowledge of groups social facts that actively reply to each other
+
+- In results part:
+  - In exploratory analysis, we operationalized alter disconnectedness as the fragmentation ratio (number of components divided by number of alters). Results mirror the main finding: lower fragmentation — i.e., more cohesive alter networks — is associated with populist rhetoric (OR = 0.02, p = .017).
+  - Exploratory analysis using the fragmentation ratio (components / alters) corroborates this pattern. Populist MPs' reply networks are structurally more cohesive — their alters cluster into fewer, larger communities rather than responding in isolation (OR = 0.02, p = .017). This is consistent with the theoretical expectation that populist rhetoric fosters a sense of shared group identity among respondents, encouraging mutual engagement beyond dyadic replies to the politician.
+
+H2: Do Populist MPs share more audience with each other than with non-populist MPs? 
+
+H3: What Network Structures are indicative of Populist MPs ego networks?
+
+
 
 
 = Literature Review
@@ -172,6 +183,21 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 // - Simple direct interpretations of each analysis
 //    - Explain how each relates to the relevant hypothesis or research question
 //    - Note any disagreements
+== Text Analysis
+
+#figure(
+  image("../images/populism_dimensions_person_level.png", width: 90%),
+  caption: [Title of the Figure],
+)<fig:label>
+#long-caption[Here comes my long caption]
+
+#figure(
+  image("../images/populism_dimensions_person_level_politicians.png", width: 90%),
+  caption: [Title of the Figure],
+)<fig:label>
+#long-caption[Here comes my long caption]
+
+== Network Analysis
 
 
 = Discussion
@@ -234,7 +260,7 @@ df = pd.read_csv('data.csv')
 #pagebreak()
 
 // ===== BIBLIOGRAPHY =====
-#bibliography(
-  "My Library.bib", 
-  style: "american-sociological-association"
-)
+//#bibliography(
+ // "My Library.bib",
+ // style: "american-sociological-association"
+//)

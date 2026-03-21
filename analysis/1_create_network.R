@@ -43,8 +43,11 @@ track_reference_tweets <- read_parquet(paste0(data_path,"/bt_track_2022-02-07_20
            col_types = col_spec_char) |> setDT()
 
 
-raw <- rbindlist(list(follow_tweets, track_tweets_1, track_tweets_2,
-                    follow_reftweets, track_reference_tweets),
+raw <- rbindlist(list(follow_tweets, 
+                      track_tweets_1, 
+                      track_tweets_2,
+                      follow_reftweets, 
+                      track_reference_tweets),
                fill = TRUE) |>
   # convert id columns to character
   (\(dt) dt[, (grep("^id|id$", names(dt), value = TRUE)) := 
