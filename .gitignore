@@ -4,8 +4,6 @@ analysis/**/*.rds
 analysis/archive
 analysis/hf_models
 analysis/.Rhistory
-analysis/.Rhistory
-analysis/.Rhistory
 data
 *.RData
 .xsession-errors

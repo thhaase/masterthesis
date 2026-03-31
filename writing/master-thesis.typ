@@ -185,6 +185,8 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 //    - Note any disagreements
 == Text Analysis
 
+Link Symetry of F1 score Appendix
+
 #figure(
   image("../images/populism_dimensions_person_level.png", width: 90%),
   caption: [Title of the Figure],
@@ -192,7 +194,7 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 #long-caption[Here comes my long caption]
 
 #figure(
-  image("../images/populism_dimensions_person_level_politicians.png", width: 90%),
+  image("../images/populism_dimensions_person_level_politicians_inset.png", width: 100%),
   caption: [Title of the Figure],
 )<fig:label>
 #long-caption[Here comes my long caption]
@@ -229,9 +231,31 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 // ===== APPENDICES =====
 #set heading(numbering: none)
 
-= Appendix A: Additional Tables and Figures
+= Appendix A: Additional Tables, Figures and Equations
 
-#lorem(50)
+== Symetry of F1 Score for swapping raters
+
+Given binary ratings $a_i, b_i in {0, 1}$ from two raters, define:
+
+$ "both_positive" = sum_i a_i b_i $
+$ "only"_b_"positive" = sum_i (1 - a_i) b_i $
+$ "only"_a_"positive" = sum_i a_i (1 - b_i) $
+
+Treating $A$ as ground truth:
+
+$ "precision" = "both_positive" / ("both_positive" + "only"_b_"positive"), quad
+  "recall" = "both_positive" / ("both_positive" + "only"_a_"positive") $
+
+Swapping roles swaps $"only"_a_"positive" <-> "only"_b_"positive"$,
+which swaps precision and recall. Since $F_1$ is their harmonic mean:
+
+$ F_1 = frac(2 dot "precision" dot "recall", "precision" + "recall")
+      = frac(2 dot "recall" dot "precision", "recall" + "precision") $
+
+Multiplication and addition are commutative, so $F_1$ is invariant under
+the swap.
+
+For swapping labels (0,1) F Scores are not symetric.
 
 #pagebreak()
 
