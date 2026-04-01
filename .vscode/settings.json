@@ -1,3 +1,5 @@
 {
+    "tinymist.rootPath": "/home/thhaase/Github/masterthesis",
+    "tinymist.fontPaths": ["/usr/share/fonts/truetype/msttcorefonts"],
     "r.lsp.promptToInstall": false
 }

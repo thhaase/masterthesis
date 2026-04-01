@@ -1,4 +1,4 @@
-rm(list = ls())
+rm(list = ls())d
 library(arrow)
 library(tidyverse)
 library(irr)
@@ -70,7 +70,7 @@ map_dfr(pairs, \(p) {
     x = NULL, y = "F1 Score",
     caption = "Data form Bundestag Speeches used to train the PopBERT Classifier\nQwen3s Rating collapsed from 7-Level Likertscale to Binary Scores for Comparison"
   ) +
-  scale_y_continuous(limits = c(0, 1), breaks = 1:10 / 10) +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10 / 10) +
   theme_bw() +
   theme(
     legend.position = "none",
@@ -79,7 +79,71 @@ map_dfr(pairs, \(p) {
     panel.grid.major.x = element_blank()
   )
 
-ggsave("../images/prompt-validation-pairwise-f1.png", width = 8, height = 5, dpi = 600)
+ggsave("../images/prompt-validation-pairwise-f1.png", width = 8, height = 4.5, dpi = 600)
+
+
+map_dfr(pairs, \(p) {
+  tibble(
+    r1 = p[1], r2 = p[2],
+    pair_type = if_else(r1 != "LLM" & r2 != "LLM", "Expert - Expert", "LLM - Expert"),
+    dimension = c("Anti-Elitism", "People-Centrism"),
+    f1 = c(
+      compute_f1(wide_elite[[p[1]]], wide_elite[[p[2]]]),
+      compute_f1(wide_people[[p[1]]], wide_people[[p[2]]])
+    )
+  )
+}) |>
+  ggplot(aes(x = pair_type, y = f1, fill = pair_type)) +
+  geom_boxplot(width = 0.5, alpha = 0.8, outlier.shape = NA) +
+  geom_jitter(width = 0.12, size = 2, alpha = 0.7) +
+  facet_wrap(~dimension) +
+  entoptic::scale_fill_entoptic_d(option = "firstlight", begin = 0.1, end = 0.5) +
+  labs(
+    #title = "Pairwise F1 Scores: LLM vs. Expert Agreement",
+    #subtitle = "F1 Scores for each Combination of 5 Raters and Qwen3-235B LLM",
+    x = NULL, y = "F1 Score",
+    #caption = "Data form Bundestag Speeches used to train the PopBERT Classifier\nQwen3s Rating collapsed from 7-Level Likertscale to Binary Scores for Comparison"
+  ) +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10 / 10) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 11),
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+ggsave("../images/prompt-validation-pairwise-f1-no-labs.png", width = 8, height = 3.7, dpi = 600)
+
+
+
+
+map_dfr(pairs, \(p) {
+  tibble(
+    r1 = p[1], r2 = p[2],
+    pair_type = if_else(r1 != "LLM" & r2 != "LLM", "Expert - Expert", "LLM - Expert"),
+    dimension = c("Anti-Elitism", "People-Centrism"),
+    accuracy = c(
+      mean(wide_elite[[p[1]]] == wide_elite[[p[2]]], na.rm = TRUE),
+      mean(wide_people[[p[1]]] == wide_people[[p[2]]], na.rm = TRUE)
+    )
+  )
+}) |>
+  ggplot(aes(x = pair_type, y = accuracy, fill = pair_type)) +
+  geom_boxplot(width = 0.5, alpha = 0.8, outlier.shape = NA) +
+  geom_jitter(width = 0.12, size = 2, alpha = 0.7) +
+  facet_wrap(~dimension) +
+  entoptic::scale_fill_entoptic_d(option = "firstlight", begin = 0.1, end = 0.5) +
+  labs(x = NULL, y = "Accuracy") +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10 / 10) +
+  theme_bw() +
+  theme(
+    legend.position = "none",
+    strip.text = element_text(face = "bold", size = 11),
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+ggsave("../images/prompt-validation-pairwise-accuracy.png", width = 8, height = 3.7, dpi = 600)
+
 
 # --- Plot 2: Majority-vote F1 ---
 
@@ -112,7 +176,7 @@ bind_rows(
     caption = "Data form Bundestag Speeches used to train the PopBERT Classifier\nQwen3s Rating collapsed from 7-Level Likertscale to Binary Scores for Comparison"
   ) +
   scale_alpha_manual(values = c(F1 = 1, Precision = 0.75, Recall = 0.75), guide = "none") +
-  scale_y_continuous(limits = c(0, 1), breaks = 1:10 / 10) +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10 / 10) +
   theme_bw() +
   theme(
     plot.title = element_text(face = "bold"),
