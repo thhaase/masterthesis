@@ -19,7 +19,6 @@ setDTthreads(0)
 # Load both raw and reftweets, then combine
 d <- read_parquet("../data/d.parquet") |> setDT()
 g <- readRDS("../data/nets/full_net.rds")
-
 # === === === === === === === === === === === === === === === === === === === == 
 # === Add Network Variables ===
 
@@ -274,3 +273,8 @@ g <- delete_edges(g, which(is.na(E(g)$thread_root_party)))
 g <- delete_vertices(g, which(igraph::degree(g) == 0))
 
 saveRDS(g, "../data/nets/g_full.rds")
+
+
+
+
+

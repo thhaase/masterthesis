@@ -31,7 +31,7 @@ d <- read_parquet("../data/d.parquet")
 g <- readRDS("../data/nets/g.rds") # largest component
 #g <- readRDS("../data/g_full.rds")
 # === META ===
-DPI = 300
+DPI = 600
 
 # === Populism Descriptives ===
 data.frame(
@@ -414,6 +414,7 @@ if(FALSE){
   
   ggsave("../images/populism_3d_final.png", img, width = 10, height = 10)
 }
+
 
 
 

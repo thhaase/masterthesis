@@ -1,4 +1,4 @@
-rm(list = ls())d
+rm(list = ls())
 library(arrow)
 library(tidyverse)
 library(irr)

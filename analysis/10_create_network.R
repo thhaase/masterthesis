@@ -63,7 +63,7 @@ d <- merge(
   (\(dt) setorder(dt, -timestamp_utc))() |>
   unique(by = "id") |>
   setkey(id)
-
+write_parquet(d,paste0(data_path,"/d_raw.parquet"))
 # filter for all tweets that are part of the reply network (replying or replied to)
 d_reply <- d[id %in% d[!is.na(to_tweetid), unique(c(id, to_tweetid))]]
 d <- d_reply
