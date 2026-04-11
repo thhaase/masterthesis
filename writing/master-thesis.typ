@@ -126,16 +126,18 @@
 // Summary of other Sections (Basically summary of Introduction Paragraphs)                         [550w - 1 page]
 
 == Motivation & Relevance Statement [280w, 0.5p]
-#lorem(280)
-
+//#lorem(280)
+- https://publications.jrc.ec.europa.eu/repository/handle/JRC144603
+  - decentralization of information is already happening
 == Research Question                [280w,0.5p]
-#lorem(280)
+//#lorem(280)
 
 == Summary of other Sections (Basically summary of Introduction Paragraphs)                         [550w - 1 page]
-#lorem(550)
+//#lorem(550)
 
 #v(1cm)
 
+REFORMULATE AFTER WRITING RESULTS PART
 
 Question:
 How does the usage of populist rhetoric by german Members of Parliament on Twitter affect the politicians engagement communities?
@@ -178,22 +180,22 @@ H3: What Network Structures are indicative of Populist MPs ego networks?
 // Summary                             [100w, 0.2 page]
 
 == Introduction                        [100w, 0.2page]
-#lorem(100)
+//#lorem(100)
 
 == Theoretical Background (start broad) [650w, 1.2 pages]
-#lorem(650)
+//#lorem(650)
 
 == Relevant Theory (less broad)         [680w, 1.3 pages]
-#lorem(680)
+//#lorem(680)
 
 == Case Study (detailed)                [670w, 1.3 pages]
-#lorem(670)
+//#lorem(670)
 
 == Hypothesis (narrow down)             [500w, 1page]
-#lorem(500)
+//#lorem(500)
 
 == Summary                             [100w, 0.2 page]
-#lorem(100)
+//#lorem(100)
 
 
 = Data and Methods
@@ -222,24 +224,82 @@ H3: What Network Structures are indicative of Populist MPs ego networks?
 
 
 == Introduction                                        [100w, 0.2p]
-#lorem(100)
+//#lorem(100)
 
 == Dataset Sampling & Description                       [264w, 0.5p] 
-#lorem(264)
+//#lorem(264) +40words
 
-Data were collected via Twitter's streaming API using two parallel strategies to capture reply interactions involving German MPs. The follow stream tracked replies to MP-generated tweets. The track stream captured tweets mentioning MP handles (e.g., "\@username"), including direct replies and nested replies to reconstruct complete conversation threads. Protected accounts were excluded. Both datasets were combined and deduplicated to create the final reply dataset.
+The Dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
+To deliniate the set of politicians and add their name and party information, a list of parliamentary members of the 19th, 20th, and 21st German Bundestag is obtained from the Bundestags Webarchiv and added to the original dataset through their twitter-account links @bundestag2026. The complete dataset consists of 693 015 Tweets in the twitwi format @medialab2026.
+
+German political news from 7–14 February 2022 were dominated by the Omikron wave's peak and the escalating Russia-Ukraine crisis. As Russia massed troops for what would become Europe's largest military offensive since WWII, Chancellor Scholz met President Biden to discuss Germany's Nord Stream 2 dependency. Domestically, Scholz's coalition split over a general vaccine mandate, with FDP Justice Minister Buschmann deeming it constitutionally dubious and proposing mandatory physician consultations for unvaccinated adults as a softer alternative.
+
 
 == Operationalization & Measure                         [500w. 1p]
-#lorem(500)
+//#lorem(500) +9words
+Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as [two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
+
+This study operationalizes the core dimensions of #cite(<mudde2004>, form: "prose")'s definition, People Attitude, Elitist Attitude, and Antagonism, by instructing a large language model through an annotation prompt (see #link(<sec:app-prompt>)[Appendix]). Each dimension is defined with explicit scoring anchors: People Attitude and Elitist Attitude are measured on bidirectional scales from --3 to +3, where positive values indicate support for and negative values indicate opposition to the respective group, while Antagonism is measured on a unidirectional scale from 0 (no divide) to 6 (existential threat), with labeled thresholds distinguishing dissatisfaction (1--2), active blame (3--4), and existential threat framing (5--6). The prompt leverages chain-of-thought style reasoning and few-shot examples to guide the models annotation behaviour. To guide the models reasoning letting it question itself throughout the process lead improved the results immensly compared to hard rule-based checks.
+
+The prompt follows the structure from #cite(<liu2026>, form: "prose"). It begins with a role definition and a pre-analysis check if the text carries any content other than just a link or a user mention. It proceeds by defining #quote[People Attitude], #quote[Elite Attitude] and #quote[Antagonism]. The definition of "the people" is restricted to a broad ordinary majority and explicitly excludes named individuals, lists of specific persons, and narrow subgroups unless the text frames them as standing in for the general public. Similarly, elite criticism is only scored when the target is a generalized powerful class rather than a single individual or a specific policy disagreement.
+In the last major section the prompt invokes the chain-of-thought before assigning scores, the model must produce a holistic redescription of the post's rhetorical strategy, an actor-by-actor analysis that classifies each referenced person or group by scale (individual, institution, or generalized class) and dimension-specific explanations that articulate the reasoning behind each score. 
+At each step, the model is asked to consider alternative readings and flag its confidence as LOW when a reasonable coder could disagree. 
+Three few-shot examples are included to calibrate the model's decision boundaries: a strongly populist post with high people, elite, and antagonism scores, a non-political post that should receive all zeros, and an ambiguous post where institutional criticism could plausibly be read as either targeted policy dissatisfaction or broader anti-elite attitude. This example structure is designed to discourage binary classification tendencies and encourage the model to use the full range of each scale.
+
+The prompt is included as a systemprompt and appended with the to be annotated tweet. The model outputs its reasoning and scores in a json format.
+
 
 == Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
-#lorem(332)
+//#lorem(332) +20words
+Computationally methods driven text analysis is based on linguistic concepts. A corpus of documents is divided in tokens as semantically meaningful units of analysis which are often words. The simplest text classification techniques are usually wordfrequency based dictionary methods. Some of which already mechanistically take context of wordappearence into account @ribeiro2016. While simple machine learning classifiers like naive bayes models are statistically more elaborate, deeplearning models are able to integrate interactions between tokens allowing for even better predictions. But deep learning architectures like convolutional neural networks trade variance for increased local bias through usage of filters @sohil2022. Transformer architectures implement modeling of long-range dependencies by implementing self attention on a micro level weighing the importance of every individual input token for other each individual input token @cordonnier2020. Qwen3-235B-A22B-Instruct-2507-FP8 is using more elaborate attention mechanisms like grouped query attention @yang2025.
+The model also implements expert segmentation, is multilingual and has 8-bit floating weights @yang2025.
+
+Output quality of large language models is highly dependent on prompt design @liu2026. Prompt engineering is conducted iteratively by drawing small random samples of tweets from the corpus and classifying it using an initial prompt. The resulting reasoning steps contained in the LLMs JSON output are then qualitatively assessed with regard to coherence and later label accuracy. Based on identified shortcomings, the prompt is systematically adjusted and the process is repeated. 
+Early versions of the prompt contained were structured in the style described by #cite(<liu2026>, form:"prose"), later additional rule based checks were integrated, the coherence of the phrasing was adjusted and lastly the rulebased checks were changed to questions prompting the LLM to question its judgements and certainty.
+External validity is tested after improving the prompt qualitatively until reaching satisfying reasoning performance. 
+The expert annotated training dataset of Bundestag for fine tuning the PopBERT populism classification transformer model is used @erhard2025. The dataset contains 8795 sentences of Bundestag speeches with binary annotations of five experts on the people-centrism and anti-elite dimension @erhard2025. After annotating validation dataset with the developed systemprompt and Qwen3-235B-A22B-Instruct-2507-FP8 accuracy 
+$ "Accuracy" = frac(1, n) sum_(i=1)^(n) bb(1)["rater"_A^((i)) = "rater"_B^((i))], $
+aswell as F scores 
+$ "Precision" = frac("both rated positive", "both rated positive" + "only predicted positive") $
+
+$ "Recall" = frac("both rated positive", "both rated positive" + "only reference positive") $
+
+$ F_1 = frac(2 dot "Precision" dot "Recall", "Precision" + "Recall") $
+for pairs of expert raters with each other and the LLM annotations are calculated. For validation the bidirectional rating scale of the LLM is collapsed to binary labels matching the direction of pro-people and anti-elite. While the F1 score is not symetric for swapping labels it is symetric for swapping raters (see #link(<sec:app-symetry-of-f1-score>)[Appendix]).
+
+
+
 
 == Networkanalysis (Threads, Replynetwork, Egonetworks) [295w, 0.6p]	
-#lorem(295)
+//#lorem(295) +38words
+The reply threads are constructed by treating tweets as nodes that are linked through directed replies. A component in the constructed thread network is then a replythread with one rootnode that is only recieving links marking the direction of a reply. Some reply chains trace back to MP tweets posted before the collection period, so the root node has no row in the dataset. Matching the target tweets user information against the politician table recovers their authorship, recovering 2,631 of 89,561 threads (2.9%). Threads root tweet information like politician with e.g. party and followerinformation, are then stored within the reply tweets of the respective thread and aswell added to each tweet in the reply network. 
+
+The main research question requires a network of interactions plausibly representing an engagement community. A weighted user centric reply network with users as nodes and replies as directed links is constructed. The original tweet-based dataset holding politician and threadinformation served as the basis for construction with its `user_id` and `to_userid` variables. The resulting network is directed with edgeweights based on replycount. It holds 81 295 user-nodes connected through 239 502 reply-links distributed among 1865 components. A giant component holds (77 194) 94% of all nodes. 1207 users are contained in components of size 2, one original user, one replying user, as the threadsize holding the second most nodes. The second largest component held 41 (0.05%) users (see the #link(<sec:app-component-table>)[table] in appendix).
+The network analysis is based on the giant component to make computation more feasable leading to a loss of the network periphery without any actual structurally relevant threads.
+
+Tweet-level populism dimensions (people scores, elitism scores, antagonism scores) are aggregated per user by computing weighted means across each user's tweets, then combined into a userlevel composite populism score. These user-level scores are added as vertex attributes to the reply network.
+
+To definitly deliniate the dataset to replies from politicians tweets reply-edges not appearing underneath politicians threads are deleted and isolates are removed. Thereby removing rest-replythreads of e.g. referenced tweets.
+
+
+== OOPS I FORGOT THE SECTION WITH MY MODELS/Investigations WHILE WORDPLANNING
+
+1. validate prompt
+2. explore results of all tweets (MP tweets, replies, referenced, retweets) in dataset for 
+  - populism dimensions
+  - populism dimensions x party
+  - tweet content
+3. explore largest component structure
+  - large network plot
+    - politicians, parties
+  - indegree, outdegree
+  - hierarchical structure
+4. extract MPs ego networks to compare means
+5? maybe not only ego controls but also alter controls to gain info about social effects??
+
 
 == Summary                                             [100w, 0.2 p]
-#lorem(100)
+//#lorem(100)
 
 
 
@@ -271,10 +331,14 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 
 
 == Introduction                     [100w, 0.2p]
-#lorem(100)
+//#lorem(100)
 
 == Textanalysis: Result              [510w, 1p]
-The text
+
+=== Prompt Validation
+- Skewed dataset inflates accuracy
+- F scores are not biased through large number of 0 populism scores
+- F scores show that prompt is rating tweet on an expert level
 #figure(
   image("../images/prompt-validation-pairwise-accuracy.png", width: 100%),
   caption: [Prompt Performance - Pairwise accuracy for all expert-expert and LLM-expert rater combinations across anti-elitism and people-centrism.]
@@ -300,7 +364,7 @@ The text
   LLM ratings were collapsed from a 7-level Likert scale to binary
   scores (anti-elitism: score < 0; people-centrism: score > 0).
 ]
-While the F1 score is not symetric for swapping labels #link(<sec:app-symetry-of-f1-score>)[it is symetric for swapping raters].
+
 
 #figure(
   image("../images/populism_dimensions_person_level.png", width: 90%),
@@ -312,26 +376,26 @@ While the F1 score is not symetric for swapping labels #link(<sec:app-symetry-of
   caption: [Title of the Figure],
 )<fig:label>
 
-#lorem(510)
+//#lorem(510)
 == Network Analysis
 
 == Network: Descriptives & Structure [469w, 0.9p]
-#lorem(469)
+//#lorem(469)
 
 == Network: Hierarchy Deepdive	     [386w, 0.7p]
-#lorem(386)
+//#lorem(386)
 
 == Network: Egonetworks	             [457w, 0.9p]	
-#lorem(457)
+//#lorem(457)
 
 == H1: Model/Means	                 [767w, 1.5p]
-#lorem(767)
+//#lorem(767)
 
 == HX: Deepdive??	                   [531w, 1.0p]	
-#lorem(531)
+//#lorem(531)
 
 == Summary                          [100w, 0.2 p]
-#lorem(100)
+//#lorem(100)
 
 
 
@@ -356,22 +420,22 @@ While the F1 score is not symetric for swapping labels #link(<sec:app-symetry-of
 
 
 == Introduction                                        [100w, 0.2p]
-#lorem(100)
+//#lorem(100)
 
 == Summary of Results	                                  [347w, 0.7p]
-#lorem(347)
+//#lorem(347)
 
 == Interpretation (Relate Results to Literature Review)	[387w,	0.7p]
-#lorem(387)
+//#lorem(387)
 
 == Implications (e.g. Significance of Findings, What side is supported, Gap filled)	[372w, 0.7p]
-#lorem(372)
+//#lorem(372)
 
 == Limitations & Future Work	                          [394w, 0.8p]
-#lorem(394)
+//#lorem(394)
 
 == Summary                                             [100w, 0.2 p]
-#lorem(100)
+//#lorem(100)
 
 
 = Conclusion
@@ -382,7 +446,7 @@ While the F1 score is not symetric for swapping labels #link(<sec:app-symetry-of
 // - Should contain a discussion of broader meaning and significance of findings
 
 // Conclusion [538w, 1.0p]	
-#lorem(538)
+//#lorem(538)
 
 // =================================================
 #pagebreak()
@@ -413,13 +477,23 @@ $ F_1 = frac(2 dot "precision" dot "recall", "precision" + "recall")
       = frac(2 dot "recall" dot "precision", "recall" + "precision")$
 
 Multiplication and addition are commutative, so $F_1$ is invariant under
-the swap.
+the swap. #sym.square.filled
 
 For swapping labels (0,1) F Scores are not symetric.
 
-
+== Component Tables
+<sec:app-component-table>
+#figure(
+  block(width: 70%,
+    include "../tables/component_table.typ"
+  ),
+  caption: [Component size distribution of the reply network]
+)<fig:prompt-accuracy>
+#long-caption[
+   linking users through directed and weighted reply links. A giant component holds most user nodes and the size appearing the most is two.
+]
 = Appendix C: Prompt
-
+<sec:app-prompt>
 /*
 #text(size: 8pt)[
   #raw(read("../analysis/prep_hpc_coding/prompt-populism.md"), lang: "markdown", block: true)

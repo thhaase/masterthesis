@@ -64,6 +64,16 @@ d <- merge(
   unique(by = "id") |>
   setkey(id)
 write_parquet(d,paste0(data_path,"/d_raw.parquet"))
+
+# d |> 
+#   mutate(date = as.Date(local_time)) |> 
+#   count(date) |> 
+#   ggplot(aes(x = date, y = n)) +
+#   geom_line() +
+#   scale_x_date(limits = as.Date(c("2022-02-04", "2022-02-17"))) +
+#   labs(x = NULL, y = "Tweets per day") +
+#   theme_bw()
+
 # filter for all tweets that are part of the reply network (replying or replied to)
 d_reply <- d[id %in% d[!is.na(to_tweetid), unique(c(id, to_tweetid))]]
 d <- d_reply
@@ -164,7 +174,7 @@ d[lapply(seq_along(threadid_lookup),
 
 d$thread_id |> head()
 
-# Step 1: Create threadinfo with ONE row per thread (not per node!)
+# Create threadinfo with ONE row per thread (not per node!)
 threadinfo <- lapply(gt_threads, function(thread) {
   list(
     size    = vcount(thread),
@@ -173,7 +183,7 @@ threadinfo <- lapply(gt_threads, function(thread) {
   )
 }) |> rbindlist(idcol = "thread_id")
 
-# Step 2: Enrich with root user info
+# Enrich with root user info
 threadinfo[d, on = .(id_root = id), `:=`(
   user_name = i.user_name,
   user_screen_name = i.user_screen_name,
@@ -235,7 +245,7 @@ cat(sprintf("Threads with party after fix: %d / %d (%.1f%%)\n",
 
 # === === === === === === === === === === === === === === === === === === === == 
 
-# Step 3: Set keys and join efficiently
+# Set keys and join threadinfo efficiently to individual tweets
 setkey(d, thread_id)
 setkey(threadinfo, thread_id)
 
@@ -317,6 +327,8 @@ gu <- d[!is.na(user_id) & !is.na(to_userid),
         by = .(user_id, to_userid)] |> 
   graph_from_data_frame(directed = TRUE)
 
+cat("Node Count: ", gu |> V() |> length())
+cat("Link Count: ", gu |> E() |> length())
 gu |> is_directed()
 gu |> is_weighted()
 gu |> str()
@@ -342,6 +354,7 @@ ggsave("../images/1-gu-componentsize-frequency.png", bg="white", width = 12, hei
 
 
 total_nodes <- igraph::vcount(gu)
+igraph::components(gu)$no
 
 table_componentsizes <- igraph::components(gu)$csize |>
   as.data.table() |>

@@ -180,8 +180,7 @@ ggsave("../images/5-modelcheck_m0.png",
 # === Full ===
 m1 <- lm(mean_alter_degree ~ populism_binary +
            ego_degree +
-           user_followers +
-           vader_sentiment_mean, 
+           user_followers, 
           data = d_ego)
 summary(m1)
 check_model(m1)
@@ -194,8 +193,7 @@ d_ego$fragmentation <- d_ego$component_count / d_ego$n_alters
 
 r1 <- lm(mean_alter_degree ~ populism_binary +
            ego_degree +
-           user_followers +
-           vader_sentiment_mean,
+           user_followers,
          data = d_ego)
 summary(r1)
 check_model(r1)
@@ -295,6 +293,7 @@ ggsave("../images/5-H1_egonet_models.png", bg = "white", width = 10, height = 5,
 
 
 # === 3. Predicted Probabilities ===
+library(marginaleffects)
 predictions(m1, 
             newdata = datagrid(populism_binary = c(0, 1))) |> 
   mutate(populism_binary = factor(populism_binary, levels = c(0,1))) |> 
