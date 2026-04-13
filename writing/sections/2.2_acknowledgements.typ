@@ -3,11 +3,11 @@
 ]
 /*
 - supervisors Philipp & Karoly
-- IAS, Synosys
+- IAS, Synosys team & friends
 
-- fantastic classmates/mitstudierende
+- fantastic classmates
 
-- wichtige lehrer?
+- important teachers?
 
 - Mom, Dad
 */

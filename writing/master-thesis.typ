@@ -144,15 +144,7 @@ How does the usage of populist rhetoric by german Members of Parliament on Twitt
 
 H1: German MPs who use populist rhetoric have more strongly interconnected alters in their reply ego networks than those who do not.
   - linguistic construction of in/outgroup 
-  - hyping the ingroup --> selfselection effect keeps only engaged users with knowledge of groups social facts that actively reply to each other
-
-- In results part:
-  - In exploratory analysis, we operationalized alter disconnectedness as the fragmentation ratio (number of components divided by number of alters). Results mirror the main finding: lower fragmentation — i.e., more cohesive alter networks — is associated with populist rhetoric (OR = 0.02, p = .017).
-  - Exploratory analysis using the fragmentation ratio (components / alters) corroborates this pattern. Populist MPs' reply networks are structurally more cohesive — their alters cluster into fewer, larger communities rather than responding in isolation (OR = 0.02, p = .017). This is consistent with the theoretical expectation that populist rhetoric fosters a sense of shared group identity among respondents, encouraging mutual engagement beyond dyadic replies to the politician.
-
-H2: Do Populist MPs share more audience with each other than with non-populist MPs? 
-
-H3: What Network Structures are indicative of Populist MPs ego networks?
+  - hyping the ingroup --> selfselection effect keeps only engaged users with knowledge of groups social facts that actively reply to each other @oswald2025
 
 
 
@@ -284,17 +276,61 @@ To definitly deliniate the dataset to replies from politicians tweets reply-edge
 
 == OOPS I FORGOT THE SECTION WITH MY MODELS/Investigations WHILE WORDPLANNING
 
-1. validate prompt
-2. explore results of all tweets (MP tweets, replies, referenced, retweets) in dataset for 
-  - populism dimensions
-  - populism dimensions x party
-  - tweet content
-3. explore largest component structure
-  - large network plot
-    - politicians, parties
-  - indegree, outdegree
-  - hierarchical structure
-4. extract MPs ego networks to compare means
+A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. The textanalysis results are described for the entire dataset containing also retweets and referenced tweets in order to capture the broader political discourse during the week. Detected populism dimensions are further explored by party additional to tweets textual content. 
+
+Following that the reply network structure is explored through a visualization using the Distributed Recursive Graph Layout and validated through closer inspection of degree and local clustering distributions @martin2007. 
+The Distributed Recursive Graph Layout (DrL) lays out a graph by applying repulsion and attraction forces between nodes to prevent overlap and keeping connected nodes close. Beginning with randomness so nodes can move freely and avoid poor configurations, gradually reducing movement until positions stabilize. Once positioned, spatially close nodes are merged into representative summary nodes producing a coarser version of the graph. The cycle of coarsening and repositioning repeats until the graph is sufficiently small to lay out directly. Finally the process is reversed, expanding each simplified graph back one level at a time, using the prior layout as an initial arrangement.
+
+
+The structure of politicians egonetworks is compared to answer the main question about local engagement communities. Mean alter degree is used as the primary measure of alter interconnectedness, capturing the average number of connections each alter maintains to other alters within the ego network. While density would be a more established measure in usual cases it is inversely related to network size, making comparisons across ego networks of different scales unreliable. As a robustness check, the fragmentation ratio is additionally tested since this measure relates the number of connected components to the overall network, providing a complementary perspective on whether alters form a cohesive neighborhood or fragment into isolated clusters.
+
+- explain model variables
+  - TODO: include mean thread size in model
+```r
+
+# ==== MODEL POPULISM ====
+
+# === Baseline ===
+m0 <- lm(mean_alter_degree ~ populism_binary, 
+         data = d_ego)
+summary(m0)
+check_model(m0)
+ggsave("../images/5-modelcheck_m0.png",
+       width = 11, height = 9, dpi = DPI)
+# === Full ===
+m1 <- lm(mean_alter_degree ~ populism_binary +
+           ego_degree + 
+           user_followers +
+           mean_thread_size, 
+          data = d_ego)
+summary(m1)
+check_model(m1)
+ggsave("../images/5-modelcheck_m1.png",
+       width = 11, height = 9, dpi = DPI)
+
+
+# ==== ROBUSTNESS CHECK ====
+d_ego$fragmentation <- d_ego$component_count / d_ego$n_alters
+
+r1 <- lm(mean_alter_degree ~ populism_binary +
+           ego_degree +
+           user_followers +
+           mean_thread_size,
+         data = d_ego)
+summary(r1)
+check_model(r1)
+ggsave("../images/5-modelcheck_r1.png",
+       width = 11, height = 9, dpi = DPI)
+
+```
+
+#text(fill:red)[MAYBE INCLUDE:
+predict 
+
+- H0: Higher alter connectivity is a mechanical artifact of thread structure, nothing social is happening.
+- H1: Ingroup Formation: 
+  - 
+]
 5? maybe not only ego controls but also alter controls to gain info about social effects??
 
 

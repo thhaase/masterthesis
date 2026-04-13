@@ -49,6 +49,7 @@ names(ego) <- V(g)$politician_name[politician_ids]
 # - mean_alter_degree
 # - gw_mean_alter_degree (geometrically weighted)
 # - prop_reciprocated
+# - mean_thread_size
 
 # additionally put this information of the ego in the table:
 # - user_screen_name
@@ -131,6 +132,11 @@ d_ego <- map_dfr(names(ego), function(nm) {
     prop_reciprocated <- NA
   }
   
+  # --- Mean thread size (from pipe-delimited edge attribute) ---
+  ts_strings <- E(eg)$thread_size
+  ts_vals <- as.numeric(unlist(strsplit(ts_strings, "\\|")))
+  mean_thread_size <- mean(ts_vals, na.rm = TRUE)
+  
   # --- Additional ego info ---
   tibble(
     politician_name      = nm,
@@ -159,7 +165,8 @@ d_ego <- map_dfr(names(ego), function(nm) {
     mean_alter_degree    = mean_alter_degree,
     component_count      = component_count,
     gw_mean_alter_degree = gw_mean_alter_degree,
-    prop_reciprocated    = prop_reciprocated
+    prop_reciprocated    = prop_reciprocated,
+    mean_thread_size     = mean_thread_size
   )
 })
 
@@ -176,11 +183,11 @@ summary(m0)
 check_model(m0)
 ggsave("../images/5-modelcheck_m0.png",
        width = 11, height = 9, dpi = DPI)
-
 # === Full ===
 m1 <- lm(mean_alter_degree ~ populism_binary +
-           ego_degree +
-           user_followers, 
+           ego_degree + 
+           user_followers +
+           mean_thread_size, 
           data = d_ego)
 summary(m1)
 check_model(m1)
@@ -193,7 +200,8 @@ d_ego$fragmentation <- d_ego$component_count / d_ego$n_alters
 
 r1 <- lm(mean_alter_degree ~ populism_binary +
            ego_degree +
-           user_followers,
+           user_followers +
+           mean_thread_size,
          data = d_ego)
 summary(r1)
 check_model(r1)
@@ -236,13 +244,15 @@ table <- tbl_merge(
       populism_binary      = "Ego Populism Score (0/1)",
       ego_degree           = "Ego Degree",
       user_followers       = "Ego Followers",
-      vader_sentiment_mean = "Ego VADER Sentiment"
+      vader_sentiment_mean = "Ego VADER Sentiment",
+      mean_thread_size     = "Egos Mean Thread Size"
     )),
     fmt_model(r1, list(
       populism_binary      = "Ego Populism Score (0/1)",
       ego_degree           = "Ego Degree",
       user_followers       = "Ego Followers",
-      vader_sentiment_mean = "Ego VADER Sentiment"
+      vader_sentiment_mean = "Ego VADER Sentiment",
+      mean_thread_size     = "Egos Mean Thread Size"
     ))
   ),
   tab_spanner = c("**Baseline**", "**Full Model**", "**Robustness**")
@@ -267,11 +277,13 @@ bind_rows(
                   fragmentation        = "Fragmentation Ratio",
                   ego_degree           = "Ego Degree",
                   user_followers       = "Ego Followers",
-                  vader_sentiment_mean = "Ego VADER Sentiment"
+                  vader_sentiment_mean = "Ego VADER Sentiment",
+                  mean_thread_size     = "Egos Mean Thread Size"
     ),
     term = factor(term, levels = rev(c(
       "Ego Populism Score (0/1)", "Fragmentation Ratio",
-      "Ego Degree", "Ego Followers", "Ego VADER Sentiment"
+      "Ego Degree", "Ego Followers", "Ego VADER Sentiment", 
+      "Egos Mean Thread Size"
     ))),
     sig = p.value < 0.05,
     model = factor(model, levels = c("Baseline", "Full Model", "Robustness"))

@@ -4,20 +4,20 @@ library(arrow)
 library(bit64)
 library(tidyverse)
 library(igraph)
-library(ggraph)
-library(easystats)
+library(sandwich)
+library(lmtest)
 library(gtsummary)
 library(broom)
 
 setwd("~/Github/masterthesis/analysis")
 
+DPI <- 300
+
 # === Load Data ===
 d <- read_parquet("../data/d.parquet")
 g <- readRDS("../data/nets/g.rds")
 
-DPI <- 300
-
-# === Extract Ego Networks (same as main analysis) ===
+# === Extract Ego Networks ===
 politician_ids <- which(!is.na(V(g)$politician_name))
 
 ego <- lapply(politician_ids, function(v) {
@@ -28,33 +28,6 @@ ego <- lapply(politician_ids, function(v) {
 })
 names(ego) <- V(g)$politician_name[politician_ids]
 
-
-# === Build Alter-Edge Dataset ===
-
-d_edges <- map_dfr(names(ego), function(nm) {
-  
-  eg <- ego[[nm]]
-  pid <- politician_ids[which(names(ego) == nm)]
-  ego_screen <- V(g)$user_screen_name[pid]
-  ego_vid <- which(V(eg)$user_screen_name == ego_screen)
-  
-  if (length(ego_vid) == 0) return(tibble())
-  
-  alter_g <- delete_vertices(eg, ego_vid)
-  
-  if (ecount(alter_g) == 0) return(tibble())
-  
-  el <- as_data_frame(alter_g, what = "edges")
-  
-  el$politician_name <- nm
-  el$party <- V(g)$party[pid]
-  el$populism_binary <- as.numeric(!is.na(V(g)$populism_score[pid]) & V(g)$populism_score[pid] > 0)
-  el$ego_followers   <- V(g)$user_followers[pid]
-  
-  as_tibble(el)
-})
-
-# === Parse pipe-separated edge attributes ===
 parse_pipe_mean <- function(x) {
   sapply(x, function(val) {
     nums <- suppressWarnings(as.numeric(strsplit(as.character(val), "\\|")[[1]]))
@@ -62,75 +35,8 @@ parse_pipe_mean <- function(x) {
   })
 }
 
-d_edges <- d_edges |> 
-  mutate(
-    weight      = as.numeric(weight),
-    thread_size = parse_pipe_mean(thread_size)
-  )
-
-# === Diagnostics ===
-cat("Edge dataset dimensions:", nrow(d_edges), "edges across", 
-    n_distinct(d_edges$politician_name), "ego networks\n\n")
-
-d_edges |> 
-  summarise(
-    n = n(),
-    pct_weight_1   = mean(weight == 1),
-    thread_size_na = mean(is.na(thread_size))
-  ) |> 
-  print()
-
-d_edges |> 
-  group_by(populism_binary) |> 
-  summarise(
-    n_egos  = n_distinct(politician_name),
-    n_edges = n(),
-    .groups = "drop"
-  ) |> 
-  print()
-
-d_edges |> as.data.frame() |> head()
-# ============================================================
-# STEP 1: RULE OUT THE NULL (H3 — Thread Size)
-# ============================================================
-
-# --- 1a. Compare thread size by ego type ---
-
-step1_summary <- d_edges |> 
-  group_by(populism_binary) |> 
-  summarise(
-    n_edges            = n(),
-    mean_thread_size   = mean(thread_size, na.rm = TRUE),
-    median_thread_size = median(thread_size, na.rm = TRUE),
-    .groups = "drop"
-  )
-print(step1_summary)
-
-cat("\n--- Thread Size: Wilcoxon rank-sum test ---\n")
-wilcox.test(thread_size ~ populism_binary, data = d_edges) |> print()
-
-
-# --- 1b. Visualize thread size distributions ---
-
-d_edges |> 
-  mutate(populism_binary = factor(populism_binary, labels = c("Non-Populist", "Populist"))) |> 
-  filter(!is.na(thread_size)) |>
-  ggplot(aes(x = thread_size, fill = populism_binary)) +
-  geom_density(alpha = 0.6, color = NA) +
-  scale_fill_manual(values = c("Non-Populist" = "#16161D", "Populist" = "#3A6B50")) +
-  scale_x_log10() +
-  labs(x = "Thread Size (Log Scale)", y = "Density", fill = NULL,
-       title = "Thread Size Distribution by Ego Type") +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-# ggsave("../images/6-step1_thread_size.png", bg = "white", 
-#        width = 7, height = 5, dpi = DPI)
-
-
-# --- 1c. Ego-level regressions ---
-
-d_ego <- map_dfr(names(ego), function(nm) {
+# === Build Dyadic Dataset ===
+d_dyads <- map_dfr(names(ego), function(nm) {
   
   eg <- ego[[nm]]
   pid <- politician_ids[which(names(ego) == nm)]
@@ -138,83 +44,130 @@ d_ego <- map_dfr(names(ego), function(nm) {
   ego_vid <- which(V(eg)$user_screen_name == ego_screen)
   
   if (length(ego_vid) == 0) return(tibble())
+  alter_g <- delete_vertices(eg, ego_vid)
+  if (ecount(alter_g) == 0) return(tibble())
   
-  pop_raw <- V(g)$populism_score[pid]
-  populism_binary <- as.numeric(!is.na(pop_raw) & pop_raw > 0)
+  el <- as_data_frame(alter_g, what = "edges")
+  el$politician_name <- nm
+  el$populism_binary <- as.numeric(!is.na(V(g)$populism_score[pid]) & V(g)$populism_score[pid] > 0)
   
-  ego_degree <- igraph::degree(eg, v = ego_vid, mode = "all")
-  alter_g <- igraph::delete_vertices(eg, ego_vid)
-  
-  n_alters <- igraph::vcount(alter_g)
-  
-  alter_degrees <- if (n_alters > 0) igraph::degree(alter_g, mode = "all") else numeric(0)
-  mean_alter_degree <- if (n_alters > 0) mean(alter_degrees) else NA
-  
-  # thread size control
-  edge_df <- as_data_frame(alter_g, what = "edges")
-  
-  if (nrow(edge_df) > 0) {
-    ts_vals <- parse_pipe_mean(edge_df$thread_size)
-    wt_vals <- as.numeric(edge_df$weight)
-    mean_thread_size <- mean(ts_vals, na.rm = TRUE)
-    mean_weight      <- mean(wt_vals, na.rm = TRUE)
-  } else {
-    mean_thread_size <- NA
-    mean_weight      <- NA
-  }
-  
-  # structural signatures (Step 2)
-  prop_reciprocated <- NA
-  if (igraph::is_directed(alter_g) && n_alters > 1) {
-    dc <- igraph::dyad_census(alter_g)
-    if ((dc$mut + dc$asym) > 0) {
-      prop_reciprocated <- dc$mut / (dc$mut + dc$asym)
-    }
-  }
-  
-  component_count <- if (n_alters > 0) igraph::components(alter_g)$no else NA
-  fragmentation   <- if (n_alters > 0) component_count / n_alters else NA
-  
-  tibble(
-    politician_name   = nm,
-    party             = V(g)$party[pid],
-    populism_binary   = populism_binary,
-    ego_degree        = ego_degree,
-    user_followers    = V(g)$user_followers[pid],
-    n_alters          = n_alters,
-    mean_alter_degree = mean_alter_degree,
-    mean_thread_size  = mean_thread_size,
-    mean_weight       = mean_weight,
-    component_count   = component_count,
-    fragmentation     = fragmentation,
-    prop_reciprocated = prop_reciprocated
-  )
+  as_tibble(el)
 })
 
-# --- Models ---
+# === Look up vertex attributes from g ===
+from_idx <- match(d_dyads$from, V(g)$name)
+to_idx   <- match(d_dyads$to, V(g)$name)
 
-m0 <- lm(mean_alter_degree ~ populism_binary, data = d_ego)
+d_dyads$from_followers <- V(g)$user_followers[from_idx]
+d_dyads$to_followers   <- V(g)$user_followers[to_idx]
+d_dyads$from_tweets    <- V(g)$user_tweets[from_idx]
+d_dyads$to_tweets      <- V(g)$user_tweets[to_idx]
+d_dyads$from_populism  <- V(g)$populism_score[from_idx]
+d_dyads$to_populism    <- V(g)$populism_score[to_idx]
+d_dyads$from_sentiment <- V(g)$vader_sentiment_mean[from_idx]
+d_dyads$to_sentiment   <- V(g)$vader_sentiment_mean[to_idx]
 
-m1 <- lm(mean_alter_degree ~ populism_binary + 
-           mean_thread_size, 
-         data = d_ego)
+# === Construct dyadic variables ===
+d_dyads <- d_dyads |> 
+  mutate(
+    weight      = as.numeric(weight),
+    thread_size = parse_pipe_mean(thread_size),
+    from_followers = as.numeric(from_followers),
+    to_followers   = as.numeric(to_followers),
+    from_tweets    = as.numeric(from_tweets),
+    to_tweets      = as.numeric(to_tweets),
+    from_populism  = as.numeric(from_populism),
+    to_populism    = as.numeric(to_populism),
+    from_sentiment = as.numeric(from_sentiment),
+    to_sentiment   = as.numeric(to_sentiment),
+    sum_followers  = from_followers + to_followers,
+    diff_followers = abs(from_followers - to_followers),
+    sum_tweets     = from_tweets + to_tweets,
+    diff_tweets    = abs(from_tweets - to_tweets),
+    sum_populism   = from_populism + to_populism,
+    diff_populism  = abs(from_populism - to_populism),
+    sum_sentiment  = from_sentiment + to_sentiment,
+    diff_sentiment = abs(from_sentiment - to_sentiment)
+  )
 
-m2 <- lm(mean_alter_degree ~ populism_binary + 
-           mean_thread_size +
-           ego_degree + user_followers,
-         data = d_ego)
+# === Diagnostics ===
+cat("Dyad dataset:", nrow(d_dyads), "edges across",
+    n_distinct(d_dyads$politician_name), "ego networks\n\n")
 
-cat("\n=== STEP 1 RESULTS ===\n")
-cat("\nBaseline:\n")
-summary(m0)
-cat("\n+ Thread size control:\n")
-summary(m1)
-cat("\nFull model:\n")
-summary(m2)
+d_dyads |> 
+  group_by(populism_binary) |> 
+  summarise(n_egos = n_distinct(politician_name), n_edges = n(), .groups = "drop") |> 
+  print()
+
+d_dyads |> 
+  summarise(
+    na_followers = mean(is.na(sum_followers)),
+    na_populism  = mean(is.na(sum_populism)),
+    na_sentiment = mean(is.na(sum_sentiment))
+  ) |> print()
 
 
-# --- Step 1 Regression Table ---
+# ============================================================
+# MODELS
+# ============================================================
 
+m0 <- lm(weight ~ populism_binary, data = d_dyads)
+
+m1 <- lm(weight ~ populism_binary + 
+           sum_followers + diff_followers + 
+           sum_tweets + diff_tweets +
+           thread_size, 
+         data = d_dyads)
+
+m2 <- lm(weight ~ populism_binary + 
+           sum_followers + diff_followers + 
+           sum_tweets + diff_tweets +
+           sum_populism + diff_populism +
+           #sum_sentiment + diff_sentiment +
+           thread_size, 
+         data = d_dyads)
+
+m3 <- lm(weight ~ populism_binary * 
+           (sum_followers + diff_followers + 
+              sum_tweets + diff_tweets +
+              sum_populism + diff_populism +
+            #  sum_sentiment + diff_sentiment
+            ) +
+           thread_size, 
+         data = d_dyads)
+
+# === Clustered SEs ===
+cc0 <- complete.cases(d_dyads[, c("weight", "populism_binary")])
+cc1 <- complete.cases(d_dyads[, c("weight", "populism_binary", 
+                                  "sum_followers", "diff_followers",
+                                  "sum_tweets", "diff_tweets", "thread_size")])
+cc2 <- complete.cases(d_dyads[, c("weight", "populism_binary", 
+                                  "sum_followers", "diff_followers",
+                                  "sum_tweets", "diff_tweets",
+                                  "sum_populism", "diff_populism",
+                                  "sum_sentiment", "diff_sentiment", "thread_size")])
+
+cl0 <- vcovCL(m0, cluster = d_dyads$politician_name[cc0])
+cl1 <- vcovCL(m1, cluster = d_dyads$politician_name[cc1])
+cl2 <- vcovCL(m2, cluster = d_dyads$politician_name[cc2])
+cl3 <- vcovCL(m3, cluster = d_dyads$politician_name[cc2])
+
+cat("\n=== M0: Baseline (Clustered SEs) ===\n")
+coeftest(m0, vcov = cl0) |> print()
+cat("\n=== M1: + Activity Controls (Clustered SEs) ===\n")
+coeftest(m1, vcov = cl1) |> print()
+cat("\n=== M2: + Alter Populism & Sentiment (Clustered SEs) ===\n")
+coeftest(m2, vcov = cl2) |> print()
+cat("\n=== M3: + Interactions (Clustered SEs) ===\n")
+coeftest(m3, vcov = cl3) |> print()
+
+cat("\n=== M0 Raw ===\n"); summary(m0)
+cat("\n=== M1 Raw ===\n"); summary(m1)
+cat("\n=== M2 Raw ===\n"); summary(m2)
+cat("\n=== M3 Raw ===\n"); summary(m3)
+
+
+# === Regression Table ===
 fmt_model <- function(model, labels) {
   model |> 
     tbl_regression(
@@ -235,48 +188,53 @@ fmt_model <- function(model, labels) {
     bold_labels()
 }
 
-table_step1 <- tbl_merge(
+lbl_full <- list(
+  populism_binary = "Populism (0/1)",
+  sum_followers   = "Sum Followers (i+j)",
+  diff_followers  = "Diff Followers |i-j|",
+  sum_tweets      = "Sum Tweets (i+j)",
+  diff_tweets     = "Diff Tweets |i-j|",
+  sum_populism    = "Sum Populism (i+j)",
+  diff_populism   = "Diff Populism |i-j|",
+  sum_sentiment   = "Sum Sentiment (i+j)",
+  diff_sentiment  = "Diff Sentiment |i-j|",
+  thread_size     = "Thread Size"
+)
+
+tbl_dyadic <- tbl_merge(
   tbls = list(
-    fmt_model(m0, list(
-      populism_binary = "Populism (0/1)"
-    )),
-    fmt_model(m1, list(
-      populism_binary  = "Populism (0/1)",
-      mean_thread_size = "Mean Thread Size"
-    )),
-    fmt_model(m2, list(
-      populism_binary  = "Populism (0/1)",
-      mean_thread_size = "Mean Thread Size",
-      ego_degree       = "Ego Degree",
-      user_followers   = "Ego Followers"
-    ))
+    fmt_model(m0, list(populism_binary = "Populism (0/1)")),
+    fmt_model(m1, lbl_full),
+    fmt_model(m2, lbl_full),
+    fmt_model(m3, lbl_full)
   ),
-  tab_spanner = c("**Baseline**", "**+ Thread Size**", "**Full Model**")
+  tab_spanner = c("**Baseline**", "**+ Activity**", "**+ Populism**", "**+ Interactions**")
 ) |> 
   modify_table_body(~.x |> dplyr::arrange(row_type == "glance_statistic"))
 
-# table_step1 |> as_kable_extra(format = "latex", booktabs = TRUE) |> 
-#   writeLines("../tables/H3_thread_controls.tex")
-# table_step1 |> as_gt() |> gt::gtsave("../tables/H3_thread_controls.png")
+tbl_dyadic
+# tbl_dyadic |> as_gt() |> gt::gtsave("../tables/H1_dyadic_models.png")
+# tbl_dyadic |> as_kable_extra(format = "latex", booktabs = TRUE) |> 
+#   writeLines("../tables/H1_dyadic_models.tex")
 
 
-# --- Step 1 Coefficient Plot ---
-
-bind_rows(
-  tidy(m0, conf.int = TRUE) |> mutate(model = "Baseline"),
-  tidy(m1, conf.int = TRUE) |> mutate(model = "+ Thread Size"),
-  tidy(m2, conf.int = TRUE) |> mutate(model = "Full Model")
-) |> 
+# === Coefficient Plot: M2 (main effects) ===
+tidy(m2, conf.int = TRUE) |> 
   filter(term != "(Intercept)") |> 
   mutate(
     term = recode(term,
-                  populism_binary  = "Populism (0/1)",
-                  mean_thread_size = "Mean Thread Size",
-                  ego_degree       = "Ego Degree",
-                  user_followers   = "Ego Followers"
+                  populism_binary = "Populism (0/1)",
+                  sum_followers   = "Sum Followers",
+                  diff_followers  = "Diff Followers",
+                  sum_tweets      = "Sum Tweets",
+                  diff_tweets     = "Diff Tweets",
+                  sum_populism    = "Sum Populism",
+                  diff_populism   = "Diff Populism",
+                  sum_sentiment   = "Sum Sentiment",
+                  diff_sentiment  = "Diff Sentiment",
+                  thread_size     = "Thread Size"
     ),
-    sig = p.value < 0.05,
-    model = factor(model, levels = c("Baseline", "+ Thread Size", "Full Model"))
+    sig = p.value < 0.05
   ) |> 
   ggplot(aes(x = estimate, y = reorder(term, estimate), color = sig)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
@@ -284,111 +242,42 @@ bind_rows(
   scale_color_manual(values = c("TRUE" = "#3A6B50", "FALSE" = "#16161D"),
                      labels = c("TRUE" = "p < 0.05", "FALSE" = "n.s."),
                      name = NULL) +
-  facet_wrap(~model, ncol = 3) +
   labs(x = "Coefficient Estimate", y = NULL,
-       title = "Step 1: Does Populism Survive Thread Size Controls?") +
+       title = "Dyadic Model: Predictors of Alter-Alter Tie Weight") +
   theme_bw() +
   theme(legend.position = "bottom")
 
-# ggsave("../images/6-step1_coefficient_plot.png", bg = "white", 
-#        width = 10, height = 5, dpi = DPI)
+# ggsave("../images/6-H1_dyadic_main_effects.png", bg = "white", 
+#        width = 9, height = 6, dpi = DPI)
 
 
-# ============================================================
-# STEP 2: CHARACTERIZE TIE QUALITY (H1 vs. H2)
-# ============================================================
+# === Coefficient Plot: M3 (interactions only) ===
+tidy(m3, conf.int = TRUE) |> 
+  filter(grepl(":", term)) |> 
+  mutate(
+    term = recode(term,
+                  `populism_binary:sum_followers`  = "Populism x Sum Followers",
+                  `populism_binary:diff_followers` = "Populism x Diff Followers",
+                  `populism_binary:sum_tweets`     = "Populism x Sum Tweets",
+                  `populism_binary:diff_tweets`    = "Populism x Diff Tweets",
+                  `populism_binary:sum_populism`   = "Populism x Sum Alter Populism",
+                  `populism_binary:diff_populism`  = "Populism x Diff Alter Populism",
+                  `populism_binary:sum_sentiment`  = "Populism x Sum Sentiment",
+                  `populism_binary:diff_sentiment` = "Populism x Diff Sentiment"
+    ),
+    sig = p.value < 0.05
+  ) |> 
+  ggplot(aes(x = estimate, y = reorder(term, estimate), color = sig)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high), size = 0.6) +
+  scale_color_manual(values = c("TRUE" = "#3A6B50", "FALSE" = "#16161D"),
+                     labels = c("TRUE" = "p < 0.05", "FALSE" = "n.s."),
+                     name = NULL) +
+  labs(x = "Coefficient Estimate", y = NULL,
+       title = "Does Populism Change the Social Sorting Process?",
+       subtitle = "Interaction terms from full dyadic model") +
+  theme_bw() +
+  theme(legend.position = "bottom")
 
-# --- 2a. Edge-level weight comparison ---
-
-step2_edges <- d_edges |> 
-  mutate(pop_label = factor(populism_binary, labels = c("Non-Populist", "Populist"))) |> 
-  group_by(pop_label) |> 
-  summarise(
-    n_edges       = n(),
-    mean_weight   = mean(weight, na.rm = TRUE),
-    median_weight = median(weight, na.rm = TRUE),
-    .groups = "drop"
-  )
-print(step2_edges)
-
-cat("\n--- Edge Weight: Wilcoxon rank-sum test ---\n")
-wilcox.test(weight ~ populism_binary, data = d_edges) |> print()
-
-
-# --- 2b. Ego-level structural signatures ---
-
-step2_structure <- d_ego |> 
-  filter(n_alters > 0) |> 
-  mutate(pop_label = factor(populism_binary, labels = c("Non-Populist", "Populist"))) |> 
-  group_by(pop_label) |> 
-  summarise(
-    n = n(),
-    mean_fragmentation = mean(fragmentation, na.rm = TRUE),
-    mean_reciprocity   = mean(prop_reciprocated, na.rm = TRUE),
-    mean_weight        = mean(mean_weight, na.rm = TRUE),
-    .groups = "drop"
-  )
-print(step2_structure)
-
-
-# --- 2c. Visualize edge weight ---
-
-d_edges |> 
-  mutate(pop_label = factor(populism_binary, labels = c("Non-Populist", "Populist"))) |>
-  ggplot(aes(x = pop_label, y = weight, fill = pop_label)) +
-  geom_boxplot(outlier.alpha = 0.3, width = 0.6) +
-  scale_fill_manual(values = c("Non-Populist" = "#16161D", "Populist" = "#3A6B50")) +
-  labs(x = NULL, y = "Edge Weight (Repeated Interactions)", fill = NULL,
-       title = "Step 2: Tie Intensity — Edge Weight") +
-  theme_classic() +
-  theme(legend.position = "none")
-
-# ggsave("../images/6-step2_edge_weight.png", bg = "white", 
-#        width = 6, height = 5, dpi = DPI)
-
-
-# --- 2d. Visualize ego-level structural signatures ---
-
-d_ego |> 
-  filter(n_alters > 0) |> 
-  mutate(pop_label = factor(populism_binary, labels = c("Non-Populist", "Populist"))) |> 
-  select(pop_label, prop_reciprocated, fragmentation) |> 
-  pivot_longer(-pop_label, names_to = "metric", values_to = "value") |> 
-  filter(!is.na(value)) |> 
-  mutate(metric = recode(metric,
-                         prop_reciprocated = "Proportion Reciprocated",
-                         fragmentation     = "Fragmentation Ratio"
-  )) |> 
-  ggplot(aes(x = pop_label, y = value, fill = pop_label)) +
-  geom_boxplot(outlier.alpha = 0.3, width = 0.6) +
-  scale_fill_manual(values = c("Non-Populist" = "#16161D", "Populist" = "#3A6B50")) +
-  facet_wrap(~metric, scales = "free_y") +
-  labs(x = NULL, y = NULL, fill = NULL,
-       title = "Step 2: Structural Signatures — Reciprocity and Fragmentation") +
-  theme_classic() +
-  theme(legend.position = "none")
-
-# ggsave("../images/6-step2_structural_signatures.png", bg = "white", 
-#        width = 8, height = 5, dpi = DPI)
-
-
-# ============================================================
-# SUMMARY
-# ============================================================
-
-cat("\n\n========================================\n")
-cat("MECHANISM DIAGNOSTIC SUMMARY\n")
-cat("========================================\n\n")
-
-cat("H1 (In-Group Formation) predicts:\n")
-cat("  - Higher edge weight       → sustained interaction\n")
-cat("  - Lower fragmentation      → cohesive community\n")
-cat("  - Higher reciprocity       → mutual ties\n\n")
-
-cat("H2 (Provocation) predicts:\n")
-cat("  - Lower edge weight        → one-off conflict\n")
-cat("  - Higher fragmentation     → opposing camps\n\n")
-
-cat("H3 (Thread Size) predicts:\n")
-cat("  - Populism coefficient drops to n.s. after thread size control\n")
-cat("  - Check Step 1 regression table\n")
+# ggsave("../images/6-H1_dyadic_interactions.png", bg = "white", 
+#        width = 9, height = 5, dpi = DPI)
