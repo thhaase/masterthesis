@@ -334,6 +334,45 @@ predict
 5? maybe not only ego controls but also alter controls to gain info about social effects??
 
 
+Follow up analysis: 
+- Unit of analysis
+  - alter-alter edges 
+    - reply ties between non-politician users within same ego network 
+    - N = 1,412 dyads across 55 ego networks 
+      - 49 non-populist, 6 populist
+
+- Vertex attributes per alter
+  - follower count
+  - tweet count
+  - populism score
+
+- Dyadic decomposition
+  - each attribute transformed into sum(i+j) and |diff(i−j)|
+    - sum captures popularity/activity effects (do high-value pairs interact more?). 
+    - diff captures homophily (do similar pairs interact more?). 
+    - basically ERGM nodecov/absdiff terms.
+
+- Dependent variable
+  - edge weight 
+    - number of repeated reply interactions between the alter pair
+
+- Structural control
+  - mean thread size 
+    - larger threads = more opportunity for incidental contact, just like before.
+
+- Model nesting:
+  - M0: ego populism only (baseline)
+  - M1: + activity controls (followers, tweets sum/diff) + thread size
+  - M2: + alter populism sum/diff (tests homophily)
+  - M3: + interactions ego populism × all alter predictors (tests whether populism changes the sorting process)
+
+- Clustered SEs
+  - sandwich estimator at politician level, because edges within the same ego network share unobserved context and are not independent.
+
+- Limitation: 
+  - Missing lots of missing nodes because of the previously restored phantom threads
+
+
 == Summary                                             [100w, 0.2 p]
 //#lorem(100)
 

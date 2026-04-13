@@ -4,4 +4,4 @@
 
 #v(1.5em)
 
-#text(fill: red){insert abstract}
+#text(fill: red)[insert abstract]
