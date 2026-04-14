@@ -281,6 +281,14 @@ First, as the main part of a text analysis populism is operationalized as a thre
 Second, the construction of reply threads, the user-level reply network and the exploration of their structure are detailed aswell. 
 Finally in a synthesis, politician ego networks are combined with the populism scores produced by the text analysis. Linear Regressions with their controls, aswell as a robustness check and further exploration of the ego networks is described.
 
+#figure(
+  image("../images/canva/flowchart.png", width: 100%),
+  caption: [Diagram describing conducted Analysis]
+)<fig:prompt-accuracy>
+#long-caption[
+  
+]
+
 == Dataset Sampling & Description                       [264w, 0.5p] 
 //#lorem(264) +40words
 
@@ -417,6 +425,8 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
 == Textanalysis: Result              [510w, 1p]
 
 === Prompt Validation
+
+
 - Skewed dataset inflates accuracy
 - F scores are not biased through large number of 0 populism scores
 - F scores show that prompt is rating tweet on an expert level
