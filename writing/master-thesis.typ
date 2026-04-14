@@ -274,7 +274,7 @@ Tweet-level populism dimensions (people scores, elitism scores, antagonism score
 To definitly deliniate the dataset to replies from politicians tweets reply-edges not appearing underneath politicians threads are deleted and isolates are removed. Thereby removing rest-replythreads of e.g. referenced tweets.
 
 
-== OOPS I FORGOT THE SECTION WITH MY MODELS/Investigations WHILE WORDPLANNING
+== OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS
 
 A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. The textanalysis results are described for the entire dataset containing also retweets and referenced tweets in order to capture the broader political discourse during the week. Detected populism dimensions are further explored by party additional to tweets textual content. 
 
