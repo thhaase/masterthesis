@@ -110,6 +110,25 @@
 // ===== C O N T E N T   S T A R T S   H E R E =====
 // =================================================
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
 = Introduction 
 // REQUIREMENTS:
 // - Overview of information presented in thesis
@@ -149,6 +168,25 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
 = Literature Review
 // REQUIREMENTS:
 // - Demonstrate deep knowledge of and clear contribution to a topical social science field
@@ -190,6 +228,25 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 //#lorem(100)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
 = Data and Methods
 // REQUIREMENTS:
 // - Description of data
@@ -205,23 +262,29 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 //    - Cite packages used
 
 
-// Data & Methods                                       [1600w, 3p]
+// Data & Methods                                       [1600w, 3p]  +887
 
-// Introduction                                        [100w, 0.2p]
-// Dataset Sampling & Description                       [264w, 0.5p] 
-// Operationalization & Measure                         [500w. 1p]
-// Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
-// Networkanalysis (Threads, Replynetwork, Egonetworks) [295w, 0.6p]	
-// Summary                                             [100w, 0.2 p]
+// Introduction                                        [100w, 0.2p]  +27
+// Dataset Sampling & Description                       [264w, 0.5p] +40
+// Operationalization & Measure                         [500w. 1p]   +9
+// Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p] +20
+// Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p] +38
+//                                                                   +725	
+// Summary                                             [100w, 0.2 p] +33
 
 
 == Introduction                                        [100w, 0.2p]
-//#lorem(100)
+//#lorem(100) +27words
+This section describes the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
+After introducing the dataset and collection procedure the 3 step analysis is described. 
+First, as the main part of a text analysis populism is operationalized as a three-dimensional construct of People Attitude, Elitist Attitude, and Antagonism, scored by a large language model through a structured annotation prompt.  
+Second, the construction of reply threads, the user-level reply network and the exploration of their structure are detailed aswell. 
+Finally in a synthesis, politician ego networks are combined with the populism scores produced by the text analysis. Linear Regressions with their controls, aswell as a robustness check and further exploration of the ego networks is described.
 
 == Dataset Sampling & Description                       [264w, 0.5p] 
 //#lorem(264) +40words
 
-The Dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
+The Dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. #text(fill: red)[did armin use this data somewhere in his own studies?? maybe I can cite something] The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
 To deliniate the set of politicians and add their name and party information, a list of parliamentary members of the 19th, 20th, and 21st German Bundestag is obtained from the Bundestags Webarchiv and added to the original dataset through their twitter-account links @bundestag2026. The complete dataset consists of 693 015 Tweets in the twitwi format @medialab2026.
 
 German political news from 7–14 February 2022 were dominated by the Omikron wave's peak and the escalating Russia-Ukraine crisis. As Russia massed troops for what would become Europe's largest military offensive since WWII, Chancellor Scholz met President Biden to discuss Germany's Nord Stream 2 dependency. Domestically, Scholz's coalition split over a general vaccine mandate, with FDP Justice Minister Buschmann deeming it constitutionally dubious and proposing mandatory physician consultations for unvaccinated adults as a softer alternative.
@@ -262,7 +325,7 @@ for pairs of expert raters with each other and the LLM annotations are calculate
 
 
 
-== Networkanalysis (Threads, Replynetwork, Egonetworks) [295w, 0.6p]	
+== Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p]	
 //#lorem(295) +38words
 The reply threads are constructed by treating tweets as nodes that are linked through directed replies. A component in the constructed thread network is then a replythread with one rootnode that is only recieving links marking the direction of a reply. Some reply chains trace back to MP tweets posted before the collection period, so the root node has no row in the dataset. Matching the target tweets user information against the politician table recovers their authorship, recovering 2,631 of 89,561 threads (2.9%). Threads root tweet information like politician with e.g. party and followerinformation, are then stored within the reply tweets of the respective thread and aswell added to each tweet in the reply network. 
 
@@ -274,68 +337,59 @@ Tweet-level populism dimensions (people scores, elitism scores, antagonism score
 To definitly deliniate the dataset to replies from politicians tweets reply-edges not appearing underneath politicians threads are deleted and isolates are removed. Thereby removing rest-replythreads of e.g. referenced tweets.
 
 
-== OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS
-
+== OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS + 510w
+//+725words
 A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. The textanalysis results are described for the entire dataset containing also retweets and referenced tweets in order to capture the broader political discourse during the week. Detected populism dimensions are further explored by party additional to tweets textual content. 
 
 Following that the reply network structure is explored through a visualization using the Distributed Recursive Graph Layout and validated through closer inspection of degree and local clustering distributions @martin2007. 
 The Distributed Recursive Graph Layout (DrL) lays out a graph by applying repulsion and attraction forces between nodes to prevent overlap and keeping connected nodes close. Beginning with randomness so nodes can move freely and avoid poor configurations, gradually reducing movement until positions stabilize. Once positioned, spatially close nodes are merged into representative summary nodes producing a coarser version of the graph. The cycle of coarsening and repositioning repeats until the graph is sufficiently small to lay out directly. Finally the process is reversed, expanding each simplified graph back one level at a time, using the prior layout as an initial arrangement.
 
 
-The structure of politicians egonetworks is compared to answer the main question about local engagement communities. Mean alter degree is used as the primary measure of alter interconnectedness, capturing the average number of connections each alter maintains to other alters within the ego network. While density would be a more established measure in usual cases it is inversely related to network size, making comparisons across ego networks of different scales unreliable. As a robustness check, the fragmentation ratio is additionally tested since this measure relates the number of connected components to the overall network, providing a complementary perspective on whether alters form a cohesive neighborhood or fragment into isolated clusters.
+The structure of politicians ego networks is compared to answer the main question about local engagement communities. Mean alter degree is used as the primary measure of alter interconnectedness, capturing the average number of connections each alter maintains to other alters within the ego network. While density would be a more established measure in usual cases it is inversely related to network size, making comparisons across ego networks of different scales unreliable. As a robustness check, the fragmentation ratio is additionally tested since this measure relates the number of connected components to the overall network, providing a complementary perspective on whether alters form a cohesive neighborhood or fragment into isolated clusters.
 
-- explain model variables
-  - TODO: include mean thread size in model
-```r
+For controlvariables the politicians (ego) degree and followercount control for the popularity of a politician while mean thread size of the politicians seeded threads controls for the depth of conversational engagement elicited by that politician. Ego degree captures structural prominence in the reply network, followercount proxies platform-level visibility, and mean thread size accounts for the possibility that longer threads mechanically increase the chance of alter-alter interaction simply by providing more opportunities for reply.
 
-# ==== MODEL POPULISM ====
+Two OLS regression models are estimated. The baseline model regresses mean alter degree on a binary populism indicator derived from the composite populism score. The full model adds ego degree, follower count, and mean thread size as controls. Comparing the populism coefficient across both models reveals how much of the observed relationship between populist rhetoric and alter interconnectedness is attributable to confounding structural and visibility differences between politicians.
 
-# === Baseline ===
-m0 <- lm(mean_alter_degree ~ populism_binary, 
-         data = d_ego)
-summary(m0)
-check_model(m0)
-ggsave("../images/5-modelcheck_m0.png",
-       width = 11, height = 9, dpi = DPI)
-# === Full ===
-m1 <- lm(mean_alter_degree ~ populism_binary +
-           ego_degree + 
-           user_followers +
-           mean_thread_size, 
-          data = d_ego)
-summary(m1)
-check_model(m1)
-ggsave("../images/5-modelcheck_m1.png",
-       width = 11, height = 9, dpi = DPI)
+As a robustness check, the fragmentation ratio
+$ "Fragmentation" = frac("component count", n_"alters") $
+is tested as an alternative dependent variable using the same specification as the full model. Where mean alter degree captures the intensity of alter interconnectedness, fragmentation captures its inverse: the degree to which the ego network consists of isolated clusters. A consistent result across both measures strengthens the claim that populist rhetoric is associated with more cohesive engagement communities instead of an artifact of the chosen operationalization.
 
+To further shed light on which social mechanisms explain a difference in alter interconnectedness, observed edge statistics are compared with a random baseline within each politician's ego network. 
+For every ego network, three alter-level attributes are considered: follower count, tweet count, and the composite populism score. Follower count and tweet count proxy platform visibility and activity level, testing whether tie formation is driven by status homophily or preferential attachment among high-activity users. The composite populism score tests the substantively central mechanism: whether alters under populist politicians connect along ideological lines, forming ties with others who express similar levels of populist rhetoric.
 
-# ==== ROBUSTNESS CHECK ====
-d_ego$fragmentation <- d_ego$component_count / d_ego$n_alters
-
-r1 <- lm(mean_alter_degree ~ populism_binary +
-           ego_degree +
-           user_followers +
-           mean_thread_size,
-         data = d_ego)
-summary(r1)
-check_model(r1)
-ggsave("../images/5-modelcheck_r1.png",
-       width = 11, height = 9, dpi = DPI)
-
-```
-
+Two ERGM-inspired statistics are computed for each attribute. 
+\ The absolute-difference statistic captures homophily. For every connected alter pair the mean absolute attribute difference $overline(|x_i - x_j|)_"obs"$ and for every possible alter pair $overline(|x_i - x_j|)_"rand"$ are calculated. A negative relative deviation signals that connected alters are more similar than chance would predict. 
+\ The sum statistic captures preferential activity. The mean attribute sum across connected pairs $overline(x_i + x_j)_"obs"$ is compared to the mean across all possible pairs $overline(x_i + x_j)_"rand"$, with positive deviation indicating that edges disproportionately link high-attribute alters. 
+\ Both statistics are expressed as relative deviations from the random baseline $(o - r) slash r$ and summarized by median and mean across populist and non-populist ego networks to identify possible systematic group-level patterns in tie formation.
 
 == Summary                                             [100w, 0.2 p]
-//#lorem(100)
+//#lorem(100) +33
+This section described the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
+The dataset comprises 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. 
+Populism is operationalized as People Attitude, Elitist Attitude, and Antagonism, scored by Qwen3-235B using a chain-of-thought annotation prompt validated against the PopBERT expert corpus. 
+Reply threads are reconstructed into a weighted user-level network whose giant component (77,194 nodes, 239,502 edges) serves as the analytical base. 
+Two OLS models regress mean alter degree on a binary populism indicator with controls for ego degree, follower count, and mean thread size. As a second dependent variable the ego networks fragmentation ratio provides a robustness check. Further exploration of alter-alter connection compares userbehaviour of populist and non-populist ego networks  
 
 
 
-- Hat armin den Datensatz schonmal irgendwo verwendet, sodass ich ihn zitieren könnte?
 
-1. First write this data collection section, send to armin for refinement and clarification purposes.
-2. write a refined proposal that focuses on politicians as egonets
-==> look in data where politicians are in reply network. make sure to filter first ofr ONLY the trees coming from politicians
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
 = Results
 // REQUIREMENTS:
 // - Describe output of each stage
@@ -350,7 +404,7 @@ ggsave("../images/5-modelcheck_r1.png",
 // Textanalysis: Result              [510w, 1p]
 // Network: Descriptives & Structure [469w, 0.9p]
 // Network: Hierarchy Deepdive	     [386w, 0.7p]
-// Network: Egonetworks	             [457w, 0.9p]	
+// Network: ego networks	             [457w, 0.9p]	
 // H1: Model/Means	                 [767w, 1.5p]
 // HX: Deepdive??	                   [531w, 1.0p]	
 // Summary                          [100w, 0.2 p]
@@ -412,7 +466,7 @@ ggsave("../images/5-modelcheck_r1.png",
 == Network: Hierarchy Deepdive	     [386w, 0.7p]
 //#lorem(386)
 
-== Network: Egonetworks	             [457w, 0.9p]	
+== Network: ego networks	             [457w, 0.9p]	
 //#lorem(457)
 
 == H1: Model/Means	                 [767w, 1.5p]
@@ -472,7 +526,23 @@ ggsave("../images/5-modelcheck_r1.png",
 
 
 
-= Discussion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
+// = Discussion
 // REQUIREMENTS:
 // - How do findings taken together provide support/evidence for hypothesis/theoretical perspectives
 // - Speaks to approaches of literature review section
@@ -510,6 +580,25 @@ ggsave("../images/5-modelcheck_r1.png",
 //#lorem(100)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ====================================================================================================
 = Conclusion
 // REQUIREMENTS:
 // - Inverse of introduction: 
