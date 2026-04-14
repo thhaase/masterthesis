@@ -324,54 +324,6 @@ ggsave("../images/5-modelcheck_r1.png",
 
 ```
 
-#text(fill:red)[MAYBE INCLUDE:
-predict 
-
-- H0: Higher alter connectivity is a mechanical artifact of thread structure, nothing social is happening.
-- H1: Ingroup Formation: 
-  - 
-]
-5? maybe not only ego controls but also alter controls to gain info about social effects??
-
-
-Follow up analysis: 
-- Unit of analysis
-  - alter-alter edges 
-    - reply ties between non-politician users within same ego network 
-    - N = 1,412 dyads across 55 ego networks 
-      - 49 non-populist, 6 populist
-
-- Vertex attributes per alter
-  - follower count
-  - tweet count
-  - populism score
-
-- Dyadic decomposition
-  - each attribute transformed into sum(i+j) and |diff(i−j)|
-    - sum captures popularity/activity effects (do high-value pairs interact more?). 
-    - diff captures homophily (do similar pairs interact more?). 
-    - basically ERGM nodecov/absdiff terms.
-
-- Dependent variable
-  - edge weight 
-    - number of repeated reply interactions between the alter pair
-
-- Structural control
-  - mean thread size 
-    - larger threads = more opportunity for incidental contact, just like before.
-
-- Model nesting:
-  - M0: ego populism only (baseline)
-  - M1: + activity controls (followers, tweets sum/diff) + thread size
-  - M2: + alter populism sum/diff (tests homophily)
-  - M3: + interactions ego populism × all alter predictors (tests whether populism changes the sorting process)
-
-- Clustered SEs
-  - sandwich estimator at politician level, because edges within the same ego network share unobserved context and are not independent.
-
-- Limitation: 
-  - Missing lots of missing nodes because of the previously restored phantom threads
-
 
 == Summary                                             [100w, 0.2 p]
 //#lorem(100)
@@ -466,8 +418,53 @@ Follow up analysis:
 == H1: Model/Means	                 [767w, 1.5p]
 //#lorem(767)
 
-== HX: Deepdive??	                   [531w, 1.0p]	
+== Alter-Alter Mechanisms	                   [531w, 1.0p]	
 //#lorem(531)
+
+#figure(
+  image("../images/6-quasi_ergm_absdiff.png", width: 100%),
+  caption: [absdiff (Alter Similarity)],
+)<fig:label>
+
+- What is shown
+  - For each ego network, the mean absolute difference on a given attribute is computed once over all observed alter–alter ties and once over all possible alter–alter dyads. The ratio (observed − random) / random yields one value per ego network. The circle shows the median across all ego networks in each group, the triangle shows the mean.
+- Alter Follower Count
+  - Medians are slightly positive for both groups (~35% non-populist, ~25% populist). 
+  - Connected alters tend to be more different in follower count than random pairs — mild heterophily. 
+  - The non-populist mean explodes to ~330% while the median stays low, indicating a heavily right-skewed distribution driven by a handful of ego networks where very high- and very low-follower alters disproportionately connect. The populist distribution is far more compact (mean ≈ median).
+- Alter Populism Score
+  - The strongest signal. Both medians sit near −90%, meaning connected alters hold nearly identical populism scores compared to what random pairing would produce. 
+  - This is strong, consistent populism homophily across both network types. 
+  - The non-populist mean is pulled upward to roughly −15%, again indicating right skew from a few outlier ego networks; the populist mean and median nearly overlap, suggesting a tight, well-behaved distribution.
+- Alter Tweet Count
+  - Medians hover near zero for non-populists (~−10%) and slightly positive for populists (~+30%). 
+  - There is no strong homophily or heterophily on tweet volume for non-populist ego networks, while populist ego networks show a mild tendency for connected alters to differ in tweet activity. Mean and median are close in both groups, so the distributions are relatively symmetric.
+
+#figure(
+  image("../images/6-quasi_ergm_nodecov.png", width: 100%),
+  caption: [nodecov (Alter Activity)],
+)<fig:label>
+
+- What is shown
+  - Instead of the absolute difference, the sum of both alters' attribute values is computed per tie and per possible dyad. Positive deviation means ties preferentially form among alters with higher attribute values.
+- Alter Follower Count
+  - Both medians are positive (~45% non-populist, ~35% populist). 
+  - Alters with more followers connect to each other at higher-than-expected rates — a preferential attachment or popularity effect. The non-populist mean is again far above the median (~315%), confirming the same small set of outlier ego networks seen in the absdiff plot.
+- Alter Populism Score
+  - Both medians are strongly negative (~−80% to −90%), meaning ties form among alters with lower combined populism scores. 
+  - The more populist an alter pair is, the less likely they are to be connected. This mirrors the absdiff finding: connections cluster among ideologically similar, low-populism alters.
+- Alter Tweet Count
+  - Both groups are positive (medians ~35% non-populist, ~50% populist). High-volume tweeters connect more than expected. 
+  - The effect is somewhat stronger in populist ego networks. Mean and median are close in both groups, indicating stable distributions without extreme outliers.
+
+- Summary
+  - structure is the same across populist and non-populist ego networks!
+    - strong populism homophily
+    - mild follower heterophily
+    - preferential connectivity among active and popular users
+  - degree difference
+    - populist ego networks show slightly more tweet-driven heterophily and activity effects 
+    but the qualitative signatures are remarkably similar. The recurring mean–median divergence in the follower facet for non-populist networks traces to a small number of high-visibility ego networks.
 
 == Summary                          [100w, 0.2 p]
 //#lorem(100)
