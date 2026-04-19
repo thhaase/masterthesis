@@ -209,6 +209,10 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 // Hypothesis (narrow down)             [500w, 1page]
 // Summary                             [100w, 0.2 page]
 
+
+- populism 
+- twitter engagement egonets
+
 == Introduction                        [100w, 0.2page]
 //#lorem(100)
 
@@ -262,14 +266,14 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 //    - Cite packages used
 
 
-// Data & Methods                                       [1600w, 3p]  +887
+// Data & Methods                                       [1600w, 3p]  +1058
 
 // Introduction                                        [100w, 0.2p]  +27
 // Dataset Sampling & Description                       [264w, 0.5p] +40
-// Operationalization & Measure                         [500w. 1p]   +9
+// Operationalization & Measure                         [500w. 1p]   +142
 // Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p] +20
 // Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p] +38
-//                                                                   +725	
+//                                                                   +762	
 // Summary                                             [100w, 0.2 p] +33
 
 
@@ -286,7 +290,7 @@ Finally in a synthesis, politician ego networks are combined with the populism s
   caption: [Diagram describing conducted Analysis]
 )<fig:prompt-accuracy>
 #long-caption[
-  
+
 ]
 
 == Dataset Sampling & Description                       [264w, 0.5p] 
@@ -299,17 +303,35 @@ German political news from 7–14 February 2022 were dominated by the Omikron wa
 
 
 == Operationalization & Measure                         [500w. 1p]
-//#lorem(500) +9words
-Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as [two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
+//#lorem(500) +143words
+Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as #quote[two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.] @mudde2004[p.543]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
 
 This study operationalizes the core dimensions of #cite(<mudde2004>, form: "prose")'s definition, People Attitude, Elitist Attitude, and Antagonism, by instructing a large language model through an annotation prompt (see #link(<sec:app-prompt>)[Appendix]). Each dimension is defined with explicit scoring anchors: People Attitude and Elitist Attitude are measured on bidirectional scales from --3 to +3, where positive values indicate support for and negative values indicate opposition to the respective group, while Antagonism is measured on a unidirectional scale from 0 (no divide) to 6 (existential threat), with labeled thresholds distinguishing dissatisfaction (1--2), active blame (3--4), and existential threat framing (5--6). The prompt leverages chain-of-thought style reasoning and few-shot examples to guide the models annotation behaviour. To guide the models reasoning letting it question itself throughout the process lead improved the results immensly compared to hard rule-based checks.
 
-The prompt follows the structure from #cite(<liu2026>, form: "prose"). It begins with a role definition and a pre-analysis check if the text carries any content other than just a link or a user mention. It proceeds by defining #quote[People Attitude], #quote[Elite Attitude] and #quote[Antagonism]. The definition of "the people" is restricted to a broad ordinary majority and explicitly excludes named individuals, lists of specific persons, and narrow subgroups unless the text frames them as standing in for the general public. Similarly, elite criticism is only scored when the target is a generalized powerful class rather than a single individual or a specific policy disagreement.
+The prompt follows the structure described by #cite(<liu2026>, form: "prose"). It begins with a role definition and a pre-analysis check if the text carries any content other than just a link or a user mention. It proceeds by defining #quote[People Attitude], #quote[Elite Attitude] and #quote[Antagonism]. The definition of "the people" is restricted to a broad ordinary majority and explicitly excludes named individuals, lists of specific persons, and narrow subgroups unless the text frames them as standing in for the general public. Similarly, elite criticism is only scored when the target is a generalized powerful class rather than a single individual or a specific policy disagreement.
 In the last major section the prompt invokes the chain-of-thought before assigning scores, the model must produce a holistic redescription of the post's rhetorical strategy, an actor-by-actor analysis that classifies each referenced person or group by scale (individual, institution, or generalized class) and dimension-specific explanations that articulate the reasoning behind each score. 
 At each step, the model is asked to consider alternative readings and flag its confidence as LOW when a reasonable coder could disagree. 
 Three few-shot examples are included to calibrate the model's decision boundaries: a strongly populist post with high people, elite, and antagonism scores, a non-political post that should receive all zeros, and an ambiguous post where institutional criticism could plausibly be read as either targeted policy dissatisfaction or broader anti-elite attitude. This example structure is designed to discourage binary classification tendencies and encourage the model to use the full range of each scale.
 
 The prompt is included as a systemprompt and appended with the to be annotated tweet. The model outputs its reasoning and scores in a json format.
+
+
+After coding the scores are combined. The three dimension scores are denoted $P in [-3, +3]$ (People Attitude), $E in [-3, +3]$ (Elitist Attitude), and $A in [0, 6]$ (Antagonism). The tweet-level populism score is
+
+$ "Populism" = cases(
+  (P - E) times A & "if" A >= 1,
+  P - E & "if" A = 0
+) $
+The subtraction captures the joint rhetorical direction that is positive when the people are elevated and elites denigrated yielding a theoretical range of $[-36, +36]$. 
+Combination on the user level is achieved by averaging each dimension separately before recombining. Let $macron(p)_u$, $macron(e)_u$, and $macron(a)_u$ denote the per-user means. The user-level score is
+
+$ "Populism"_u = cases(
+  (macron(p)_u - macron(e)_u) times macron(a)_u & "if" macron(p)_u > 0 comma macron(e)_u < 0 comma macron(a)_u > 0,
+  macron(p)_u - macron(e)_u & "if" macron(p)_u > 0 comma macron(e)_u < 0 comma macron(a)_u = 0,
+  0 & "otherwise"
+) $
+
+The gate zeros out users whose average rhetoric is not simultaneously people-affirming and elite-critical, operationalizing #cite(<mudde2004>,form: "prose")'s tripart definition at the actor level. Aggregating dimensions before recombining allows a user to distribute their anti-elite and pro-people attitudes across different tweets.
 
 
 == Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
@@ -346,8 +368,10 @@ To definitly deliniate the dataset to replies from politicians tweets reply-edge
 
 
 == OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS + 510w
-//+725words
-A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. The textanalysis results are described for the entire dataset containing also retweets and referenced tweets in order to capture the broader political discourse during the week. Detected populism dimensions are further explored by party additional to tweets textual content. 
+//+762words
+A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. 
+#text(fill: red)[its all graphbased, except the partyplot and the tweettopics plot]
+The textanalysis is conducted with tweets contained in the largest component of the retweet network, that also serves as the basis for the network analysis. Exceptions are the comparison of populism by parties and a wordcorrelation network to infer the tweets content, which are based on the entire tweetdataset including retweets and referenced tweets in order to capture the broader political discourse during the week.
 
 Following that the reply network structure is explored through a visualization using the Distributed Recursive Graph Layout and validated through closer inspection of degree and local clustering distributions @martin2007. 
 The Distributed Recursive Graph Layout (DrL) lays out a graph by applying repulsion and attraction forces between nodes to prevent overlap and keeping connected nodes close. Beginning with randomness so nodes can move freely and avoid poor configurations, gradually reducing movement until positions stabilize. Once positioned, spatially close nodes are merged into representative summary nodes producing a coarser version of the graph. The cycle of coarsening and repositioning repeats until the graph is sufficiently small to lay out directly. Finally the process is reversed, expanding each simplified graph back one level at a time, using the prior layout as an initial arrangement.
@@ -427,9 +451,6 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
 === Prompt Validation
 
 
-- Skewed dataset inflates accuracy
-- F scores are not biased through large number of 0 populism scores
-- F scores show that prompt is rating tweet on an expert level
 #figure(
   image("../images/prompt-validation-pairwise-accuracy.png", width: 100%),
   caption: [Prompt Performance - Pairwise accuracy for all expert-expert and LLM-expert rater combinations across anti-elitism and people-centrism.]
@@ -455,17 +476,84 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
   LLM ratings were collapsed from a 7-level Likert scale to binary
   scores (anti-elitism: score < 0; people-centrism: score > 0).
 ]
+- put everything in one plot (they can be smaller, direction matters)
+
+- Skewed dataset inflates accuracy
+- F scores are not biased through large number of 0 populism scores
+- F scores show that prompt is rating tweet on an expert level
+
 
 
 #figure(
-  image("../images/populism_dimensions_person_level.png", width: 90%),
-  caption: [Title of the Figure]
-)<fig:label>
+  image("../images/populism_dimensions_person_level.png", width: 100%),
+  caption: [Distribution of populism dimensions per user in the giant component;]
+)<fig:populism-dimensions>
+#long-caption[
+  People score ($macron(p)_u$) and elite score
+  ($macron(e)_u$) are binned into 0.25-wide intervals.
+  Color visualizes mean antagonism ($macron(a)_u$) per bin;
+  opacity describes user count ($n = 29 thin 672$).
+]
+
+- something something
+
+#figure(
+  image("../images/populism_3d_final.png", width: 100%),
+  caption: [Distribution of populism dimensions per user in the giant component;]
+)<fig:populism-dimensions-3d>
+#long-caption[
+  People score ($macron(p)_u$) and elite score
+  ($macron(e)_u$) are binned into 0.25-wide intervals.
+  Color visualizes mean antagonism ($macron(a)_u$) per bin;
+  height describes user count ($n = 29 thin 672$).
+]
+
+-woah3d
 
 #figure(
   image("../images/populism_dimensions_person_level_politicians_inset.png", width: 100%),
-  caption: [Title of the Figure],
-)<fig:label>
+  caption: [Distribution of populism dimensions per user in the giant component with marked politicians position;],
+)<fig:populism-dimensions-politicians>
+#long-caption[
+  People score ($macron(p)_u$) and elite score
+  ($macron(e)_u$) are binned into 0.25-wide intervals.
+  Color visualizes mean antagonism ($macron(a)_u$) per bin;
+  opacity describes user count ($n = 29 thin 672$).
+]
+
+- something something politicians
+- #text(fill: red)[IN APPENDIX, yellow font]
+
+#figure(
+  image("../images/populism_stacked_dimensions_all_tweets_combined.png", width: 100%),
+  caption: [Populism score and its components split by parties and sorted by mean party populism scores.],
+)<fig:populism-dimensions-parties>
+#long-caption[
+  Each bar is one politician; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("People Score" + "Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"People Score" + "Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
+]
+
+- widen populism column
+- something something party
+
+
+#figure(
+  image("../images/tfidf_wordcorrelations.png", width: 110%),
+  caption: [Distribution of populism dimensions per user in the giant component;]
+)<fig:populism-dimensions-3d>
+#long-caption[
+  People score ($macron(p)_u$) and elite score
+  ($macron(e)_u$) are binned into 0.25-wide intervals.
+  Color visualizes mean antagonism ($macron(a)_u$) per bin;
+  height describes user count ($n = 29 thin 672$).
+]
+- wordcontent tfidf network
+- only include if it fits the story somewhere... 
+
+- make 3/4 separate networks with words related to anti elitism, peo people, antag and populism dimension MAYBE
+
+TODO
+- introduction first, only hypothesize about main question
+- independent from results/conclusion
 
 //#lorem(510)
 == Network Analysis

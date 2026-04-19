@@ -185,8 +185,8 @@ plot <- gp |>
   # theme
   theme_graph(background = "white") +
   theme(
-    legend.text  = element_text(family = "Roboto", size = 18),
-    legend.title = element_text(family = "Roboto", size = 20, lineheight = 0.35),
+    legend.text  = element_text(family = "Roboto", size = 20),
+    legend.title = element_text(family = "Roboto", size = 24, lineheight = 0.35),
     legend.key.width  = unit(0.5, "cm"),
     legend.key.height = unit(1, "cm"),
     
@@ -197,7 +197,7 @@ plot <- gp |>
     plot.caption.position = "plot",
     text = element_text(family = "Roboto")
   )
-
+#plot
 ggsave("../images/tfidf_wordcorrelations.png", plot,
        width = 8, height = 5, dpi = 300, bg = "white")
 

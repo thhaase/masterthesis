@@ -1,4 +1,5 @@
 rm(list = ls())
+
 library(arrow)
 library(bit64)
 library(tidyverse)
@@ -110,8 +111,8 @@ breaks_abs  <- seq(-floor(sym_lim_abs), floor(sym_lim_abs), by = 1)
 ggplot(d_absdiff, aes(x = ego_label, y = value, shape = stat)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_hline(yintercept = setdiff(breaks_abs, 0), linetype = "dotted", color = "grey80") +
-  geom_point(size = 3.5) +
-  scale_shape_manual(values = c(Median = 16, Mean = 17)) +
+  geom_point(size = 4) +
+  scale_shape_manual(values = c(Median = 18, Mean = 20)) +
   scale_y_continuous(labels = scales::percent_format(),
                      breaks = breaks_abs,
                      limits = c(-sym_lim_abs, sym_lim_abs)) +
@@ -150,8 +151,8 @@ breaks_nod  <- seq(-floor(sym_lim_nod), floor(sym_lim_nod), by = 1)
 ggplot(d_nodecov, aes(x = ego_label, y = value, shape = stat)) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
   geom_hline(yintercept = setdiff(breaks_nod, 0), linetype = "dotted", color = "grey80") +
-  geom_point(size = 3.5) +
-  scale_shape_manual(values = c(Median = 16, Mean = 17)) +
+  geom_point(size = 4) +
+  scale_shape_manual(values = c(Median = 18, Mean = 20)) +
   scale_y_continuous(labels = scales::percent_format(),
                      breaks = breaks_nod,
                      limits = c(-sym_lim_nod, sym_lim_nod)) +

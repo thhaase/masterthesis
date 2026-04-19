@@ -31,14 +31,21 @@ d <- read_parquet("../data/d.parquet")
 g <- readRDS("../data/nets/g.rds") # largest component
 #g <- readRDS("../data/g_full.rds")
 # === META ===
-DPI = 600
+DPI = 300
+
+
 
 # === Populism Descriptives ===
 data.frame(
   people = V(g)$people_score,
   elite  = V(g)$elite_score,
   antag  = V(g)$antag_score
-) |>
+) |> nrow()
+data.frame(
+  people = V(g)$people_score,
+  elite  = V(g)$elite_score,
+  antag  = V(g)$antag_score
+ ) |> 
   filter(!is.na(people), !is.na(elite), !is.na(antag)) |>
   mutate(people_bin = round(people * 4) / 4, elite_bin = round(elite * 4) / 4) |>
   group_by(people_bin, elite_bin) |>
@@ -297,7 +304,7 @@ p_inset <- ggplot(df_tile_zoom, aes(x = people_bin, y = elite_bin, fill = Antago
              size = 3.2, alpha = 1, position = position_jitter(0.01, 0.01)) +
   geom_text_repel(data = df_pol_labeled,
                   aes(x = people, y = elite, label = label),
-                  size = 1.8, bg.color = "white", bg.r = 0.12,
+                  size = 2.8, bg.color = "white", bg.r = 0.12,
                   inherit.aes = FALSE,
                   segment.color = "black", segment.size = 0.3,
                   min.segment.length = 0, box.padding = 0.25, point.padding = 0.1,

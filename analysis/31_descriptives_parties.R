@@ -171,6 +171,11 @@ prep_bars <- function(data, score_col, cat_name, breaks, labels, none_label) {
     rename(!!cat_name := cat)
 }
 
+scales::show_col(c("gray95", rev(entoptic::firstlight(3,begin = 0.2, end = 0.75))))
+
+scale_fill <- scale_fill_manual(values = c("gray95", rev(entoptic::firstlight(3,begin = 0.15, end = 0.6))))
+#scale_fill <- scale_fill_manual(values = c("gray95", rev(viridis::inferno(3,begin = 0.3, end = 0.8))))
+
 pc_ae <- prep_bars(d_party |> mutate(neg_elite = -elite_score),
                    "neg_elite", "Anti-Elite",
                    c(-Inf, 0, 1, 2, Inf),
@@ -178,10 +183,12 @@ pc_ae <- prep_bars(d_party |> mutate(neg_elite = -elite_score),
                    "None (>= 0)") |>
   ggplot(aes(x = pct, y = politician_label, fill = `Anti-Elite`)) +
   geom_col(position = "stack", width = 1) +
-  scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  #scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  scale_fill +
   facet_grid(party ~ ., scales = "free_y", space = "free_y", switch = "y") +
   theme_bars +
-  labs(x = NULL, y = NULL, title = "Anti-Elite")
+  labs(x = NULL, y = NULL, title = "Anti-Elite") +
+  theme(strip.text.y.left = element_text(size = 14, angle = 0))
 
 pc_pp <- prep_bars(d_party, "people_score", "Pro-People",
                    c(-Inf, 0, 1, 2, Inf),
@@ -189,7 +196,8 @@ pc_pp <- prep_bars(d_party, "people_score", "Pro-People",
                    "None (<= 0)") |>
   ggplot(aes(x = pct, y = politician_label, fill = `Pro-People`)) +
   geom_col(position = "stack", width = 1) +
-  scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  #scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  scale_fill +
   facet_grid(party ~ ., scales = "free_y", space = "free_y", switch = "y") +
   theme_bars + theme(strip.text.y.left = element_blank()) +
   labs(x = NULL, y = NULL, title = "Pro-People")
@@ -200,7 +208,8 @@ pc_an <- prep_bars(d_party, "antagonism_score", "Antagonism",
                    "None (0)") |>
   ggplot(aes(x = pct, y = politician_label, fill = Antagonism)) +
   geom_col(position = "stack", width = 1) +
-  scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  #scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  scale_fill +
   facet_grid(party ~ ., scales = "free_y", space = "free_y", switch = "y") +
   theme_bars + theme(strip.text.y.left = element_blank()) +
   labs(x = NULL, y = NULL, title = "Antagonism")
@@ -211,15 +220,26 @@ pc_pop <- prep_bars(d_party, "populism_score", "Populism",
                     "None (0)") |>
   ggplot(aes(x = pct, y = politician_label, fill = Populism)) +
   geom_col(position = "stack", width = 1) +
-  scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  #scale_fill_viridis_d(option = "inferno", direction = -1, begin = 0.3, end = 0.9) +
+  scale_fill +
   facet_grid(party ~ ., scales = "free_y", space = "free_y", switch = "y") +
   theme_bars + theme(strip.text.y.left = element_blank()) +
-  labs(x = NULL, y = NULL, title = "¹Populism",
-       caption = "¹(Anti-Elite + Pro-People); if Antagonism > 0: (Anti-Elite + Pro-People)*Antagonism")
+  labs(x = NULL, y = NULL, title = "Populism",
+       #caption = "¹(Anti-Elite + Pro-People); if Antagonism > 0: (Anti-Elite + Pro-People)*Antagonism"
+       )
 
 pc_ae + pc_pp + pc_an + pc_pop +
   plot_layout(ncol = 4, guides = "collect") &
-  theme(legend.position = "right") &
-  labs(x = "% of Politician's Tweets")
+  labs(x = "% of Politician's Tweets") &
+  theme(legend.position = "bottom",
+        legend.text.position = "bottom",
+        legend.title.position = "top",
+        legend.title = element_text(size = 13),
+        legend.text = element_text(size = 12),
+        plot.title   = element_text(size = 18),
+        axis.text.x  = element_text(size = 13),
+        axis.title.x = element_text(size = 13)) 
 
-ggsave("../images/populism_stacked_dimensions_all_tweets_combined.png", bg = "white", width = 16, height = 12, dpi = DPI)
+#ggsave("../images/populism_stacked_dimensions_all_tweets_combined.png", bg = "white", width = 14, height = 10, dpi = DPI)
+ggsave("../images/populism_stacked_dimensions_all_tweets_combined.png", bg = "white", width = 14, height = 12, dpi = DPI)
+
