@@ -165,9 +165,7 @@ For this the literature review elaborates on the systemtheoretic framing of popu
 Luhmanns systemtheory percieves democracy as a system with governing/opposing as its own binary code of communication @czerwick2008. Populist strategy works then as a program under the the communicative code of democracy by substituting governing/opposing with elite/people, and the party represents the people that should be in power. 
 Additionally social movements follow the communicative code of mobilization/not-mobilizing @kusche2016a. Democracy incorporates dissent through its elective system @czerwick2008. Parties are social movements that need to mobilize and gain political power to become the governing party @tilly1978[117]. Social media maximizes for attention @simon1971 and social media platforms are the arena for mobilization. Social movements form a symbiosis with social media platforms by maximizing mobilization and attention simultaniously. But does the linguistically constructed people-ingroup translate into lasting observable engagement-structures on social media platforms?
 
-The analysis is based on a dataset of 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. #cite(<mudde2004>, form: "prose")s definition is operationalized into the linguistic construction of two groups that a post can voice an attitude towards. Populism then is operationalized along People Attitude, Elite Attitude, and Antagonism, scored by Qwen3-235B via a chain-of-thought prompt validated against the PopBERT expert corpus. To connect these with network measures reply threads are reconstructed into a weighted user-level network, whose giant component (77,194 nodes; 239,502 edges) forms the analytical base. To focus on the local network structure around politicians egonetworks are extracted. Two OLS models then regress mean alter degree on populism, controlling for network effects through ego degree, follower count, and mean thread size. Fragmentation ratio serves as a second dependent variable for robustness. To not only compare aggregated egonetwork measures but investigate social mechanisms further alter-alter tie probability is descriptivly visualized to compare possible behavioural differences of populist vs. nonpopulist communities. 
-
-Finally the results are presented and discussed together with their limitations. 
+The analysis is based on a dataset of 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. #cite(<mudde2004>, form: "prose")s definition is operationalized into the linguistic construction of two groups that a post can voice an attitude towards. Populism then is operationalized along People Attitude, Elite Attitude, and Antagonism, scored by Qwen3-235B via a chain-of-thought prompt validated against the PopBERT expert corpus. To connect these with network measures reply threads are reconstructed into a weighted user-level network, whose giant component (77,194 nodes; 239,502 edges) forms the analytical base. To focus on the local network structure around politicians egonetworks are extracted. Two OLS models then regress mean alter degree on populism, controlling for network effects through ego degree, follower count, and mean thread size. Fragmentation ratio serves as a second dependent variable for robustness. To not only compare aggregated egonetwork measures but investigate social mechanisms further alter-alter tie probability is descriptivly visualized to compare possible behavioural differences of populist vs. nonpopulist communities. Finally the results are presented and discussed together with their limitations. 
 
 
 // ====================================================================================================
@@ -278,7 +276,7 @@ H1: German MPs who use populist rhetoric have more strongly interconnected alter
 // Summary                                             [100w, 0.2 p] +33
 
 
-== Introduction                                        [100w, 0.2p]
+//== Introduction                                        [100w, 0.2p]
 //#lorem(100) +27words
 This section describes the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
 After introducing the dataset and collection procedure the 3 step analysis is described. 
@@ -294,8 +292,9 @@ Finally in a synthesis, politician ego networks are combined with the populism s
 
 ]
 
-== Dataset Sampling & Description                       [264w, 0.5p] 
+//== Dataset Sampling & Description                       [264w, 0.5p] 
 //#lorem(264) +40words
+== Data and Operationalization
 
 The Dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. #text(fill: red)[did armin use this data somewhere in his own studies?? maybe I can cite something] The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
 To deliniate the set of politicians and add their name and party information, a list of parliamentary members of the 19th, 20th, and 21st German Bundestag is obtained from the Bundestags Webarchiv and added to the original dataset through their twitter-account links @bundestag2026. The complete dataset consists of 693 015 Tweets in the twitwi format @medialab2026.
@@ -303,7 +302,7 @@ To deliniate the set of politicians and add their name and party information, a 
 German political news from 7–14 February 2022 were dominated by the Omikron wave's peak and the escalating Russia-Ukraine crisis. As Russia massed troops for what would become Europe's largest military offensive since WWII, Chancellor Scholz met President Biden to discuss Germany's Nord Stream 2 dependency. Domestically, Scholz's coalition split over a general vaccine mandate, with FDP Justice Minister Buschmann deeming it constitutionally dubious and proposing mandatory physician consultations for unvaccinated adults as a softer alternative.
 
 
-== Operationalization & Measure                         [500w. 1p]
+//== Operationalization & Measure                         [500w. 1p]
 //#lorem(500) +143words
 Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as #quote[two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.] @mudde2004[p.543]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
 
@@ -335,8 +334,9 @@ $ "Populism"_u = cases(
 The gate zeros out users whose average rhetoric is not simultaneously people-affirming and elite-critical, operationalizing #cite(<mudde2004>,form: "prose")'s tripart definition at the actor level. Aggregating dimensions before recombining allows a user to distribute their anti-elite and pro-people attitudes across different tweets.
 
 
-== Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
+//== Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
 //#lorem(332) +20words
+== Textanalysis
 Computationally methods driven text analysis is based on linguistic concepts. A corpus of documents is divided in tokens as semantically meaningful units of analysis which are often words. The simplest text classification techniques are usually wordfrequency based dictionary methods. Some of which already mechanistically take context of wordappearence into account @ribeiro2016. While simple machine learning classifiers like naive bayes models are statistically more elaborate, deeplearning models are able to integrate interactions between tokens allowing for even better predictions. But deep learning architectures like convolutional neural networks trade variance for increased local bias through usage of filters @sohil2022. Transformer architectures implement modeling of long-range dependencies by implementing self attention on a micro level weighing the importance of every individual input token for other each individual input token @cordonnier2020. Qwen3-235B-A22B-Instruct-2507-FP8 is using more elaborate attention mechanisms like grouped query attention @yang2025.
 The model also implements expert segmentation, is multilingual and has 8-bit floating weights @yang2025.
 
@@ -356,8 +356,10 @@ for pairs of expert raters with each other and the LLM annotations are calculate
 
 
 
-== Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p]	
+//== Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p]	
 //#lorem(295) +38words
+
+== Network Analysis
 The reply threads are constructed by treating tweets as nodes that are linked through directed replies. A component in the constructed thread network is then a replythread with one rootnode that is only recieving links marking the direction of a reply. Some reply chains trace back to MP tweets posted before the collection period, so the root node has no row in the dataset. Matching the target tweets user information against the politician table recovers their authorship, recovering 2,631 of 89,561 threads (2.9%). Threads root tweet information like politician with e.g. party and followerinformation, are then stored within the reply tweets of the respective thread and aswell added to each tweet in the reply network. 
 
 The main research question requires a network of interactions plausibly representing an engagement community. A weighted user centric reply network with users as nodes and replies as directed links is constructed. The original tweet-based dataset holding politician and threadinformation served as the basis for construction with its `user_id` and `to_userid` variables. The resulting network is directed with edgeweights based on replycount. It holds 81 295 user-nodes connected through 239 502 reply-links distributed among 1865 components. A giant component holds (77 194) 94% of all nodes. 1207 users are contained in components of size 2, one original user, one replying user, as the threadsize holding the second most nodes. The second largest component held 41 (0.05%) users (see the #link(<sec:app-component-table>)[table] in appendix).
@@ -368,8 +370,9 @@ Tweet-level populism dimensions (people scores, elitism scores, antagonism score
 To definitly deliniate the dataset to replies from politicians tweets reply-edges not appearing underneath politicians threads are deleted and isolates are removed. Thereby removing rest-replythreads of e.g. referenced tweets.
 
 
-== OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS + 510w
+//== OOPS I FORGOT THE SECTION WITH MY MODELS WHEN STRUCTURING MY PARAGRAPHS/WORDS + 510w
 //+762words
+== Ego Network Analysis
 A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. 
 #text(fill: red)[its all graphbased, except the partyplot and the tweettopics plot]
 The textanalysis is conducted with tweets contained in the largest component of the retweet network, that also serves as the basis for the network analysis. Exceptions are the comparison of populism by parties and a wordcorrelation network to infer the tweets content, which are based on the entire tweetdataset including retweets and referenced tweets in order to capture the broader political discourse during the week.
@@ -396,7 +399,7 @@ Two ERGM-inspired statistics are computed for each attribute.
 \ The sum statistic captures preferential activity. The mean attribute sum across connected pairs $overline(x_i + x_j)_"obs"$ is compared to the mean across all possible pairs $overline(x_i + x_j)_"rand"$, with positive deviation indicating that edges disproportionately link high-attribute alters. 
 \ Both statistics are expressed as relative deviations from the random baseline $(o - r) slash r$ and summarized by median and mean across populist and non-populist ego networks to identify possible systematic group-level patterns in tie formation.
 
-== Summary                                             [100w, 0.2 p]
+//== Summary                                             [100w, 0.2 p]
 //#lorem(100) +33
 This section described the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
 The dataset comprises 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. 
