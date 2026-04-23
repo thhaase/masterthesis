@@ -192,31 +192,6 @@ The analysis is based on a dataset of 693,015 tweets collected via Twitter's str
 // Hypothesis (narrow down)             [500w, 1page]
 // Summary                             [100w, 0.2 page]
 
-Social media threatens democracy through several channels, one of them being populism @lorenz-spreen2022. While scholars are busy discussing about definitions, people all around the world take part in populist movements democratizing authoritarian regimes and destabilizing western democracies @lorenz-spreen2022. This is hardly surprising considering the essence of populism.  
-
-Generally populism research has been divided in geographical foci, methods, and host ideologies @hunger2022. Since 2016 the research landscape is dominated by political science perspectives converging on populism as a discoursive practice @tugal2021. They almost uniformly adopts #cite(<mudde2004>, form: "prose")s definition of populism as #quote[an ideology that considers society to be ultimately separated into two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people] @mudde2004[542].
-
-While the theoretical branches lose themselves in the deliniation of the concept building largely on marxist traditions the perspective of relational and system sociology has largely been missing @tugal2021 @hunger2022. This is puzzeling since #cite(<mudde2004>, form: "prose")s definition yields the largest #quote[Anschlusskommunikation] through reducing populism to 3 core parts, proven by the amount of theorists discussing, contrasting and developing it but through its adoption in empiricist studies @castanhosilva2020. Additionally a relational perspective is not far fetched since already Simmel connected antagonism and groupcohesion. During conflict groups are #quote[...held together by a shared aversion [...] to which entirely foreign elements are drawn by the commonality of an antagonism.]@simmel1908[Ch.4]. 
-
-One of computational social sciences original aims is to make use of digital data for social science questions @lazer2009. Since dynamics of complex systems are inherently baked in the design of social media researchers should take a complex system perspective to study them @bak-coleman2025. So a relational sociology perspective is not only filling a longstanding gap on the topic but also adresses the structure of social media.
-Even though a few larger social media studies of populism exist they analyze merely the content but and do not investigate a relationship between populism and patterns of linkformation further @erhard2025 @yarchi2021 @serrano2020.
-
-In summary populism research has largely ignored relational approaches even though they seem intuitive given already simmel adresses one dimension of the most popular definition. Additionally social media research has not been focusing on relational approaches of populism but focused on describing the content instead. 
-This study fills the outlined gap by analyzing the effect of politicians populism usage on local structures around them in a replynetwork. More closely:
-How does the usage of populist rhetoric of German parliamentary members affect the politicians engagement communities on Twitter?
-
-For this the literature review elaborates on the systemtheoretic framing of populist rhetoric and connecting it to social movement research. 
-Luhmanns systemtheory percieves democracy as a system with governing/opposing as its own binary code of communication @czerwick2008. Populist strategy works then as a program under the the communicative code of democracy by substituting governing/opposing with elite/people, and the party represents the people that should be in power. 
-Additionally social movements follow the communicative code of mobilization/not-mobilizing @kusche2016a. Democracy incorporates dissent through its elective system @czerwick2008. Parties are social movements that need to mobilize and gain political power to become the governing party @tilly1978[117]. Social media maximizes for attention @simon1971 and social media platforms are the arena for mobilization. Social movements form a symbiosis with social media platforms by maximizing mobilization and attention simultaniously. But does the linguistically constructed people-ingroup translate into lasting observable engagement-structures on social media platforms?
-
-The analysis is based on a dataset of 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. #cite(<mudde2004>, form: "prose")s definition is operationalized into the linguistic construction of two groups that a post can voice an attitude towards. Populism then is operationalized along People Attitude, Elite Attitude, and Antagonism, scored by Qwen3-235B via a chain-of-thought prompt validated against the PopBERT expert corpus. To connect these with network measures reply threads are reconstructed into a weighted user-level network, whose giant component (77,194 nodes; 239,502 edges) forms the analytical base. To focus on the local network structure around politicians egonetworks are extracted. Two OLS models then regress mean alter degree on populism, controlling for network effects through ego degree, follower count, and mean thread size. Fragmentation ratio serves as a second dependent variable for robustness. To not only compare aggregated egonetwork measures but investigate social mechanisms further alter-alter tie probability is descriptivly visualized to compare possible behavioural differences of populist vs. nonpopulist communities. Finally the results are presented and discussed together with their limitations. 
-
-
-- populism 
-  - movement
-  - democracy @czerwick2008[p.182]
-  - parties @tilly1978[p.117]
-- twitter engagement egonets
 
 
 == Introduction                        [100w, 0.2page]
@@ -224,9 +199,47 @@ The analysis is based on a dataset of 693,015 tweets collected via Twitter's str
 
 == Theoretical Background (start broad) [650w, 1.2 pages]
 //#lorem(650)
+Lay out the pieces in this order:\
+Focus on bringing up perspectives on language (what is how communicated) and networks/systems
 
-damaging for democracy? 
-While this definition is critizised for being developed only for liberal democracy  
+
+- What is democracy
+  - @czerwick2008 
+    - evolves from already structurally functional differentiated society.
+    - works as a filter reducing societal complexity to political complexity but also creates complexity in the political system. democracy is then reproducing itself through "meaning".
+    - democraty as a system is reproducing itself through the code Government/Opposition
+    - "Since democracy is defined as the rule of the people, the underlying distinction between rulers and the ruled is semantically dissolved or presented as a self-contradiction, thereby creating its own myth. In such a situation, only democracy itself can rule."
+    - 
+- What are parties
+  - parties as social movements
+    - @tilly1978
+    - @kusche2016a
+    - @lietz2016[46]
+  - parties in democracy
+    - @tilly1978
+- What is populism
+  - @tugal2021
+  - @mudde2004
+  - the role of language
+    - @wray2007
+    - @schmitz2025
+  - is populism damaging for democracy? 
+    - pro 
+      - collapses discourse on one group-axis (reduces complexity of issues needed to be solved) 
+    - contra
+      - populism is only antidemocratic when it incorporates antipluralism since democracy is supposed to have powerful people
+
+- socialmedia 
+  - socialmedia x parties / social movements
+    - @stier2018
+    - @stier2025
+  - socialmedia x populism / language
+    - @hu2024 
+      - second largest type of language on twitter is mobilizing
+  - socialmedia structure
+    - 
+networklevel controls
+
 
 Social media platforms constitute modern arenas for political discourse. Since parties as social movements want to mobilize followers for their ideas @borum2011 they enter a symbiotic relationship with the social media platforms. As platforms optimize for time spent on the platform in order to earn money through ads and datacollection on their users, parties try to
 capture the collective attention of the users to increase their own popularity and probability of gaining votes in elections. For example posts on Twitter containing populist rhetoric receive in general more attention and interactions compared to non-populist tweets @cassell2021. 
