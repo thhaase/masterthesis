@@ -154,8 +154,9 @@ Social media threatens democracy through several channels, one of them being pop
 Populism research has historically been divided by geographical focus, methods, and host ideologies @hunger2022. Since 2016 the research landscape has been dominated by political science perspectives converging on populism as a discursive practice @tugal2021. They almost uniformly adopt #cite(<mudde2004>, form: "prose")'s definition of populism as #quote[an ideology that considers society to be ultimately separated into two homogeneous and antagonistic groups, 'the pure people' versus 'the corrupt elite', and which argues that politics should be an expression of the volonté générale (general will) of the people] @mudde2004[542].
 
 While theoretical work refines the concept largely within Marxist traditions, relational and systems-sociological perspectives have remained peripheral @tugal2021 @hunger2022. This is puzzling, because Mudde's definition is itself relational: populism is constituted through the antagonism between two groups. Simmel already connected antagonism to group cohesion, noting that groups are #quote[...held together by a shared aversion [...] to which entirely foreign elements are drawn by the commonality of an antagonism.] @simmel1908[Ch.4]. A relational reading of Mudde is therefore not a far fetched but literally a theoretical operationalization of it.
+//- write more about populism in general
 
-One of computational social science's original aims is to make use of digital data for social science questions @lazer2009. Since the dynamics of complex systems are baked into the design of social media, researchers should take a complex-systems perspective when studying them @bak-coleman2025. Yet existing large-scale social media studies of populism analyze only content and do not investigate whether and how populism relates to patterns of link formation @erhard2025 @yarchi2021 @serrano2020.
+One of computational social science's original aims is to make use of digital data for social science questions @lazer2009. Since the dynamics of complex systems are baked into the design of social media, researchers should take a complex-systems perspective when studying them @bak-coleman2025. Yet existing large-scale observational social media studies of populism analyze only textual content @erhard2025 @yarchi2021 @serrano2020. Populism has rarely been connected to networks.  
 
 This study fills that gap by asking:
 
@@ -164,8 +165,10 @@ This study fills that gap by asking:
 The theoretical framing draws on social movement research combined with relational and systems-theoretic sociology. Parties are movements competing for political power @tilly1978[117], and they do so in platform environments that maximize attention @simon1971. Twitter is not a neutral arena in which rhetoric is received but a medium whose architecture actively structures who encounters whom. Populist rhetoric, by linguistically constructing a pure people against a corrupt elite, offers a candidate identity formula around which such encounters could stabilize into durable patterns of engagement. From a Luhmannian perspective, the reply network is a self-referential communicative system that reproduces itself through the recursive connection of utterances to prior utterances; what persists is not speakers but the patterns of connection their communications leave behind @luhmann1984. #cite(<white2008>, form: "prose") complements this view from the other direction. Identities emerge based on events like a politician using populist rhetoric @white2008[Ch.1]. While Identities can develope to a point of conciousness a stronger connected engagementcommunity represents the second sense of identity formation @white2008[10]. 
 Read together, the two frameworks suggest that populist rhetoric on Twitter is a story-work attempting to constitute a people-ingroup within an ongoing communicative system. Its effects should be legible as a structural signature in the local engagement neighborhoods of the politicians who deploy it rather than only in the content of what is said.
 
-The analysis is based on a dataset of 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. Mudde's definition is operationalized along People Attitude, Elite Attitude, and Antagonism, scored by Qwen3-235B via a chain-of-thought prompt validated against the PopBERT expert corpus. Reply threads are reconstructed into a weighted user-level network whose giant component (77,194 nodes; 239,502 edges) forms the analytical base. Ego networks are extracted around politicians to focus on local structure. Two OLS models regress mean alter degree on populism, controlling for networkstructure through ego degree, follower count, and mean thread size. Fragmentation ratio serves as a second dependent variable for robustness. To move beyond mere aggregated ego-network measures toward social mechanisms an outlook describes alter-alter tie probability comparing engagement patterns in populist and non-populist communities. The results are then presented and discussed alongside their limitations.
+- write more about my goals, what I am up to based on the theoretical arguments, transition
+  - Extended abstract but without results
 
+The methodological approach translates the outlined theoretical ideas by using a twitter reply network to poperationalize social interactions on social media. Compared to retweets and mentions replies are a way of directly answering to a message another person published. The dataset contains politicians tweets and their replies to construct such a replynetwork. To explore the effect of a politician using populist rhetoric on their community all tweets are labeled by the amount of populist attitude they communicate. This textanalysis is achieved through a fewshot LLM Qwen3-235B annotation using an expert validated systemprompt. The egonetworks of politicians are extracted and their structure compared by their usage of populist rhetoric to explore expected relationship can be observed. The textanalysis, structure of the complete replynetwork and egonetworks are further described.
 
 
 
@@ -202,44 +205,81 @@ The analysis is based on a dataset of 693,015 tweets collected via Twitter's str
 Lay out the pieces in this order:\
 Focus on bringing up perspectives on language (what is how communicated) and networks/systems
 
+- What is populism (THIS IS THE MAIN STORY; FOCUS ON THAT)
+  - What is democracy (super short)
+    - @czerwick2008 
+      - evolves from already structurally functional differentiated society.
+      - works as a filter reducing societal complexity to political complexity but also creates complexity in the political system. democracy is then reproducing itself through "meaning".
+      - democraty as a system is reproducing itself through the code Government/Opposition
+      - "Since democracy is defined as the rule of the people, the underlying distinction between rulers and the ruled is semantically dissolved or presented as a self-contradiction, thereby creating its own myth. In such a situation, only democracy itself can rule."
+    - @luhmann1987
+      - Democracy is NOT: making all decisions participatory
+          - If one wanted to make all decisions participatory, one would reduce all decisions to decisions about decisions
+          ==_Teledemobureaucratization_
+          ==Favoring opaque power structures and insiders
+      - Democracy is: ==Division of the Elite==
+        - Government vs. Opposition
+          - positiv vs. negativ like 
+            - lawful/unlawful in law system
+            - true/false in science
+            - immanence/transcendence in religion
+            - selection of communication by that
+          - Only when society is differentiated enough in horizontal functional systems that it doesnt need a head of state
+        - the code dissolves fundamental paradox of all systems with organized powerdifferences. The opposition has no governing power, but can influence through this impotence.
+      - society is too big and previosly relevant systems have emancipated themselves from their role focusing on keeping themselves alive.
 
-- What is democracy
-  - @czerwick2008 
-    - evolves from already structurally functional differentiated society.
-    - works as a filter reducing societal complexity to political complexity but also creates complexity in the political system. democracy is then reproducing itself through "meaning".
-    - democraty as a system is reproducing itself through the code Government/Opposition
-    - "Since democracy is defined as the rule of the people, the underlying distinction between rulers and the ruled is semantically dissolved or presented as a self-contradiction, thereby creating its own myth. In such a situation, only democracy itself can rule."
-    - 
-- What are parties
-  - parties as social movements
-    - @tilly1978
-    - @kusche2016a
-    - @lietz2016[46]
-  - parties in democracy
-    - @tilly1978
-- What is populism
+  - What are parties (not mainly analysed by me, keep it short)
+    - parties as social movements
+      - Doug McAdam, Roger Gould
+      - @tilly1978
+      - @kusche2016a
+    - parties in democracy
+      - @tilly1978
+    - lots of theorists in all camps not deciding on whats it
+    - Political communication is about talking policy! 
+      - what are different strategies, how are they different from populism
   - @tugal2021
   - @mudde2004
+    - Subtypes of populism
+      - Rightwing/leftwingpopulism populism @erhard2025
+      - ...
   - the role of language
     - @wray2007
     - @schmitz2025
+    INFLUENCE, persuasive language, political motivations, political marketing
+    ==> Textanalysis of populisms, politicians talk and they adress those dimensions
+    - Elitist & Peoplecentric
+      - connection to policymaking
+    - Easy to trace in text but hard to trace in behaviour
   - is populism damaging for democracy? 
     - pro 
       - collapses discourse on one group-axis (reduces complexity of issues needed to be solved) 
-    - contra
+    - contra[[]]
       - populism is only antidemocratic when it incorporates antipluralism since democracy is supposed to have powerful people
 
 - socialmedia 
-  - socialmedia x parties / social movements
-    - @stier2018
-    - @stier2025
-  - socialmedia x populism / language
+  - @lazer2009
+    - easy access, lots of opportunities ==> social media is a good place to answer behavioural questions regarding populism https://www.tandfonline.com/doi/full/10.1080/01402382.2011.616665
+      -> and its important @lorenz-spreen2022
+  - socialmedia x populism / language MOST IMPORTANT; MUCH SPACE
     - @hu2024 
       - second largest type of language on twitter is mobilizing
-  - socialmedia structure
+    - socialmedia x parties / social movements LESS SPACE BC ITS ABOUT PARTIES
+      - @stier2018
+      - @stier2025
+      - also comparative studies maybe
+        - why is it interesting -> afd, linke, pegida
+  - Measuring populism?
+    - as communication
+      - Brubaker, R. (2017). Why populism?. Theory and society, 46(5), 357-385.
+  - Algorithm?
     - 
+  - socialmedia structure
+
+
 networklevel controls
 
+TRANSITION AND NARROW DOWN TO QUESTION AND HYPOTHESIS
 
 Social media platforms constitute modern arenas for political discourse. Since parties as social movements want to mobilize followers for their ideas @borum2011 they enter a symbiotic relationship with the social media platforms. As platforms optimize for time spent on the platform in order to earn money through ads and datacollection on their users, parties try to
 capture the collective attention of the users to increase their own popularity and probability of gaining votes in elections. For example posts on Twitter containing populist rhetoric receive in general more attention and interactions compared to non-populist tweets @cassell2021. 
@@ -486,6 +526,7 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
 == Textanalysis: Result              [510w, 1p]
 
 === Prompt Validation
+
 
 
 #figure(
