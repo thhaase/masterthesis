@@ -1,3 +1,5 @@
+#import "@preview/cetz:0.3.4"
+
 // ===== SETUP =====
 #set page(
   width: 21cm, 
@@ -143,7 +145,7 @@
 // - Start broad with relevance statement 
 // - Narrow to specific research question & findings
 
-// Introduction                     [1,110w, 2.1 pages, ~10%] -400 words
+// Introduction                     [1,110w, 2.1 pages, ~10%] -600 words
 // Motivation & Relevance Statement [518w, 0.5p]
 // Research Question                [42,0.5p]
 // Summary of other Sections (Basically summary of Introduction Paragraphs)                         [550w - 1 page]
@@ -162,15 +164,15 @@ This study fills that gap by asking:
 
 #quote[How does populist rhetoric by German parliamentary members shape the structure of their reply communities on Twitter?]
 
+/*
 The theoretical framing draws on social movement research combined with relational and systems-theoretic sociology. Parties are movements competing for political power @tilly1978[117], and they do so in platform environments that maximize attention @simon1971. Twitter is not a neutral arena in which rhetoric is received but a medium whose architecture actively structures who encounters whom. Populist rhetoric, by linguistically constructing a pure people against a corrupt elite, offers a candidate identity formula around which such encounters could stabilize into durable patterns of engagement. From a Luhmannian perspective, the reply network is a self-referential communicative system that reproduces itself through the recursive connection of utterances to prior utterances; what persists is not speakers but the patterns of connection their communications leave behind @luhmann1984. #cite(<white2008>, form: "prose") complements this view from the other direction. Identities emerge based on events like a politician using populist rhetoric @white2008[Ch.1]. While Identities can develope to a point of conciousness a stronger connected engagementcommunity represents the second sense of identity formation @white2008[10]. 
 Read together, the two frameworks suggest that populist rhetoric on Twitter is a story-work attempting to constitute a people-ingroup within an ongoing communicative system. Its effects should be legible as a structural signature in the local engagement neighborhoods of the politicians who deploy it rather than only in the content of what is said.
-
-- write more about my goals, what I am up to based on the theoretical arguments, transition
-  - Extended abstract but without results
+*/
+Populism research is divided over whether populism is a thin or a thick ideology. The minimal definition reads it as a vertical antagonism between a homogeneous people and a homogeneous elite @mudde2004, often enriched with a horizontal dimension constructing the people additionally against outside groups @brubaker2017. What unifies all perspectives is the minimal definition as a common denominator and the intuition that populism is system-destabilizing @lorenz-spreen2022. The definitions of populism implicitly are connected to representative democracy. Democracy selects its communications through the Government/Opposition distinction @luhmann1987, and populism is then the reproduction of this distinction at the level of a social movement (Elite/People) attempting to place itself as a valid democratic group. Social media amplifies this code @lorenz-spreen2022 and Twitter in particular is not a neutral arena in which rhetoric is received but a medium whose recommender architecture actively structures who encounters whom @x2026. Parties are then movements competing for political power in this attention environment @tilly1978[117] @simon1971, and populist rhetoric constructs the distinction of the pure people against a corrupt elite. This gives encounters a distinction around which they can stabilize. Engagement in this medium is not agreement @morselli2026 but a structural fact, users repeatedly showing up in the same place around the same politician whatever their reason for doing so, and whether such stabilization actually occurs is then a question about communication and not about speakers.
 
 The methodological approach translates the outlined theoretical ideas by using a twitter reply network to poperationalize social interactions on social media. Compared to retweets and mentions replies are a way of directly answering to a message another person published. The dataset contains politicians tweets and their replies to construct such a replynetwork. To explore the effect of a politician using populist rhetoric on their community all tweets are labeled by the amount of populist attitude they communicate. This textanalysis is achieved through a fewshot LLM Qwen3-235B annotation using an expert validated systemprompt. The egonetworks of politicians are extracted and their structure compared by their usage of populist rhetoric to explore expected relationship can be observed. The textanalysis, structure of the complete replynetwork and egonetworks are further described.
 
-
+- Results & Discussion
 
 // ====================================================================================================
 = Literature Review
@@ -186,7 +188,7 @@ The methodological approach translates the outlined theoretical ideas by using a
 // - Describe case study in detail
 
 
-// Literature Review                    [2 740w, 5.2pages, 25%]
+// Literature Review                    [2 740w, 5.2pages, 25%] 2490 ==> -250
 
 // Introduction                        [100w, 0.2page]
 // Theoretical Background (start broad) [650w, 1.2 pages]
@@ -197,110 +199,247 @@ The methodological approach translates the outlined theoretical ideas by using a
 
 
 
-== Introduction                        [100w, 0.2page]
+
+//== Introduction                        [100w, 0.2page]
 //#lorem(100)
 
-== Theoretical Background (start broad) [650w, 1.2 pages]
-//#lorem(650)
-Lay out the pieces in this order:\
-Focus on bringing up perspectives on language (what is how communicated) and networks/systems
-
-- What is populism (THIS IS THE MAIN STORY; FOCUS ON THAT)
-  - What is democracy (super short)
-    - @czerwick2008 
-      - evolves from already structurally functional differentiated society.
-      - works as a filter reducing societal complexity to political complexity but also creates complexity in the political system. democracy is then reproducing itself through "meaning".
-      - democraty as a system is reproducing itself through the code Government/Opposition
-      - "Since democracy is defined as the rule of the people, the underlying distinction between rulers and the ruled is semantically dissolved or presented as a self-contradiction, thereby creating its own myth. In such a situation, only democracy itself can rule."
-    - @luhmann1987
-      - Democracy is NOT: making all decisions participatory
-          - If one wanted to make all decisions participatory, one would reduce all decisions to decisions about decisions
-          ==_Teledemobureaucratization_
-          ==Favoring opaque power structures and insiders
-      - Democracy is: ==Division of the Elite==
-        - Government vs. Opposition
-          - positiv vs. negativ like 
-            - lawful/unlawful in law system
-            - true/false in science
-            - immanence/transcendence in religion
-            - selection of communication by that
-          - Only when society is differentiated enough in horizontal functional systems that it doesnt need a head of state
-        - the code dissolves fundamental paradox of all systems with organized powerdifferences. The opposition has no governing power, but can influence through this impotence.
-      - society is too big and previosly relevant systems have emancipated themselves from their role focusing on keeping themselves alive.
-
-  - What are parties (not mainly analysed by me, keep it short)
-    - parties as social movements
-      - Doug McAdam, Roger Gould
-      - @tilly1978
-      - @kusche2016a
-    - parties in democracy
-      - @tilly1978
-    - lots of theorists in all camps not deciding on whats it
-    - Political communication is about talking policy! 
-      - what are different strategies, how are they different from populism
-  - @tugal2021
-  - @mudde2004
-    - Subtypes of populism
-      - Rightwing/leftwingpopulism populism @erhard2025
-      - ...
-  - the role of language
-    - @wray2007
-    - @schmitz2025
-    INFLUENCE, persuasive language, political motivations, political marketing
-    ==> Textanalysis of populisms, politicians talk and they adress those dimensions
-    - Elitist & Peoplecentric
-      - connection to policymaking
-    - Easy to trace in text but hard to trace in behaviour
-  - is populism damaging for democracy? 
-    - pro 
-      - collapses discourse on one group-axis (reduces complexity of issues needed to be solved) 
-    - contra[[]]
-      - populism is only antidemocratic when it incorporates antipluralism since democracy is supposed to have powerful people
-
-- socialmedia 
-  - @lazer2009
-    - easy access, lots of opportunities ==> social media is a good place to answer behavioural questions regarding populism https://www.tandfonline.com/doi/full/10.1080/01402382.2011.616665
-      -> and its important @lorenz-spreen2022
-  - socialmedia x populism / language MOST IMPORTANT; MUCH SPACE
-    - @hu2024 
-      - second largest type of language on twitter is mobilizing
-    - socialmedia x parties / social movements LESS SPACE BC ITS ABOUT PARTIES
-      - @stier2018
-      - @stier2025
-      - also comparative studies maybe
-        - why is it interesting -> afd, linke, pegida
-  - Measuring populism?
-    - as communication
-      - Brubaker, R. (2017). Why populism?. Theory and society, 46(5), 357-385.
-  - Algorithm?
-    - 
-  - socialmedia structure
 
 
-networklevel controls
+Populism research is divided over one main question: Is populism a thin or thick ideology? And if it is thick, how so? The following section provides an overview of the conflict and explains the implicit theoretical source of the conflict. The second half proposes a new generalizing perspective on the topic motivated through already observed micro mechanisms. 
+== Populist Theories of Populism
+//== Horizontal vs. Vertical Populism
+2004 Cas Mudde proposed a minimal definition of populism as an ideology where a message is framed in a way that the powerless homogenious people stand against a ruling homogenious elite as antagonistic groups @mudde2004. 
+This definition has been considered "thin", because it only considers a vertical divide of society @brubaker2017. Vertical in the sense that one group is ruling the other. When read as an ideology #cite(<mudde2004>, form: "prose") s mininmal populism implicitly includes a class component as the core of its definition @yates2026. The definition is currently the most cited work on populism. Its minimalism increases the potential of connected communication for theorists discussing the work @tugal2021 @urbinati2019 @brubaker2017 @luhmann1987. Also empirical studies operationalized the main dimensions of people-centrism and anti-elitism in surveys and finetuned bert classifier PopBert on german Bundestagspeeches @castanhosilva2020 @akkerman2014 @erhard2025.
+Often this minimal definition is combined with some other dimension like antipluralism or the distinction between left and rightwing populism @erhard2025 @castanhosilva2020. Also theorists combine the thin definition with institutional and substantive analyses when discussing populism but those are chosen rather arbitrary @tugal2021. #cite(<tugal2021>, form: "prose") found that the minimal definition together with the discoursive and performative marxist and postmarxist definitions built on #cite(<laclau2005>, form: "prose") are part of the same family of subjectivist definitions.  
 
-TRANSITION AND NARROW DOWN TO QUESTION AND HYPOTHESIS
+Combining the minimal definition with more substantial categories of analysis not only thickens the analytic concept but also increases its theoretical richness. #cite(<brubaker2017>, form: "prose") criticised the minimal definition for only capturing the his proposed vertical dimension without acknowledging the horizontal distinctions between "the people" and outside groups. For example one thickness-increasing addition would be that left-wing populism defines "the people" economically or politically against threats like globalization and imperialism, while right-wing populism defines them culturally or ethnically against outside groups and "internal outsiders" perceived as not belonging to the nation @brubaker2017. 
+The more terms are added and connected the stronger and thicker the assumed ideology gets. #cite(<brubaker2017>, form: "prose") for example researches 5 different elites, more outsidegroups and the heartland. This comes with the caveat that the more the concept of populism is enriched the more it #quote[lumps together] disparate political projects with disparate social bases and modes of action @brubaker2017 @medzihorsky2024. 
 
-Social media platforms constitute modern arenas for political discourse. Since parties as social movements want to mobilize followers for their ideas @borum2011 they enter a symbiotic relationship with the social media platforms. As platforms optimize for time spent on the platform in order to earn money through ads and datacollection on their users, parties try to
-capture the collective attention of the users to increase their own popularity and probability of gaining votes in elections. For example posts on Twitter containing populist rhetoric receive in general more attention and interactions compared to non-populist tweets @cassell2021. 
+#figure(
+  cetz.canvas(length: 1cm, {
+    import cetz.draw: *
 
-== Relevant Theory (less broad)         [680w, 1.3 pages]
-//#lorem(680)
+    let dark = rgb("#16161D")  // Eigengrau
+
+    line((-5.4, 0), (5.4, 0),
+      mark: (start: ">", end: ">", fill: dark),
+      stroke: 1.4pt + dark)
+    line((0, 0), (0, 4.1),
+      mark: (end: ">", fill: dark),
+      stroke: 1.4pt + dark)
+
+    content((1.1, 3.8),
+      text(weight: "bold", size: 11pt, fill: dark)[The Elite])
+
+    content((1.3, 0.2),
+      text(weight: "bold", size: 11pt, fill: dark)[The People])
+
+    content((-4.7, 0.3),
+      text(style: "italic", size: 8.5pt, fill: dark)[Immigrants])
+    content(( 4.7, 0.3),
+      text(style: "italic", size: 8.5pt, fill: dark)[The poor])
+
+    content((-3.3, 0.7),
+      text(style: "italic", size: 8.5pt, fill: dark)[Ethnic groups])
+    content((-1.4, 0.2),
+      text(style: "italic", size: 8.5pt, fill: dark)[Religious groups])
+    content(( 3.2, 0.3),
+      text(style: "italic", size: 8.5pt, fill: dark)[LGBTQ+])
+    content(( 2, 0.6),
+      text(style: "italic", size: 8.5pt, fill: dark)[The unemployed])
+
+    content((6, -1),
+      text(size: 8.5pt, fill: dark)[
+        horizontal axis \
+        thick populism \
+        (Brubaker 2017)
+      ])
+    content((1, 4.5),
+      text(size: 8.5pt, fill: dark)[
+        vertical axis \
+        thin populism \
+        (Mudde 2004)
+      ])
+  }),
+  caption: [Vertical and horizontal dimensions of populism]
+) <fig:populism-axes>
+#long-caption[
+  After #cite(<mudde2004>, form: "prose") and #cite(<brubaker2017>, form: "prose"). The vertical axis captures the thin, minimal definition: "the people" constructed against "the elite". The horizontal axis captures Brubaker's thick extension, in which "the people" is additionally constructed against horizontal others. The labels along the axis are illustrative examples of such horizontal others; their position on the axis is not meaningful and the horizontal dimension is not equivalent to a left–right axis.
+]
+
+But then is populism really a densely connected set of concepts aka an ideology? And is it democratic or antidemocratic?
+While those putting left and rightwing populism on one axis do not necessarily assume that they are part of the same dimension they use it to enrich populism in order to bring it closer to an ideology. #cite(<yates2026>, form: "prose") argues that on an ideological level there is no right-wing populism. Leftwing and rightwing populists disagree on the meaning of the "people" they invoke. The leftists mean plebs, while the rightwing mean ethos. While left wing populism aims at increasing marginalized groups visibility, right wing populism extends the privalige of already visible groups and leaves the oppressed and exploited oppressed and exploited @yates2026. For rightwingers populism is then not part of an ideological core but merely a strategy for gaining votes. They abuse populisms ability to unify different cleavages @urbinati2019. 
+In short, even though thin vertical populism is often enriched with the left and right dimension only leftwing populism can be ideological. The distinction becomes clearer when populists gain power. Populist leaders in power either reaffirm their pro-people identity, remaining in a permanent electoral campaign or change rules to strengthen their decisionmakingpower @urbinati2019. While the populists continue to use propaganda facist populists revoke checks and balances @urbinati2019. In the end one arrives at a so called #quote[partyless democracy] where the people represent themselves through populist protests and parties openly rule only for their own good @urbinati2019 @kriesi2014 @brubaker2017. 
+
+Luhmanns Systemtheory provides a contrasting image to the relation between populism and democracy of the different scholars. For Luhmann democracy is not making all decisions participatory because then one would reduce all decisions to decisions about decisions which Luhmann calls #quote[Teledemobureaucratization] @luhmann1987. This favours opaque powerstructures and insiders, just like the partyless democracy claims. In its essence democracy is the division of the elite into Government vs. Opposition which becomes the systems binary code to select which communications are considered relevant or not. The code dissolves fundamental paradoxes of all systems with organized powerdifferences @luhmann1987. This split only works when society is already differentiated in enough horizontal functional systems that it does not need a head of state anymore @luhmann1987. Society then is too big and previosly relevant systems have emancipated themselves from their role focusing on keeping themselves alive. This is an exact match with the prediction of the powerless democracy. From Luhmanns code the thin populist ideology, as a distinction between the elite and the people, naturally arises. 
+
+We can make a distinction between two cases here. Either the representative democracy is seen as a genuine and working representation of the people or it is seen as a functionally differentiated system that emancipated itself from society where parties already only rule in their own favor. In the first case representative democracy is the rule of the people and in the second case representative democracy is the rule of the elite. Then the thin definition is an accurate representation of the actual structural condition and thickening is optional. 
+When scholars choose between a thin or thick definition of populism, they commit implicitly to a perspective on democracy. A thick definition adds content like ethnic identity, antipluralism, or outside groups, and it treats populism as something that corrupts a working democracy. This only makes sense if you already believe democracy genuinely represents the people, otherwise there would be nothing for populism to corrupt. A thin definition, with just the elite-people divide, fits much better with the idea that democracy has closed in on itself and mostly serves its own elite. The thin divide then describes a real structural split rather than a distortion. Most researchers overlook this tension, and some hold both sides at once, they define populism thinly but still frame it as a danger to a democracy that genuinely works. From this perspective, the thin-versus-thick debate implicitly is about the quesiton if representative democracy truly represents the people.
+
+What unifies all perspectives is the minimal definition as a common denominator and the general intuition that populism is political-system-destabilizing @lorenz-spreen2022. 
+
+== Populism and Social Media
+
+Social media populism studies all implicitly understand populist as a form of communication since they analyse it on a social media plattform with communication potential between all users. 
+
+If populism arises from the elite-people code of representative democracy, social media amplifies this code and decouples it from traditional institutions. Digital media use is consistently associated with higher populism, with causal evidence for far-right support and even ethnic hate crimes in democratic and authoritarian regimes @lorenz-spreen2022. The question is not whether social media matters but what it does structurally. The common explanation is affordance. Social media is cheap, viral and engagement-driven, exploited by populists for demagogic, anti-establishment and people-praising messaging including name-and-shame strategies @gildezuniga2020. #cite(<cassell2021>, form: "prose") confirmed this through qualitative coding of populist leaders tweets across Latin America and Europe, where populist frames outperformed pluralist, technocratic and neutral tweets in likes and retweets. Yet this engagement advantage is asymmetric. Dutch populists reciprocate interaction on Twitter less than non-populists @jacobs2019. Populist communication mobilizes attention upward without distributing it downward. Politicians also adapt to platforms rather than to policy. #cite(<stier2018>, form: "prose") used a Bayesian semi-supervised single-membership language model to show that candidates use Facebook and Twitter for distinct purposes, discussing campaign events and platform-specific topics rather than policy. The audience is no longer a mass but chooses its broadcaster, which makes strategic tailoring rational. 
+#cite(<hu2024>, form: "prose") explores the engagement of political tweets labeled by topics and finds few follower of politicians using selfexpressive, argumentative aswell as mobilizing language. These patterns aggregate at the group level. #cite(<stier2017>, form: "prose") showed AfD and Pegida share Facebook userbases, mutually like each other and converge on topics like crime, sexual assaults, EU referenda and #quote[state and the people]. #cite(<stier2025>, form: "prose") found through linked survey and webtracking data that radical right populists and their supporters avoid public broadcasters and expose themselves to alternative channels. #quote[How to talk about and select media sources seems to have developed into a core component in the construction of a radical right group identity and a shared information 'safe space' for political information] @stier2025. Group identity is built around the choice of information infrastructure itself. This ties populist communication to a legitimacy crisis rather than to a left-right axis. Analyzing 32 million tweets from parliamentary accounts in 26 countries, #cite(<tornberg2026>, form: "prose") found that neither left-right nor populism alone explains misinformation spread. Both left and right-wing populists consume more misinformation, but only the rightwing believe themselves better informed. The radical right has built an alternative media ecosystem in symbiotic relationship with attention-economic platforms @tornberg2026. Consistent with the Luhmannian reading above, once a functional system emancipates itself from its societal task it begins to produce its own environment to keep itself alive. 
+
+To summarize, populism is a style of communication that constructs the divide between the people and the elite with usually rule-destabilizing consequences. Even though we can not know the individuals motivations or reasons behind usage of populist rhetoric, what is sure is the role politicians assign themselves to. From a point of political communication politicians use this language in order to put themselves into a position to govern @luhmann1987.
 
 
+== Language and the Meso Level
 
-== Case Study (detailed)                [670w, 1.3 pages]
-//#lorem(670)
+Up until now we established that populist language is used by politicians on social media platforms and that it has been connected to different topics aswell as engagementmetrics.
 
-== Hypothesis (narrow down)             [500w, 1page]
-//#lorem(500)
+But engagementmetrics only report on the reactions of single users, but users interact, especially on social media platforms. Those interactions of single users are conceptually not independent since social media recommender algorithms use collaborative filtering. This is especially well known for Twitter since X open sourced the architecture of the platforms recommender algorithm @x2026. Multiple steps in the recommender algorithm are enriched with collaborative filtering techniques like SimClusters, the UTEG (User-Tweet-Entity-Graph) and the knowledgegraph @x2026. Through this algorithm twitter shapes the interactions on its platform. But not only from a technical perspective groupdynamics between users should be considered. One of the oldest sociological idea is that antagonistic groups shape each others dynamics. 
+#quote[Finally, this leads to the idea that hostilities easily fuel each other.] @simmel1908[256]. 
 
-H1: German MPs who use populist rhetoric have more strongly interconnected alters in their reply ego networks than those who do not.
-  - linguistic construction of in/outgroup 
-  - hyping the ingroup --> selfselection effect keeps only engaged users with knowledge of groups social facts that actively reply to each other @oswald2025
+For Simmel a group needs at least three persons @simmel1908[Ch2]. This is mainly because when one person leaves the group it doesnt automatically dissolve like if in the case of only two persons. For three persons the group can sustain itself if a person leaves the group. That a group emerges in the real world two processes are needed, homophily for the group cohesion and repulsion of others for defined group boundaries @stadtfeld2020. Pure attraction only explains a groups expansion while a heterophob repulsion mechanism creates stable groups by defining its boundaries. #cite(<stadtfeld2020>, form: "prose") shows this by calibrating a stochastic actor oriented model as an agent-based model to 479 students from 13 schoolclasses in order to simulate how friendship and dislike networks emerge.
+In twitter retweet language can be used as a marker for opinion-based group formation @morselli2026. Opinion based group formation requires opinions as identity markers that individuals use to transition from holding an opinion to selfcategorizing themselves through the opinion @morselli2026. In linguistic theory the identity markers changing meaning for the ingroup is described through the distinction between esoteric and exoteric language @wray2007. Esoteric language is specialized in the sense that it is used for ingroup communication and outsiders can not understand it. Exoteric language is more selfexplanatary and is used for communication with outsiders @wray2007. The coevolution of language and social groups is already activly researched in the science of science. For example #cite(<schmitz2025>, form: "prose") traces the evolution of scientific groups in the US and German sociology through a stochastic blockmodel of a multilayer network operationalized through co-word usage, shared citations and co-authoring. 
+
+The social media studies so far were mostly largescale observational studies. Experimental studies in controlled contexts can give closer insight into the social mechanics of online group/discussion formation. #cite(<oswald2025>, form: "prose") payed participants to engage with each other about political topics in reddit forums they moderated. Participants additionally filled out surveys regularly over a period of four weeks. When users percieved a discussion to be toxic they did not engage in the discussion. The users who engaged engaged more when the discussion was polarized and toxic @oswald2025. With a Luhmannian read the results can be generalized to the formation of a code in the discussion as a social system. Users percieve the community as positive/negative according to their own standards and start with the second stage of communication: "Mitteilung" @luhmann1984[Ch.4]. While different persons engage according to their own evaluative codes and their communication creates thematic and meaning structures @luhmann1984[Ch.4]. The social-discussion-system reproduces itself, and if the discussions would start to be selfdescriptive the system starts making a distinction between itself and its environment and emerging as a differentiated unit itself @luhmann1984[Ch.4]. #cite(<oswald2025>, form: "prose")s experiment also include the persons being driven away from the discussion through e.g. the evaluation of a toxic environment. Outside of the experimental context they would put their attention somewhere else, creating new opportunities for social systems to emerge, driving again others away. On one hand the discussion becoming more homogenous reduces complexity, but it also increases comprehensible complexity #cite(<luhmann1984>, form: "prose"). A larger amounts of connectivity (Netness) around a certain category (Catness) is equivalent to a higher amount of organization of a group @tilly1978. Parties are aggregating members loyal to the category, aka political interest and communicative practice aka code making it distinct from its environment @tilly1978[76]. Parties are then social movement because they are mobilizing others @kusche2016a @tilly1978.
 
 
-== Summary                             [100w, 0.2 page]
+#figure(
+  cetz.canvas(length: 1cm, {
+    import cetz.draw: *
+
+    let dark  = rgb("#16161D")
+    let green = rgb("#59778d")
+    let pink  = rgb("#d14b4b")
+    let beige = rgb("#4ac648")
+
+    let panel-arrow(from, to) = {
+      line(from, to, mark: (end: ">", fill: dark), stroke: 1.2pt + dark)
+    }
+
+    // --- Panel 1
+    circle((-5, 0), radius: 1.7,
+      stroke: (paint: dark, dash: "dashed", thickness: 0.5pt))
+
+    let p1-dots = (
+      (-5.7, 0.6, green), (-4.5, 0.8, pink),
+      (-5.1, -0.4, pink), (-4.4, -0.5, green),
+      (-5.6, -0.7, green), (-5.3, 0.9, pink),
+      (-4.7, 0.0, green), (-5.4, -0.1, pink),
+      (-4.3, 0.3, pink),  (-5.9, 0.0, green),
+      (-4.6, -0.9, pink), (-5.0, 0.3, green),
+    )
+    for (x, y, col) in p1-dots {
+      circle((x, y), radius: 0.13, fill: col, stroke: none)
+    }
+
+      content((-5, -2.25),
+//      text(weight: "bold", size: 9.5pt, fill: dark)[t#sub[0]])
+  //  content((-5, -2.85),
+      text(size: 8pt, fill: dark)[heterogeneous \ communication])
+
+    // arrow 
+    panel-arrow((-3.05, 0), (-1.85, 0))
+
+    // --- Panel 2
+    circle((0, 0), radius: 1.7,
+      stroke: (paint: dark, dash: "dashed", thickness: 0.5pt))
+
+    // green dots
+    let p2-green = (
+      (-0.3, 0.2), (0.4, 0.5), (-0.5, -0.3),
+      (0.2, -0.5), (0.6, -0.1), (0.0, 0.6),
+    )
+    for pt in p2-green {
+      circle(pt, radius: 0.13, fill: green, stroke: none)
+    }
+    line((-0.3, 0.2), (0.4,  0.5),  stroke: 0.4pt + green)
+    line((0.4,  0.5), (0.6, -0.1),  stroke: 0.4pt + green)
+    line((-0.5,-0.3), (0.2, -0.5),  stroke: 0.4pt + green)
+    line((-0.3, 0.2), (-0.5,-0.3),  stroke: 0.4pt + green)
+
+
+    let p2-leaving = (
+      (-0.80,  1.00, -1.60,  1.55),
+      ( 1.00,  0.90,  1.70,  1.45),
+      (-0.20, -1.10,  0.25, -1.85),
+      (-1.05, -0.50, -1.85, -0.85),
+    )
+    for (x1, y1, x2, y2) in p2-leaving {
+      circle((x1, y1), radius: 0.12, fill: pink, stroke: none)
+      line((x1, y1), (x2, y2),
+        mark: (end: ">", fill: pink), stroke: 0.7pt + pink)
+    }
+
+    content((0, -2.25),
+    //  text(weight: "bold", size: 9.5pt, fill: dark)[t#sub[1]])
+    //content((0, -2.85),
+      text(size: 8pt, fill: dark)[selection by \ evaluative code])
+
+    // arrow
+    panel-arrow((1.85, 0), (3.05, 0))
+
+    // --- Panel 3
+    circle((5, 0), radius: 1.5,
+      stroke: (paint: dark, thickness: 1.4pt),
+      fill: green.lighten(82%))
+
+    let p3-dots = (
+      (4.5,  0.3), (5.3,  0.5), (4.4, -0.2),
+      (5.0, -0.5), (5.4,  0.0), (4.7,  0.0),
+      (5.0,  0.7), (5.5, -0.3),
+    )
+    let p3-edges = (
+      (0, 1), (0, 2), (0, 5), (0, 6),
+      (1, 4), (1, 5), (1, 6),
+      (2, 3), (2, 5),
+      (3, 4), (3, 7),
+      (4, 5), (4, 7),
+      (5, 6), (5, 7),
+    )
+    for (a, b) in p3-edges {
+      line(p3-dots.at(a), p3-dots.at(b), stroke: 0.4pt + green)
+    }
+    for pt in p3-dots {
+      circle(pt, radius: 0.13, fill: green, stroke: none)
+    }
+
+    // --- recursion hint
+    circle((5.5, 2.0), radius: 0.4,
+      stroke: (paint: dark, dash: "dotted", thickness: 0.5pt))
+    circle((5.35, 1.90), radius: 0.10, fill: beige, stroke: none)
+    circle((5.70, 1.95), radius: 0.10, fill: beige, stroke: none)
+    circle((5.50, 2.20), radius: 0.10, fill: pink,  stroke: none)
+    content((5.5, 2.65),
+      text(style: "italic", size: 7pt, fill: dark)[new system \ forming])
+
+    content((5, -2.25),
+    //  text(weight: "bold", size: 9.5pt, fill: dark)[t#sub[2]])
+    //content((5, -2.85),
+      text(size: 8pt, fill: dark)[differentiated system \ system / environment])
+
+  }),
+  caption: [
+    Three-stage account of group emergence in online discussions, after #cite(<oswald2025>, form: "prose") read through #cite(<luhmann1984>, form: "prose") and
+    #cite(<tilly1978>, form: "prose"). At the first step communication is heterogeneous: users with divergent evaluative codes (positive in green, negative in pink) all participate in the same discussion. At the second step the system selects: users who evaluate the discussion negatively disengage, while those who evaluate it positively intensify and form initial ties. At the last step a homogenized code reproduces itself, ties densify (Tilly's netness around a shared catness), and the discussion makes a distinction between itself and its environment, emerging as a differentiated social system. The displaced users seed new systems elsewhere, restarting the cycle.
+  ]
+) <fig:groupformation>
+
+Populism (Elite/People) is the reproduction of the democratic system (Government/Opposition) through the social movement as a subsystem of the political system. Democratic system select communication through this code @luhmann1987 and by reproducing it the social movement attempts to plcae itself in a position of being a valid democratic group. This explains why right-wing populists use this distinciton as a mobilizaiton strategy even though it contradicts their elitist ideology @yates2026. Being for the people as an ingroup is very universal since every voter can be part of the constructed ingroup. Communication with this distinction has great potential for "Anschlusskommunikation". It drags everyone in the political arena, puts citizens at the negative-opposition side of the Government/Opposition distinction inviting them to participate in the movement empowering them as political citizens. 
+#align(center)[
+  #block(width: 90%)[
+    A more active engagement community should therefore manifest itself through more observed ties in the area around the populist politician.
+  ]
+]
+Or more precisely for the given Dataset:
+
+#align(center)[
+  #block(width: 90%)[
+    German MPs who use populist rhetoric have more strongly interconnected alters in their reply ego networks compared to MPs using less populist rhetoric.
+  ]
+]
+
+Engagement networks are special in the sense that they do not reflect who agrees with whom but who interacts with whom. #cite(<morselli2026>, form: "prose") found that close individuals in the twitter retweet network can have different opinions. Even though on a linguistic basis at the first glance it seems unreasonable, but we can imagine the extreme case. A user is always coming back to a politicians tweets and its fanbase to share their disagreement. Are they part of the group or not? The person is not part of the fanbase but definitly part of an engagement community where individuals continuously show up in the same place and position, no matter why. 
+
+
+//== Summary                             [100w, 0.2 page]
 //#lorem(100)
 
 
@@ -396,7 +535,7 @@ $ "Populism" = cases(
   P - E & "if" A = 0
 ) $
 The subtraction captures the joint rhetorical direction that is positive when the people are elevated and elites denigrated yielding a theoretical range of $[-36, +36]$. 
-Combination on the user level is achieved by averaging each dimension separately before recombining. Let $macron(p)_u$, $macron(e)_u$, and $macron(a)_u$ denote the per-user means. The user-level score is
+Politicians using populist strategies on social media do not have to adress all populism dimensions in one tweet but can be anti-elitist in one and pro-people in the next. Therefore the combination on the user level is achieved by averaging each dimension separately before recombining. Let $macron(p)_u$, $macron(e)_u$, and $macron(a)_u$ denote the per-user means. The user-level score is
 
 $ "Populism"_u = cases(
   (macron(p)_u - macron(e)_u) times macron(a)_u & "if" macron(p)_u > 0 comma macron(e)_u < 0 comma macron(a)_u > 0,
