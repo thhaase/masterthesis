@@ -416,12 +416,11 @@ The social media studies so far were mostly largescale observational studies. Ex
       text(size: 8pt, fill: dark)[differentiated system \ system / environment])
 
   }),
-  caption: [
-    Three-stage account of group emergence in online discussions, after #cite(<oswald2025>, form: "prose") read through #cite(<luhmann1984>, form: "prose") and
-    #cite(<tilly1978>, form: "prose"). At the first step communication is heterogeneous: users with divergent evaluative codes (positive in green, negative in pink) all participate in the same discussion. At the second step the system selects: users who evaluate the discussion negatively disengage, while those who evaluate it positively intensify and form initial ties. At the last step a homogenized code reproduces itself, ties densify (Tilly's netness around a shared catness), and the discussion makes a distinction between itself and its environment, emerging as a differentiated social system. The displaced users seed new systems elsewhere, restarting the cycle.
-  ]
+  caption: [Three-stage account of group emergence in online discussions]
 ) <fig:groupformation>
-
+#long-caption[
+  After #cite(<oswald2025>, form: "prose") read through #cite(<luhmann1984>, form: "prose") and #cite(<tilly1978>, form: "prose"). At the first step communication is heterogeneous: users with divergent evaluative codes (positive in green, negative in pink) all participate in the same discussion. At the second step the system selects: users who evaluate the discussion negatively disengage, while those who evaluate it positively intensify and form initial ties. At the last step a homogenized code reproduces itself, ties densify (Tilly's netness around a shared catness), and the discussion makes a distinction between itself and its environment, emerging as a differentiated social system. The displaced users seed new systems elsewhere, restarting the cycle.
+]
 Populism (Elite/People) is the reproduction of the democratic system (Government/Opposition) through the social movement as a subsystem of the political system. Democratic system select communication through this code @luhmann1987 and by reproducing it the social movement attempts to plcae itself in a position of being a valid democratic group. This explains why right-wing populists use this distinciton as a mobilizaiton strategy even though it contradicts their elitist ideology @yates2026. Being for the people as an ingroup is very universal since every voter can be part of the constructed ingroup. Communication with this distinction has great potential for "Anschlusskommunikation". It drags everyone in the political arena, puts citizens at the negative-opposition side of the Government/Opposition distinction inviting them to participate in the movement empowering them as political citizens. 
 #align(center)[
   #block(width: 90%)[
