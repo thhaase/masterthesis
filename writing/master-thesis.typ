@@ -837,8 +837,10 @@ The network's dense core is dominated by generic conversational and modal vocabu
 /*
 - keine struktur ==> wir brauchen advancte methoden
 - make 3/4 separate networks with words related to anti elitism, peo people, antag and populism dimension MAYBE
-- ggf. netzwerk für viel populismus und wenig populismus
 */
+- maybe split the network into two, 
+  - one for lots of populism, one for a little populism. Then structure might arise 
+
 
 //#lorem(510)
 == Network Analysis
