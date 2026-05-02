@@ -329,8 +329,8 @@ The social media studies so far were mostly largescale observational studies. Ex
     }
 
     // --- Panel 1
-    circle((-5, 0), radius: 1.7,
-      stroke: (paint: dark, dash: "dashed", thickness: 0.5pt))
+    //circle((-5, 0), radius: 1.7,
+    // stroke: (paint: dark, dash: "dashed", thickness: 0.5pt))
 
     let p1-dots = (
       (-5.7, 0.6, green), (-4.5, 0.8, pink),
@@ -353,7 +353,7 @@ The social media studies so far were mostly largescale observational studies. Ex
     panel-arrow((-3.05, 0), (-1.85, 0))
 
     // --- Panel 2
-    circle((0, 0), radius: 1.7,
+    circle((0, 0), radius: 1.6,
       stroke: (paint: dark, dash: "dashed", thickness: 0.5pt))
 
     // green dots
@@ -391,7 +391,7 @@ The social media studies so far were mostly largescale observational studies. Ex
     panel-arrow((1.85, 0), (3.05, 0))
 
     // --- Panel 3
-    circle((5, 0), radius: 1.5,
+    circle((5, 0), radius: 1.4,
       stroke: (paint: dark, thickness: 1.4pt),
       fill: green.lighten(82%))
 
@@ -490,7 +490,7 @@ Engagement networks are special in the sense that they do not reflect who agrees
 //    - Cite packages used
 
 
-// Data & Methods                                       [1600w, 3p]  +1058
+// Data & Methods                                       [1600w, 3p]  +1058 -100summary
 
 // Introduction                                        [100w, 0.2p]  +27
 // Dataset Sampling & Description                       [264w, 0.5p] +40
@@ -521,7 +521,9 @@ Finally in a synthesis, politician ego networks are combined with the populism s
 //#lorem(264) +40words
 == Data and Operationalization
 
-The Dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. #text(fill: red)[did armin use this data somewhere in his own studies?? maybe I can cite something] The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
+The dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. 
+//#text(fill: red)[did armin use this data somewhere in his own studies?? maybe I can cite something] 
+The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
 To deliniate the set of politicians and add their name and party information, a list of parliamentary members of the 19th, 20th, and 21st German Bundestag is obtained from the Bundestags Webarchiv and added to the original dataset through their twitter-account links @bundestag2026. The complete dataset consists of 693 015 Tweets in the twitwi format @medialab2026.
 
 German political news from 7–14 February 2022 were dominated by the Omikron wave's peak and the escalating Russia-Ukraine crisis. As Russia massed troops for what would become Europe's largest military offensive since WWII, Chancellor Scholz met President Biden to discuss Germany's Nord Stream 2 dependency. Domestically, Scholz's coalition split over a general vaccine mandate, with FDP Justice Minister Buschmann deeming it constitutionally dubious and proposing mandatory physician consultations for unvaccinated adults as a softer alternative.
@@ -626,12 +628,13 @@ Two ERGM-inspired statistics are computed for each attribute.
 
 //== Summary                                             [100w, 0.2 p]
 //#lorem(100) +33
+/*
 This section described the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
 The dataset comprises 693,015 tweets collected via Twitter's streaming API from 7-14 February 2022. 
 Populism is operationalized as People Attitude, Elite Attitude, and Antagonism, scored by Qwen3-235B using a chain-of-thought annotation prompt validated against the PopBERT expert corpus. 
 Reply threads are reconstructed into a weighted user-level network whose giant component (77,194 nodes, 239,502 edges) serves as the analytical base. 
 Two OLS models regress mean alter degree on a binary populism indicator with controls for ego degree, follower count, and mean thread size. As a second dependent variable the ego networks fragmentation ratio provides a robustness check. Further exploration of alter-alter connection compares userbehaviour of populist and non-populist ego networks  
-
+*/
 
 
 
@@ -672,7 +675,7 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
 
 
 
-== Introduction                     [100w, 0.2p]
+//== Introduction                     [100w, 0.2p]
 //#lorem(100)
 
 == Textanalysis: Result              [510w, 1p]
