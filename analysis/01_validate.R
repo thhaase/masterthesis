@@ -187,3 +187,43 @@ bind_rows(
   )
 
 ggsave("../images/prompt-validation-majority-f1.png", width = 7, height = 5, dpi = 600)
+
+# --- Plot 3 (alt): Two-pane Pairwise F1 + Accuracy ---
+
+map_dfr(pairs, \(p) {
+  tibble(
+    r1 = p[1], r2 = p[2],
+    pair_type = if_else(r1 != "LLM" & r2 != "LLM", "Expert - Expert", "LLM - Expert"),
+    dimension = rep(c("Anti-Elitism", "People-Centrism"), 2),
+    metric    = factor(rep(c("F1 Score", "Accuracy"), each = 2),
+                       levels = c("Accuracy", "F1 Score")),
+    value = c(
+      compute_f1(wide_elite[[p[1]]],  wide_elite[[p[2]]]),
+      compute_f1(wide_people[[p[1]]], wide_people[[p[2]]]),
+      mean(wide_elite[[p[1]]]  == wide_elite[[p[2]]],  na.rm = TRUE),
+      mean(wide_people[[p[1]]] == wide_people[[p[2]]], na.rm = TRUE)
+    )
+  )
+}) |>
+  ggplot(aes(x = metric, y = value, fill = pair_type)) +
+  geom_boxplot(width = 0.6, alpha = 0.8, outlier.shape = NA,
+               position = position_dodge(width = 0.7)) +
+  geom_point(position = position_jitterdodge(jitter.width = 0.15,
+                                             dodge.width = 0.7),
+             size = 1.8, alpha = 0.7,
+             aes(color = pair_type), show.legend = FALSE) +
+  facet_wrap(~dimension) +
+  entoptic::scale_fill_entoptic_d(option  = "firstlight", begin = 0.1, end = 0.5) +
+  entoptic::scale_color_entoptic_d(option = "firstlight", begin = 0.1, end = 0.5) +
+  labs(x = NULL, y = "Score", fill = NULL) +
+  scale_y_continuous(limits = c(0, 1), breaks = 0:10 / 10) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom",
+    strip.text = element_text(face = "bold", size = 11),
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+
+ggsave("../images/prompt-validation-pairwise-two-pane.png",
+       width = 8, height = 4.5, dpi = 600)

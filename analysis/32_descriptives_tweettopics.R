@@ -40,6 +40,13 @@ d <- d |>
                                  0)
          )
 
+# example tweets
+d |> 
+  filter(!is.na(party)) |> 
+  select(text, populism_score, user_screen_name, party) |> 
+  slice_max(populism_score, n = 10)
+
+# back to text analysis
 corp <- corpus(d$text,
                docvars = d[,-5])
 

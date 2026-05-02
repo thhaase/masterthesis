@@ -133,6 +133,24 @@
 
 
 
+░██████              ░██                                
+  ░██                ░██                                
+  ░██  ░████████  ░████████ ░██░████  ░███████          
+  ░██  ░██    ░██    ░██    ░███     ░██    ░██ ░██████ 
+  ░██  ░██    ░██    ░██    ░██      ░██    ░██         
+  ░██  ░██    ░██    ░██    ░██      ░██    ░██         
+░██████░██    ░██     ░████ ░██       ░███████          
+                                                        
+                                                        
+       ░██                          ░██    ░██                      
+       ░██                          ░██                             
+ ░████████ ░██    ░██  ░███████  ░████████ ░██ ░███████  ░████████  
+░██    ░██ ░██    ░██ ░██    ░██    ░██    ░██░██    ░██ ░██    ░██ 
+░██    ░██ ░██    ░██ ░██           ░██    ░██░██    ░██ ░██    ░██ 
+░██   ░███ ░██   ░███ ░██    ░██    ░██    ░██░██    ░██ ░██    ░██ 
+ ░█████░██  ░█████░██  ░███████      ░████ ░██ ░███████  ░██    ░██ 
+                                                                    
+                                                                    
 
 // ====================================================================================================
 = Introduction 
@@ -174,6 +192,20 @@ The methodological approach translates the outlined theoretical ideas by using a
 
 - Results & Discussion
 
+
+
+
+
+░██         ░██   ░██                                      ░██                                   
+░██               ░██                                      ░██                                   
+░██         ░██░████████  ░███████  ░██░████  ░██████   ░████████ ░██    ░██ ░██░████  ░███████  
+░██         ░██   ░██    ░██    ░██ ░███           ░██     ░██    ░██    ░██ ░███     ░██    ░██ 
+░██         ░██   ░██    ░█████████ ░██       ░███████     ░██    ░██    ░██ ░██      ░█████████ 
+░██         ░██   ░██    ░██        ░██      ░██   ░██     ░██    ░██   ░███ ░██      ░██        
+░██████████ ░██    ░████  ░███████  ░██       ░█████░██     ░████  ░█████░██ ░██       ░███████  
+                                                                                                 
+                                                                                                 
+                                                                                                 
 // ====================================================================================================
 = Literature Review
 // REQUIREMENTS:
@@ -468,7 +500,27 @@ Engagement networks are special in the sense that they do not reflect who agrees
 
 
 
+/*
 
+░███████                 ░██               
+░██   ░██                ░██               
+░██    ░██  ░██████   ░████████  ░██████   
+░██    ░██       ░██     ░██          ░██  
+░██    ░██  ░███████     ░██     ░███████  
+░██   ░██  ░██   ░██     ░██    ░██   ░██  
+░███████    ░█████░██     ░████  ░█████░██ 
+                                           
+░███     ░███               ░██    ░██                          ░██            
+░████   ░████               ░██    ░██                          ░██            
+░██░██ ░██░██  ░███████  ░████████ ░████████   ░███████   ░████████  ░███████  
+░██ ░████ ░██ ░██    ░██    ░██    ░██    ░██ ░██    ░██ ░██    ░██ ░██        
+░██  ░██  ░██ ░█████████    ░██    ░██    ░██ ░██    ░██ ░██    ░██  ░███████  
+░██       ░██ ░██           ░██    ░██    ░██ ░██    ░██ ░██   ░███        ░██ 
+░██       ░██  ░███████      ░████ ░██    ░██  ░███████   ░█████░██  ░███████  
+                                                                               
+
+
+*/
 
 
 
@@ -520,7 +572,7 @@ Finally in a synthesis, politician ego networks are combined with the populism s
 //== Dataset Sampling & Description                       [264w, 0.5p] 
 //#lorem(264) +40words
 == Data and Operationalization
-
+<sec:method-data-operationalization>
 The dataset used in this study was kindly provided by Armin Pournaki from the Max Planck Institute for Mathematics in the Sciences, Leipzig. 
 //#text(fill: red)[did armin use this data somewhere in his own studies?? maybe I can cite something] 
 The dataset holds tweets and replies directed at German members of parliament aswell as their retweets and referenced tweets, collected over a one wekk from February 7 to February 14, 2022. Only the MPs tweets and their replies are analysed since the reply network best captures social interactions of engagementcommunities. Data were obtained via Twitter's streaming API using two parallel strategies. The follow stream tracked replies to MP-generated tweets, while the track stream captured tweets mentioning MP handles (e.g., #quote[\@username]), including direct and nested replies. Protected accounts were excluded. Both datasets were combined and deduplicated. From the raw data, reply-threads were constructed by linking tweets through directed reply chains. These interactions were then aggregated to a user-level reply network, weighted by the number of exchanges. Thus, the dataset enables an analysis of interaction patterns between politicians and their engagement communities on social media.
@@ -564,8 +616,9 @@ The gate zeros out users whose average rhetoric is not simultaneously people-aff
 //== Textanalysis (Discuss LLM, Prompt, Validation)       [332w, 0.6p]
 //#lorem(332) +20words
 == Textanalysis
+<sec:method-textanalysis>
 Computationally methods driven text analysis is based on linguistic concepts. A corpus of documents is divided in tokens as semantically meaningful units of analysis which are often words. The simplest text classification techniques are usually wordfrequency based dictionary methods. Some of which already mechanistically take context of wordappearence into account @ribeiro2016. While simple machine learning classifiers like naive bayes models are statistically more elaborate, deeplearning models are able to integrate interactions between tokens allowing for even better predictions. But deep learning architectures like convolutional neural networks trade variance for increased local bias through usage of filters @sohil2022. Transformer architectures implement modeling of long-range dependencies by implementing self attention on a micro level weighing the importance of every individual input token for other each individual input token @cordonnier2020. Qwen3-235B-A22B-Instruct-2507-FP8 is using more elaborate attention mechanisms like grouped query attention @yang2025.
-The model also implements expert segmentation, is multilingual and has 8-bit floating weights @yang2025.
+The model also implements expert segmentation, is multilingual and has 8-bit floating weights @yang2025. To run the model most efficiently on the HPC Capella Cluster the vLLM framework was used through python to make use of virtual memory PagedAttention techniques @kwon2023. 
 
 Output quality of large language models is highly dependent on prompt design @liu2026. Prompt engineering is conducted iteratively by drawing small random samples of tweets from the corpus and classifying it using an initial prompt. The resulting reasoning steps contained in the LLMs JSON output are then qualitatively assessed with regard to coherence and later label accuracy. Based on identified shortcomings, the prompt is systematically adjusted and the process is repeated. 
 Early versions of the prompt contained were structured in the style described by #cite(<liu2026>, form:"prose"), later additional rule based checks were integrated, the coherence of the phrasing was adjusted and lastly the rulebased checks were changed to questions prompting the LLM to question its judgements and certainty.
@@ -587,6 +640,7 @@ for pairs of expert raters with each other and the LLM annotations are calculate
 //#lorem(295) +38words
 
 == Network Analysis
+<sec:networkanalysis>
 The reply threads are constructed by treating tweets as nodes that are linked through directed replies. A component in the constructed thread network is then a replythread with one rootnode that is only recieving links marking the direction of a reply. Some reply chains trace back to MP tweets posted before the collection period, so the root node has no row in the dataset. Matching the target tweets user information against the politician table recovers their authorship, recovering 2,631 of 89,561 threads (2.9%). Threads root tweet information like politician with e.g. party and followerinformation, are then stored within the reply tweets of the respective thread and aswell added to each tweet in the reply network. 
 
 The main research question requires a network of interactions plausibly representing an engagement community. A weighted user centric reply network with users as nodes and replies as directed links is constructed. The original tweet-based dataset holding politician and threadinformation served as the basis for construction with its `user_id` and `to_userid` variables. The resulting network is directed with edgeweights based on replycount. It holds 81 295 user-nodes connected through 239 502 reply-links distributed among 1865 components. A giant component holds (77 194) 94% of all nodes. 1207 users are contained in components of size 2, one original user, one replying user, as the threadsize holding the second most nodes. The second largest component held 41 (0.05%) users (see the #link(<sec:app-component-table>)[table] in appendix).
@@ -636,23 +690,19 @@ Reply threads are reconstructed into a weighted user-level network whose giant c
 Two OLS models regress mean alter degree on a binary populism indicator with controls for ego degree, follower count, and mean thread size. As a second dependent variable the ego networks fragmentation ratio provides a robustness check. Further exploration of alter-alter connection compares userbehaviour of populist and non-populist ego networks  
 */
 
+/*
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+░█████████                                   ░██    ░██               
+░██     ░██                                  ░██    ░██               
+░██     ░██  ░███████   ░███████  ░██    ░██ ░██ ░████████  ░███████  
+░█████████  ░██    ░██ ░██        ░██    ░██ ░██    ░██    ░██        
+░██   ░██   ░█████████  ░███████  ░██    ░██ ░██    ░██     ░███████  
+░██    ░██  ░██               ░██ ░██   ░███ ░██    ░██           ░██ 
+░██     ░██  ░███████   ░███████   ░█████░██ ░██     ░████  ░███████  
+                                                                      
+                                                                      
+                                                                                                                                                            
+*/
 // ====================================================================================================
 = Results
 // REQUIREMENTS:
@@ -665,31 +715,29 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
 // Results                           [3320w, 6.3p]
 
 // Introduction                     [100w, 0.2p]
-// Textanalysis: Result              [510w, 1p]
+// Textanalysis: Result              [610w, 1p]
 // Network: Descriptives & Structure [469w, 0.9p]
 // Network: Hierarchy Deepdive	     [386w, 0.7p]
 // Network: ego networks	             [457w, 0.9p]	
 // H1: Model/Means	                 [767w, 1.5p]
 // HX: Deepdive??	                   [531w, 1.0p]	
-// Summary                          [100w, 0.2 p]
 
 
 
 //== Introduction                     [100w, 0.2p]
 //#lorem(100)
+== Textanalysis 
+//: Result              [610w, 1p] +300
+//=== Prompt Validation
 
-== Textanalysis: Result              [510w, 1p]
-
-=== Prompt Validation
-
-
+To rate the tweets populism scores a system prompt was developed as described in #ref(<sec:method-textanalysis>) instructing the LLM with the operationalization scheme of populist rhetoric. To validate the prompt it was used to rate an already expert annotated dataset of sentences from bundestagspeeches used to train the PopBERT classifier @erhard2025. The 8795 sentences were rated by 5 expert raters on a binary scale if they contain anti-elitist or people-centrist attitudes. since the LLMs system prompt rates the same dimensions in higher resolution the output was collapsed to a binary rating for comparison. The LLM rates if a tweet contains an attitude towards the elite or the people, each on a scale of -3 to 3 where negative numbers represent negative attitude towards the group and positive numbers positive attitudes. An elite_score from -3 to -1 represents anti-elitism and was collapsed to 1, while all other ratings were collapsed to 0. The same was done to the people_score.  
 
 #figure(
-  image("../images/prompt-validation-pairwise-accuracy.png", width: 100%),
-  caption: [Prompt Performance - Pairwise accuracy for all expert-expert and LLM-expert rater combinations across anti-elitism and people-centrism.]
-)<fig:prompt-accuracy>
+  image("../images/prompt-validation-pairwise-two-pane.png", width: 100%),
+  caption: [Prompt Performance - Pairwise accuracy and F1 scores for all expert-expert and LLM-expert rater combinations across anti-elitism and people-centrism.]
+)<fig:prompt-validation>
 #long-caption[
-  Pairwise accuracy between binarized Qwen3-235B-A22B-Instruct-2507-FP8
+  Pairwise accuracy and F1 scores between binarized Qwen3-235B-A22B-Instruct-2507-FP8
   ratings using the developed populism system prompt and five expert
   annotators from the PopBERT training corpus @erhard2025.
   Each point represents one rater pair (expert-expert or LLM-expert).
@@ -697,98 +745,100 @@ Two OLS models regress mean alter degree on a binary populism indicator with con
   scores (anti-elitism: score < 0; people-centrism: score > 0).
 ]
 
-#figure(
-  image("../images/prompt-validation-pairwise-f1-no-labs.png", width: 100%),
-  caption: [Prompt Performance - Pairwise F1 scores for all expert-expert and LLM-expert rater combinations across anti-elitism and people-centrism.]
-)<fig:prompt-f1>
-#long-caption[
-  Pairwise F1 scores between binarized Qwen3-235B-A22B-Instruct-2507-FP8
-  ratings using the developed populism system prompt and five expert
-  annotators from the PopBERT training corpus @erhard2025.
-  Each point represents one rater pair (expert-expert or LLM-expert).
-  LLM ratings were collapsed from a 7-level Likert scale to binary
-  scores (anti-elitism: score < 0; people-centrism: score > 0).
+#ref(<fig:prompt-validation>) shows the pairwise accuracy measures and D1 scores between each combination of expert raters aswell as each combination between the LLM and one of the expert raters. The rater-rater and rater-LLM accuracyscores are quite high for anti-elitism with a median between 0.8 and 0.9 and people-centrism with a median between 0.85 and 0.9. Accuracy is the proportion of tweets on which two raters assigned the same binary label. Since most sentences seemed to contain no anti-elitism or people-centrim the dataset was skewed which inflates the accuracy scores. The raters and the LLM have high agreement on the large count of 0 values. 
+
+To accurately assess the performance of the prompt pairwise F1-scores are calculated for each rater-rater and rater-LLM combination. It adjusts the accuracy by ignoring zero agreements and only rewards raters for agreement on rare positives. The rater-rater and rater-LLM combinations for the anti-elitism score produce a median F1 Score of slightly over 0.5, while the median F1 score for people-centrism lie around 0.2 - 0.25. 
+
+Populism seems to be a fuzzy concept where even expert raters have a hard time deciding on its presence on the anti-elitism dimension but agree even less on the people-centrism dimension. 
+What still stands out is that the LLM-rater combinations lie in the same regime as the rater-rater combinations successfully making an LLM equiped with the systemprompt as precise as an expert rater in detecting dimensions of populism in bundestagspeeches. 
+
+// 395 words until here
+
+The Qwen3-235B LLM rated all tweets by their attitude about the elite, the people and the opposition between the two groups. 
+
+/*
+- 2 tweetbeispiele zeigen (philipp sagt ich soll)
+*/
+#align(center)[
+  #block(width: 95%)[
+    #figure(
+    [
+      #set text(size: 9pt)
+      #table(
+        columns: (1fr, auto, auto),
+        align: (left, center + horizon, center + horizon),
+        table.header([*Tweet*], [*Populism\ Score*], [*Party*]),
+
+        [Das kleben einem die politischen Freunde von `@PoliticianX`, sog. \#Antifas an die Fenster, wenn sie nicht gerade Artikel von `@PoliticianX` in links#highlight(fill: rgb("#5b8c5a86"))[extremistischen] Postillen lesen. Die Aussage wird vom #highlight(fill: rgb("#5b8c5a86"))[totalitären \#innenministerium] vermutlich geteilt. #highlight(fill: rgb("#5b8c5a86"))[Das Volk soll die Fresse halten].], 
+        [25], [AfD],
+
+        [#highlight(fill: rgb("#5b8c5a86"))[Prügelnde Bullen, Tränengas, Gewalt.] \ 
+        Warum nochmal?\
+        Um die Verbreitung eines Krankheitserregers einzudämmen?\
+        #highlight(fill: rgb("#5b8c5a86"))[Glaubt das ernsthaft noch jemand?]\
+        Es ist längst klar, dass es hier nicht um Pandemiebekämpfung geht.\
+        Sondern um #highlight(fill: rgb("#5b8c5a86"))[die 1% gegen den Rest.]\
+        Steht auf und wehrt #highlight(fill: rgb("#5b8c5a86"))[euch.]],
+        [25], [AfD],
+
+        [Und dieser transformierte demokratische #highlight(fill: rgb("#5b8c5a86"))[Widerstand der Bürger] wird am Ende wieder die Freiheit, die Demokratie und den Rechtsstaat herbeizwingen. #quote[Lasst uns aus dem #highlight(fill: rgb("#5b8c5a86"))[autoritären Linksstaat] wieder einen freiheitlichen demokratischen Rechtsstaat machen!] \#AfD ],
+        [20], [AfD],
+
+        [Typisch \#Hannover, typisch unter \#SPD-\#Pistorius! #highlight(fill: rgb("#5b8c5a86"))[\#Polizei] kuschelt mit #highlight(fill: rgb("#5b8c5a86"))[\#Clan-Kriminellen] und \#linksextremen Gegendemonstranten.\
+        Aber rein #highlight(fill: rgb("#5b8c5a86"))[schikanösen] \#FFP2-\#Maskenzwang (AN FRISCHER LUFT!) setzen Polizisten gegen #highlight(fill: rgb("#5b8c5a86"))[friedliche Bürger] brutal um, im Stil von #quote[Waas guggst Du?]-Typen!],
+        [20], [AfD],
+
+        [Gut erkannt! Aber das ist doch das Ziel, #highlight(fill: rgb("#5b8c5a86"))[das immer währende Drangsalieren der Menschen]. Durch \#impfzwang \#Impfpflicht Sog. \#corona-Maßnahmen usw. Darum: \#Spazierengehen! #highlight(fill: rgb("#5b8c5a86"))[Dem gewissenlosen Establishment] zeigen: \#Impfpflichtneindanke],
+        [20], [AfD],
+      )
+    ],
+    caption: [Top-scoring tweets on the composite populism scale.],
+    kind: table,
+    ) <tab:top-populism-tweets>
+  ]
 ]
-- put everything in one plot (they can be smaller, direction matters)
 
-- Skewed dataset inflates accuracy
-- F scores are not biased through large number of 0 populism scores
-- F scores show that prompt is rating tweet on an expert level
-
-
+The individual dimensions are aggregated by user. By that each user is positioned in a three dimensional space of those values. #ref(<fig:populism-dimensions>) visualizes this space. Most users lie at the zero value on all axis (better seen in #ref(<fig:populism-dimensions-threed>)). Most users lie in bottom half of the plot, tweeting against the elite. Of those users some are tweeting also against the people, but most tweet against the elite and for the people. Antagonism is getting stronger in the direction of the bottom corners of the space. The diagonal from the origin to the bottom right region is essentialy the axis of populist operationalization. The distribution is skewed in this direction, visualizing the real populism signal. The Appendix includes a version of #ref(<fig:populism-dimensions>) with the highlighted position of politicians.
+//530
 
 #figure(
   image("../images/populism_dimensions_person_level.png", width: 100%),
   caption: [Distribution of populism dimensions per user in the giant component;]
 )<fig:populism-dimensions>
 #long-caption[
-  People score ($macron(p)_u$) and elite score
-  ($macron(e)_u$) are binned into 0.25-wide intervals.
-  Color visualizes mean antagonism ($macron(a)_u$) per bin;
-  opacity describes user count ($n = 29 thin 672$).
+  People score ($macron(p)_u$) and elite score ($macron(e)_u$) are binned into 0.25-wide intervals. Color visualizes mean antagonism ($macron(a)_u$) per bin; opacity describes user count ($n = 29 thin 672$).
 ]
 
-- something something
-
-#figure(
-  image("../images/populism_3d_final.png", width: 100%),
-  caption: [Distribution of populism dimensions per user in the giant component;]
-)<fig:populism-dimensions-3d>
-#long-caption[
-  People score ($macron(p)_u$) and elite score
-  ($macron(e)_u$) are binned into 0.25-wide intervals.
-  Color visualizes mean antagonism ($macron(a)_u$) per bin;
-  height describes user count ($n = 29 thin 672$).
-]
-
--woah3d
-
-#figure(
-  image("../images/populism_dimensions_person_level_politicians_inset.png", width: 100%),
-  caption: [Distribution of populism dimensions per user in the giant component with marked politicians position;],
-)<fig:populism-dimensions-politicians>
-#long-caption[
-  People score ($macron(p)_u$) and elite score
-  ($macron(e)_u$) are binned into 0.25-wide intervals.
-  Color visualizes mean antagonism ($macron(a)_u$) per bin;
-  opacity describes user count ($n = 29 thin 672$).
-]
-
-- something something politicians
-- #text(fill: red)[IN APPENDIX, yellow font]
-
+#ref(<fig:populism-dimensions-parties>) shows the relative count of tweets rated on each scale, grouped by party (sorted by mean populism) and by politician within party (sorted by populism score relative to tweet count). The plot visualizes not only politicians of the giant component as before but all politicians in the original dataset including politicians outside of the giant component or politicians only present in the retweet network. This allows interpretation of within- and between-party variation in the populism score and its components. The AfD has the most politicians using populist rhetoric, followed by BSW and Die Linke, while CDU and CSU sit in the middle and the least populist parties are the Greens, SPD, and FDP which made up the ruling coalition at the time of data collection. Populism scores are driven almost entirely by anti-elite and antagonism components, as pro-people rhetoric is nearly absent across all parties and therefore contributes little to the composite score. Most politicians do not use populist rhetoric on Twitter, except in the AfD, BSW, and Die Linke, where a substantial share use populism in at least 1/5 of their tweets.
+// 713
 #figure(
   image("../images/populism_stacked_dimensions_all_tweets_combined.png", width: 100%),
   caption: [Populism score and its components split by parties and sorted by mean party populism scores.],
 )<fig:populism-dimensions-parties>
 #long-caption[
-  Each bar is one politician; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("People Score" + "Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"People Score" + "Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
+  Each bar is one politician; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("Pro People Score" + "Anti Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"Pro People Score" + "Anti Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
 ]
 
-- widen populism column
-- something something party
+To get a deeper insight into the content of the tweets #ref(<fig:tfidf-wordcorrelations>) displays the term-frequency inverse-document-frequency correlation network colored by populism score. Tf-idf weights a term proportionally to its in-document frequency and inversely to its corpus-wide document frequency, treating concentration as a measure for distinctivness. The top tfidf values across a corpus represent characteristic key words of the entire collection of documents, while the visualized top correlated tf-idf show distinctive words that appear together potentially revealing clusters of relevant topics. The visualized words are colored by the populism score of the words they appear in.
 
+The network's dense core is dominated by generic conversational and modal vocabulary (`geht`, `kommen`, `heute`, `tag`, `frage`, `wirklich`, `einfach`, `müssen`), while the periphery holds issue-specific tokens clustered by topic: a pandemic region (`corona`, `pandemie`, `impfpflicht`, `impfung`, `lauterbach`, `maßnahmen`), a foreign-policy edge (`ukraine`), and political-actor terms (`regierung`, `politiker`, `politik`, `deutschland`) sitting between core and periphery. Person- and group-referring tokens (`bürger`, `menschen`, `deutschen`, `unsere`) are spread across different regions. The populism correlation does not reflect spatial position. `bürger` stands out most strongly (\~0.15+), with a scattered mid-tier of actor- and in-group terms (\~0.08–0.12), while the topical periphery and the high-frequency core remain near zero.
 
+// 910
 #figure(
   image("../images/tfidf_wordcorrelations.png", width: 110%),
   caption: [Distribution of populism dimensions per user in the giant component;]
-)<fig:populism-dimensions-3d>
+)<fig:tfidf-wordcorrelations>
 #long-caption[
   People score ($macron(p)_u$) and elite score
   ($macron(e)_u$) are binned into 0.25-wide intervals.
   Color visualizes mean antagonism ($macron(a)_u$) per bin;
   height describes user count ($n = 29 thin 672$).
 ]
-- wordcontent tfidf network
-- only include if it fits the story somewhere... 
-
-- 2 tweetbeispiele zeigen (philipp sagt ich soll)
+/*
 - keine struktur ==> wir brauchen advancte methoden
 - make 3/4 separate networks with words related to anti elitism, peo people, antag and populism dimension MAYBE
-
-TODO
-- introduction first, only hypothesize about main question
-- independent from results/conclusion
+- ggf. netzwerk für viel populismus und wenig populismus
+*/
 
 //#lorem(510)
 == Network Analysis
@@ -871,8 +921,17 @@ TODO
 
 
 
-
-
+/*
+░███████   ░██                                                       ░██                      
+░██   ░██                                                                                     
+░██    ░██ ░██ ░███████   ░███████  ░██    ░██  ░███████   ░███████  ░██ ░███████  ░████████  
+░██    ░██ ░██░██        ░██    ░██ ░██    ░██ ░██        ░██        ░██░██    ░██ ░██    ░██ 
+░██    ░██ ░██ ░███████  ░██        ░██    ░██  ░███████   ░███████  ░██░██    ░██ ░██    ░██ 
+░██   ░██  ░██       ░██ ░██    ░██ ░██   ░███        ░██        ░██ ░██░██    ░██ ░██    ░██ 
+░███████   ░██ ░███████   ░███████   ░█████░██  ░███████   ░███████  ░██ ░███████  ░██    ░██ 
+*/                                                                                            
+                                                                                              
+                                                                                              
 
 // ====================================================================================================
 // = Discussion
@@ -928,8 +987,17 @@ TODO
 
 
 
-
-
+/*
+  ░██████                                   ░██                       ░██                      
+ ░██   ░██                                  ░██                                                
+░██         ░███████  ░████████   ░███████  ░██ ░██    ░██  ░███████  ░██ ░███████  ░████████  
+░██        ░██    ░██ ░██    ░██ ░██    ░██ ░██ ░██    ░██ ░██        ░██░██    ░██ ░██    ░██ 
+░██        ░██    ░██ ░██    ░██ ░██        ░██ ░██    ░██  ░███████  ░██░██    ░██ ░██    ░██ 
+ ░██   ░██ ░██    ░██ ░██    ░██ ░██    ░██ ░██ ░██   ░███        ░██ ░██░██    ░██ ░██    ░██ 
+  ░██████   ░███████  ░██    ░██  ░███████  ░██  ░█████░██  ░███████  ░██ ░███████  ░██    ░██ 
+*/                                                                                             
+                                                                                               
+                                                                                               
 
 // ====================================================================================================
 = Conclusion
@@ -945,9 +1013,54 @@ TODO
 // =================================================
 #pagebreak()
 
+
+/*
+   ░███                                                       ░██ ░██           
+  ░██░██                                                      ░██               
+ ░██  ░██  ░████████  ░████████   ░███████  ░████████   ░████████ ░██░██    ░██ 
+░█████████ ░██    ░██ ░██    ░██ ░██    ░██ ░██    ░██ ░██    ░██ ░██ ░██  ░██  
+░██    ░██ ░██    ░██ ░██    ░██ ░█████████ ░██    ░██ ░██    ░██ ░██  ░█████   
+░██    ░██ ░███   ░██ ░███   ░██ ░██        ░██    ░██ ░██   ░███ ░██ ░██  ░██  
+░██    ░██ ░██░█████  ░██░█████   ░███████  ░██    ░██  ░█████░██ ░██░██    ░██ 
+           ░██        ░██                                                       
+           ░██        ░██                                                       
+                                                                                
+*/
 // ===== APPENDICES =====
 #set heading(numbering: none)
 
+/*
+░██████████           ░██        ░██                                                       
+    ░██               ░██        ░██                                                       
+    ░██     ░██████   ░████████  ░██  ░███████   ░███████                                  
+    ░██          ░██  ░██    ░██ ░██ ░██    ░██ ░██                                        
+    ░██     ░███████  ░██    ░██ ░██ ░█████████  ░███████                                  
+    ░██    ░██   ░██  ░███   ░██ ░██ ░██               ░██                                 
+    ░██     ░█████░██ ░██░█████  ░██  ░███████   ░███████  ░██                             
+                                                            ░█                             
+                                                           ░█                              
+                                                                                           
+░██████████░██                                                                             
+░██                                                                                        
+░██        ░██ ░████████ ░██    ░██ ░██░████  ░███████   ░███████                          
+░█████████ ░██░██    ░██ ░██    ░██ ░███     ░██    ░██ ░██                                
+░██        ░██░██    ░██ ░██    ░██ ░██      ░█████████  ░███████                          
+░██        ░██░██   ░███ ░██   ░███ ░██      ░██               ░██                         
+░██        ░██ ░█████░██  ░█████░██ ░██       ░███████   ░███████  ░██                     
+                     ░██                                            ░█                     
+               ░███████                                            ░█                      
+                                                                                           
+░██████████                                     ░██    ░██                                 
+░██                                             ░██                                        
+░██          ░████████ ░██    ░██  ░██████   ░████████ ░██ ░███████  ░████████   ░███████  
+░█████████  ░██    ░██ ░██    ░██       ░██     ░██    ░██░██    ░██ ░██    ░██ ░██        
+░██         ░██    ░██ ░██    ░██  ░███████     ░██    ░██░██    ░██ ░██    ░██  ░███████  
+░██         ░██   ░███ ░██   ░███ ░██   ░██     ░██    ░██░██    ░██ ░██    ░██        ░██ 
+░██████████  ░█████░██  ░█████░██  ░█████░██     ░████ ░██ ░███████  ░██    ░██  ░███████  
+                   ░██                                                                     
+                   ░██                                                                     
+                                                                                           
+*/
 = Appendix A: Additional Tables, Figures and Equations
 
 == Symetry of F1 Score for swapping raters
@@ -986,16 +1099,55 @@ For swapping labels (0,1) F Scores are not symetric.
 #long-caption[
    linking users through directed and weighted reply links. A giant component holds most user nodes and the size appearing the most is two.
 ]
+
+== Textanalysis Additional Results
+#figure(
+  image("../images/populism_3d_final.png", width: 100%),
+  caption: [Distribution of populism dimensions per user in the giant component;]
+)<fig:populism-dimensions-threed>
+#long-caption[
+  People score ($macron(p)_u$) and elite score ($macron(e)_u$) are binned into 0.25-wide intervals. Color visualizes mean antagonism ($macron(a)_u$) per bin; height describes user count ($n = 29 thin 672$).
+]
+
+#figure(
+  image("../images/populism_dimensions_person_level_politicians_inset.png", width: 100%),
+  caption: [Distribution of populism dimensions per user in the giant component with marked politicians position;],
+)<fig:populism-dimensions-politicians>
+#long-caption[
+  People score ($macron(p)_u$) and elite score ($macron(e)_u$) are binned into 0.25-wide intervals. Color visualizes mean antagonism ($macron(a)_u$) per bin; opacity describes user count ($n = 29 thin 672$).
+]
+
+/*
+░█████████                                                    ░██    
+░██     ░██                                                   ░██    
+░██     ░██ ░██░████  ░███████  ░█████████████  ░████████  ░████████ 
+░█████████  ░███     ░██    ░██ ░██   ░██   ░██ ░██    ░██    ░██    
+░██         ░██      ░██    ░██ ░██   ░██   ░██ ░██    ░██    ░██    
+░██         ░██      ░██    ░██ ░██   ░██   ░██ ░███   ░██    ░██    
+░██         ░██       ░███████  ░██   ░██   ░██ ░██░█████      ░████ 
+                                                ░██                  
+                                                ░██                  
+                                                                     
+*/
 = Appendix C: Prompt
 <sec:app-prompt>
-/*
-#text(size: 8pt)[
-  #raw(read("../analysis/prep_hpc_coding/prompt-populism.md"), lang: "markdown", block: true)
-]
-*/
+
+#text(size: 8pt)[#raw(read("../analysis/prep_hpc_coding/prompt-populism.md"), lang: "markdown", block: true)]
+
 
 #pagebreak()
 
+/*
+  ░██████                    ░██            
+ ░██   ░██                   ░██            
+░██         ░███████   ░████████  ░███████  
+░██        ░██    ░██ ░██    ░██ ░██    ░██ 
+░██        ░██    ░██ ░██    ░██ ░█████████ 
+ ░██   ░██ ░██    ░██ ░██   ░███ ░██        
+  ░██████   ░███████   ░█████░██  ░███████  
+                                            
+                                            
+*/
 = Appendix B: Code
 // REQUIRED: Must contain code used to process datasets for examination
 

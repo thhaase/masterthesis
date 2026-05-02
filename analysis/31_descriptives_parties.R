@@ -35,6 +35,7 @@ g <- readRDS("../data/nets/g.rds") # largest component
 DPI = 600
 WIDTH = 5
 HEIGHT = 9
+
 # === Prepare tweet-level party data ===
 
 d_party <- d |>
@@ -149,6 +150,11 @@ p_antagonism <- d_party |>
 p_antagonism
 ggsave("../images/populism_stacked_antagonism_all_tweets.png", bg = "white", width = WIDTH, height = HEIGHT, dpi = DPI)
 
+
+
+
+
+
 # === Combined plot - all dimensions side by side, sorted by populism score ===
 party_pop_order <- d_party |>
   group_by(party) |>
@@ -228,17 +234,30 @@ pc_pop <- prep_bars(d_party, "populism_score", "Populism",
        #caption = "¹(Anti-Elite + Pro-People); if Antagonism > 0: (Anti-Elite + Pro-People)*Antagonism"
        )
 
-pc_ae + pc_pp + pc_an + pc_pop +
-  plot_layout(ncol = 4, guides = "collect") &
-  labs(x = "% of Politician's Tweets") &
+op <- function(sym) {
+  ggplot() + annotate("text", x = 0, y = 0, label = sym, size = 10) +
+    theme_void()
+}
+
+add_x <- function(p) {
+  p + labs(x = "% of Politician's Tweets") +
+    theme(axis.text.x  = element_text(size = 13),
+          axis.title.x = element_text(size = 13))
+}
+pc_ae  <- add_x(pc_ae)
+pc_pp  <- add_x(pc_pp)
+pc_an  <- add_x(pc_an)
+pc_pop <- add_x(pc_pop)
+
+pc_ae + op("+") + pc_pp + op("×") + pc_an + op("=") + pc_pop +
+  plot_layout(ncol = 7, widths = c(1, 0.15, 1, 0.15, 1, 0.15, 1.8),
+              guides = "collect") &
   theme(legend.position = "bottom",
         legend.text.position = "bottom",
         legend.title.position = "top",
         legend.title = element_text(size = 13),
-        legend.text = element_text(size = 12),
-        plot.title   = element_text(size = 18),
-        axis.text.x  = element_text(size = 13),
-        axis.title.x = element_text(size = 13)) 
+        legend.text  = element_text(size = 12),
+        plot.title   = element_text(size = 18))
 
 #ggsave("../images/populism_stacked_dimensions_all_tweets_combined.png", bg = "white", width = 14, height = 10, dpi = DPI)
 ggsave("../images/populism_stacked_dimensions_all_tweets_combined.png", bg = "white", width = 14, height = 12, dpi = DPI)
