@@ -49,7 +49,7 @@ plot_ego_sparse <- function(g,
                             clip_sd = 2.5,
                             fr_scaling_factor = 2) {
   
-  comps <- decompose(g)
+  comps <- igraph::decompose(g)
   
   # check undirected isomorphisms (same structure when undirected)
   groups <- list()
@@ -143,7 +143,7 @@ plot_ego_sparse <- function(g,
   
   combined <- Reduce(disjoint_union, reps)
   
-  deg <- degree(combined)
+  deg <-igraph::degree(combined)
   V(combined)$s   <- if (diff(range(deg)) == 0) 3.5 else normalise(deg, to = c(3, 4))
   V(combined)$grp <- rep(seq_len(n), sapply(reps, vcount))
   
@@ -177,7 +177,7 @@ plot_ego_sparse <- function(g,
     geom_node_point(aes(size = I(s), alpha = s), show.legend = FALSE) +
     scale_alpha_continuous(range = c(0.4, 1)) +
     geom_text(data = labels, aes(x = x, y = y, label = label),
-              size = 3.5, colour = "gray10", vjust = -1, inherit.aes = FALSE) +
+              size = 5, colour = "gray10", vjust = -1, inherit.aes = FALSE) +
     theme_graph() +
     ggtitle(title)
 }
@@ -239,7 +239,7 @@ ego[[name]] |>
   delete_vertices(which(V(ego[[name]])$politician_name == name)) |> 
   plot_ego_sparse(layout = "stress", gap_weight = 0.3, clip_sd = 2.0)
 ggsave("../images/egonet_top_7_stephan_günther_brandner.png",
-       bg = "white", width = 14, height = 9, dpi = DPI)
+       bg = "white", width = 7, height = 4.5, dpi = DPI)
 
 # TOP 7 Populist
 name <- "Dietmar Gerhard Bartsch"
@@ -255,7 +255,7 @@ ego[[name]] |>
   delete_vertices(which(V(ego[[name]])$politician_name == name)) |> 
   plot_ego_sparse(layout = "stress", gap_weight = 0.3, clip_sd = 2.0)
 ggsave("../images/egonet_top_9_sahra_wagenknecht.png",
-       bg = "white", width = 14, height = 9, dpi = DPI)
+       bg = "white", width = 7, height = 4.5, dpi = DPI)
 
 
 
@@ -267,11 +267,11 @@ ego[[name]] |>
   delete_vertices(which(V(ego[[name]])$politician_name == name)) |> 
   plot_ego_sparse(layout = "kk")
 ggsave("../images/egonet_christian_lindner.png",
-       bg = "white", width = 12, height = 7, dpi = DPI)
+       bg = "white", width = 7, height = 4.5, dpi = DPI)
 
 name <- "Katja Kipping"
 ego[[name]] |> 
   delete_vertices(which(V(ego[[name]])$politician_name == name)) |> 
   plot_ego_sparse(layout = "kk")
 ggsave("../images/egonet_katja_kipping.png",
-       bg = "white", width = 12, height = 7, dpi = DPI)
+       bg = "white", width = 7, height = 4.5, dpi = DPI)

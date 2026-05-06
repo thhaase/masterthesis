@@ -288,19 +288,20 @@ bind_rows(
     sig = p.value < 0.05,
     model = factor(model, levels = c("Baseline", "Full Model", "Robustness"))
   ) |> 
-  ggplot(aes(x = estimate, y = term, color = sig)) +
+ggplot(aes(x = estimate, y = term, color = sig)) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
   geom_pointrange(aes(xmin = conf.low, xmax = conf.high), size = 0.6) +
-  scale_color_manual(values = c("TRUE" = "#3A6B50", "FALSE" = "#16161D"),
+  scale_color_manual(values = c("TRUE" = "#16161D", "FALSE" = "#84A66A"),
                      labels = c("TRUE" = "p < 0.05", "FALSE" = "not significant"),
                      name = NULL) +
   facet_wrap(~model, ncol = 3) +
   labs(x = "Coefficient Estimate", y = NULL,
-       title = "Coefficient Plot: Predicting Mean Alter Degree") +
+       #title = "Coefficient Plot: Predicting Mean Alter Degree"
+       ) +
   theme_bw() +
   theme(legend.position = "bottom")
 
-ggsave("../images/5-H1_egonet_models.png", bg = "white", width = 10, height = 5, dpi = DPI)
+ggsave("../images/5-H1_egonet_models.png", bg = "white", width = 8, height = 3, dpi = DPI)
 
 
 
@@ -314,20 +315,20 @@ predictions(m1,
     data = d_ego |> 
       mutate(populism_binary = factor(populism_binary, levels = c(1, 0))),
     aes(y = mean_alter_degree),
-    width = 0.1, alpha = 0.45, color = "#16161D", size = 2, stroke = 0
+    width = 0.1, alpha = 0.75, color = "#5B8C5A", size = 2.5, stroke = 0
   ) +
   geom_pointrange(aes(ymin = conf.low, ymax = conf.high), 
-                  size = 1.25, linewidth = 1.25, color = "#4B7D55") +
+                  size = 1.25, linewidth = 1.25, color = "#16161D") +
   scale_y_log10() +
   scale_x_discrete(labels = c("1" = "Populist", "0" = "Non-Populist")) +
   labs(
     x = "Ego Populism Score > 0",
     y = "Mean Alter Degree (Log Scaled)",
-    title = "Predicted Values vs. Observations - Full Model (N = 147)"
+    #title = "Predicted Values vs. Observations - Full Model (N = 147)"
   ) +
   theme_classic()
 ggsave("../images/5-H1_predicted_values.png", bg = "white", 
-       width = 6, height = 6, dpi = DPI)
+       width = 4, height = 4, dpi = DPI)
 
 predictions(r1, 
             newdata = datagrid(populism_binary = c(0, 1))) |> 
@@ -337,19 +338,19 @@ predictions(r1,
     data = d_ego |> 
       mutate(populism_binary = factor(populism_binary, levels = c(1, 0))),
     aes(y = mean_alter_degree),
-    width = 0.1, alpha = 0.45, color = "#16161D", size = 2, stroke = 0
+    width = 0.1, alpha = 0.75, color = "#5B8C5A", size = 2.5, stroke = 0
   ) +
   geom_pointrange(aes(ymin = conf.low, ymax = conf.high), 
-                  size = 1.25, linewidth = 1.25, color = "#4B7D55") +
+                  size = 1.25, linewidth = 1.25, color = "#16161D") +
   scale_y_log10() +
   scale_x_discrete(labels = c("1" = "Populist", "0" = "Non-Populist")) +
   labs(
     x = "Ego Populism Score > 0",
     y = "Fragmentation Ratio¹ (Log Scaled)",
-    title = "Predicted Values vs. Observations - Full Model (N = 147)",
-    caption = "¹ Component Count / Alter Count"
+    #title = "Predicted Values vs. Observations - Full Model (N = 147)",
+    #caption = "¹ Component Count / Alter Count"
   ) +
   theme_classic()
 ggsave("../images/5-H1-robustness_predicted_values.png", bg = "white", 
-       width = 6, height = 6, dpi = DPI)
+       width = 4, height = 4, dpi = DPI)
 

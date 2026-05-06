@@ -490,6 +490,7 @@ if(FALSE){
 }
 
 # === Degree Distributions ===
+
 rbind(
   data.table(degree = igraph::degree(g, mode = "in"),  type = "Indegree"),
   data.table(degree = igraph::degree(g, mode = "out"), type = "Outdegree")
@@ -506,46 +507,70 @@ rbind(
   #scale_color_manual(values = c("Indegree" = "steelblue4", "Outdegree" = "tomato2")) +
   scale_shape_manual(values = c("Indegree" = 16, "Outdegree" = 17)) +
   entoptic::scale_color_entoptic_d(option = "firstlight", begin = 0.15, end = 0.45, direction = -1) +
-  labs(title = "Replynetwork: Largest Component",
-       subtitle = "Degree Distribution",
-       caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies",
+  labs(#title = "Replynetwork: Largest Component",
+       #subtitle = "Degree Distribution",
+       #caption = "Data:\nGerman MPs Twitterposts + all replies to MPs posts + all replies to replies",
        x = "Degree (log scale)", y = "Frequency (log scale)",
        color = "Type", shape = "Type") +
   theme_bw() + theme(panel.grid = element_blank()) + 
   annotation_logticks(sides = "trbl", short = unit(0.075, "cm"),
                       mid = unit(0.15, "cm"), long = unit(0.175, "cm")) +
   theme(legend.position = "inside",
-        legend.position.inside = c(0.92, 0.88),
+        legend.position.inside = c(0.9, 0.84),
         legend.background = element_rect(color = "gray44", fill = "white", linewidth = 0.4))
-ggsave("../images/3-degree-distribution.png", bg = "white", width = 10, height = 6, dpi = DPI)
+ggsave("../images/3-degree-distribution.png", bg = "white", width = 7.5, height = 4, dpi = DPI)
 
 # looks quite hierarchical, lets test barabasis hierarchical network model
-data.frame(
-  degree = igraph::degree(g),
-  clustering = igraph::transitivity(g, type = "local")
-) |> 
-  filter(degree > 1 & !is.na(clustering) & clustering > 0) |> 
-  ggplot(aes(x = degree, y = clustering)) + 
-  geom_point(alpha = 0.6, size = 1.5, 
-             position = position_jitter(
-               width = 0.3, height = 0.3,
-               seed = 161
-               )
-             ) +
-  geom_smooth(method = "lm", color = "black", linewidth = 0.5, 
-              se = FALSE, linetype = "dashed") + 
-  scale_x_log10(labels = scales::label_log()) + 
+# wait this does not make sense because the clustering was so small...
+# data.frame(
+#   degree = igraph::degree(g),
+#   clustering = igraph::transitivity(g, type = "local"),
+#   ispol = is.na(V(g)$party)
+# ) |>
+#   #filter(degree > 1 & !is.na(clustering) & clustering > 0) |>
+#   #filter(ispol == TRUE) |> 
+#   ggplot(aes(x = degree, y = clustering, color = ispol)) +
+#   geom_point(alpha = 0.6, size = 1.5,
+#              position = position_jitter(
+#                width = 0.3, height = 0.3,
+#                seed = 161
+#                )
+#              ) +
+#   geom_smooth(method = "lm", color = "black", linewidth = 0.5,
+#               se = FALSE, linetype = "dashed") +
+#   #scale_x_log10(labels = scales::label_log()) +
+#   #scale_y_log10(labels = scales::label_log()) +
+#   labs(
+#     #title = "Degree vs. Local Clustering",
+#     #subtitle = "Test Barabasi Hierarchical Model: arXiv:cond-mat/0206130",
+#     x = "Degree (k)",
+#     y = "Local Clustering C(k)"
+#   ) +
+#   theme_bw() + theme(panel.grid = element_blank()) +
+#   annotation_logticks(sides = "trbl", short = unit(0.075, "cm"),
+#                       mid = unit(0.15, "cm"), long = unit(0.175, "cm"))
+# ggsave("../images/3-degree-vs-clustering.png", bg = "white", width = 7.5, height = 4, dpi = DPI)
+
+
+# lets check core periphery structure instead
+data.frame(core = coreness(g)) |>
+  count(core) |>
+  ggplot(aes(core, n)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "lm", color = "black", linewidth = 0.5,
+              se = FALSE, linetype = "dashed") +
+  scale_x_log10(breaks = c(1, 2, 3, 5, 10),
+                labels = c(1, 2, 3, 5, 10)) +
   scale_y_log10(labels = scales::label_log()) +
   labs(
-    title = "Degree vs. Local Clustering",
-    subtitle = "Test Barabasi Hierarchical Model: arXiv:cond-mat/0206130",
-    x = "Degree (k)",
-    y = "Local Clustering C(k)" 
+    x = "Coreness k (log scale)",
+    y = "Nodecount n (log scale)"
   ) +
-  theme_bw() + theme(panel.grid = element_blank()) + 
+  theme_bw() + theme(panel.grid = element_blank()) +
   annotation_logticks(sides = "trbl", short = unit(0.075, "cm"),
                       mid = unit(0.15, "cm"), long = unit(0.175, "cm"))
-ggsave("../images/3-degree-vs-clustering.png", bg = "white", width = 10, height = 6, dpi = DPI)
+ggsave("../images/3-coreness-x-nodes.png", bg = "white", width = 6, height = 3.5, dpi = DPI)
+
 
 
 # === Centrality Distributions ===
@@ -836,7 +861,7 @@ p_main <-
            ymin = zoom_ylim[1], ymax = zoom_ylim[2],
            fill = NA, color = "grey10", linewidth = 0.5) +
   geom_node_text(aes(label = label),
-                 size = 2.7, repel = TRUE,
+                 size = 2.9, repel = TRUE,
                  bg.color = "white", bg.r = 0.1) +
   scale_size_continuous(name = "Degree", range = c(1.1, 5)) +
   scale_fill_manual(name = "Politician of Party",
@@ -850,8 +875,8 @@ p_main <-
            x = zoom_xlim[1], xend = -450,
            y = zoom_ylim[2], yend = -110) +
   annotate("segment",color = "gray15", linewidth = 0.7, linetype = "dashed",
-           x = zoom_xlim[2], xend = -155,
-           y = zoom_ylim[2], yend = -110) +
+           x = zoom_xlim[2], xend = -162,
+           y = zoom_ylim[1], yend = -400) +
   scale_edge_width_continuous(range = c(0.5, 3)) +
   theme_void() +
   theme(legend.position       = "bottom",
@@ -905,7 +930,7 @@ p_inset <- ggraph(lay_inset) +
                                            x >= min(zoom_xlim), x <= max(zoom_xlim),
                                            y >= min(zoom_ylim), y <= max(zoom_ylim)),
                  aes(label = politician_name),
-                 size = 2.5, repel = TRUE,
+                 size = 3, repel = TRUE,
                  bg.color = "white", bg.r = 0.15) +
   scale_size_continuous(range = c(2, 8)) +
   scale_fill_manual(values = c("CDU"="black", "CSU"="navy",

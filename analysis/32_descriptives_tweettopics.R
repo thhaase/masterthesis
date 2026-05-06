@@ -40,11 +40,75 @@ d <- d |>
                                  0)
          )
 
-# example tweets
-d |> 
-  filter(!is.na(party)) |> 
-  select(text, populism_score, user_screen_name, party) |> 
+#example tweets
+d |>
+  filter(!is.na(party)) |>
+  select(text, populism_score, user_screen_name, party) |>
   slice_max(populism_score, n = 10)
+
+# Internal Validity
+
+d |> 
+  select(people_score, elite_score, antagonism_score, populism_score) |>
+  mutate(elite_score = -elite_score) |> 
+  drop_na() |> 
+  cov(method = "pearson") |> 
+  round(3) 
+
+d |> 
+  select(people_score, elite_score, antagonism_score, populism_score) |>
+  mutate(elite_score = -elite_score) |> 
+  drop_na() |> 
+  cor() |> 
+  round(3) 
+
+d |> 
+  select(people_score, elite_score, antagonism_score) |> 
+  mutate(elite_score = -elite_score) |> 
+  drop_na() |> 
+  psych::alpha()
+
+
+lm(retweet_count ~ people_score * antagonism_score, data = d) |> 
+summary()
+
+library(sjPlot)
+
+plot_model(lm(like_count ~ people_score * antagonism_score, data = d), 
+           type = "int") +
+  theme_minimal() +
+  labs(title = "Moderationseffekt von Antagonismus auf People-Centrism")
+
+library(MASS)
+# Negative Binomial Regression
+glm.nb(reply_count ~ people_score * antagonism_score, data = d) |> 
+  summary()
+
+library(pscl)
+# hurdle() kombiniert Logit (für die 0) und truncated NegBin (für den Rest)
+model <- hurdle(reply_count ~ people_score * antagonism_score |
+         people_score * antagonism_score,
+       dist = "negbin", data = d) 
+summary(model)
+library(ggplot2)
+library(broom)
+
+# Koeffizienten extrahieren
+tidy_hurdle <- tidy(model) |> 
+  filter(term != "(Intercept)", term != "Log(theta)")
+
+# Plot erstellen
+ggplot(tidy_hurdle, aes(x = estimate, y = term, color = component)) +
+  geom_vline(xintercept = 0, linetype = "dashed", alpha = 0.5) +
+  geom_point(size = 3) +
+  geom_errorbarh(aes(xmin = estimate - 1.96 * std.error, 
+                     xmax = estimate + 1.96 * std.error), height = 0.2) +
+  facet_wrap(~component, scales = "free_x") +
+  theme_minimal() +
+  labs(title = "Forest Plot: Hurdle Model Koeffizienten",
+       subtitle = "Vergleich der Wahrscheinlichkeit (zero) vs. Intensität (count)",
+       x = "Estimate (mit 95% Konfidenzintervall)",
+       y = "")
 
 # back to text analysis
 corp <- corpus(d$text,
@@ -140,9 +204,14 @@ gp <- g |>
 set.seed(161)
 lay <- create_layout(gp, layout = "drl",
                      options = list(
-                       edge.cut             = 0.92,
-                       liquid.attraction    = 0,
+                       edge.cut             = 0.45,
+                       liquid.attraction    = 0.01,
+                       
+                       expansion.iterations = 400,
+                       expansion.temperature = 7000,
                        expansion.attraction = 0,
+                       expansion.damping.mult = 1,
+                       
                        cooldown.attraction  = 0.3,
                        crunch.attraction    = 0.6,
                        simmer.attraction    = 0.08,
@@ -162,14 +231,16 @@ lay <- create_layout(gp, layout = "drl",
 #                        use.seed = 161
 #                      ))
 plot <- gp |> 
-  ggraph(layout = "manual", x = lay$x, y = lay$y) +
+  #ggraph(layout = "manual", x = lay$x, y = lay$y) +
+  ggraph(layout = "centrality", 
+         cent = closeness(gp)) + #strength, closeness, betweenness
   # edges
   geom_edge_bundle_path0(
     aes(edge_linewidth = weight),
-    #tension = 0.95,
+    tension = 0.75,
     #colour = "grey80",
     
-    tension = 0.7,
+    #tension = 0.7,
     colour = "gray35",
     
     alpha = 0.2,
@@ -202,11 +273,12 @@ plot <- gp |>
     legend.title.position = "top",
     plot.caption = element_text(face = "plain"),
     plot.caption.position = "plot",
-    text = element_text(family = "Roboto")
+    text = element_text(family = "Roboto"),
+    plot.margin = margin(2,2,2,2)
   )
-#plot
+plot
 ggsave("../images/tfidf_wordcorrelations.png", plot,
-       width = 8, height = 5, dpi = 300, bg = "white")
+       width = 6.5, height = 4.5, dpi = 300, bg = "white")
 
 
 

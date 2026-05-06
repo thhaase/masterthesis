@@ -121,7 +121,32 @@
 
 
 
+/*
+TODO Karoly
 
+Some relevant literature that could be still incorporated on populism:
+
+Abts, K., & Rummens, S. (2007). Populism versus democracy. Political studies, 55(2), 405-424.
+
+Urbinati, N. (2019). Political theory of populism. Annual review of political science, 22(1), 111-127.
+
+A classic work: Hofstadter R. 1956. The Age of Reform. New York: Knopf.
+
+ 
+
+Populism and social media:
+
+Engesser, S., Ernst, N., Esser, F., & Büchel, F. (2017). Populism and social media: How politicians spread a fragmented ideology. Information, communication & society, 20(8), 1109-1126.
+
+Postill, J. (2018). Populism and social media: a global perspective. Media, culture & society, 40(5), 754-765.
+
+ 
+
+Data part. The people attitude and the elitist attitude is merged into a single measurement with antagonism, this needs more justification and discussion. I think you can make a stronger connection with Brubaker 2017 and your Figure 1. In general, argue more why to have a composite index when you could work with separate ones.
+
+ 
+
+*/
 
 
 
@@ -244,7 +269,7 @@ Populism research is divided over one main question: Is populism a thin or thick
 This definition has been considered "thin", because it only considers a vertical divide of society @brubaker2017. Vertical in the sense that one group is ruling the other. When read as an ideology #cite(<mudde2004>, form: "prose") s mininmal populism implicitly includes a class component as the core of its definition @yates2026. The definition is currently the most cited work on populism. This can be explained with the minimalism increasing the potential of connected communication for theorists discussing the work @tugal2021 @urbinati2019 @brubaker2017 @luhmann1987. Empirical studies operationalized the main dimensions of people-centrism and anti-elitism in surveys and finetuned bert classifier PopBert on german Bundestagspeeches @castanhosilva2020 @akkerman2014 @erhard2025.
 Often this minimal definition is combined with some other dimension like antipluralism or the distinction between left and rightwing populism @erhard2025 @castanhosilva2020. Theorists combine the thin definition with institutional and substantive analyses when discussing populism but those are chosen rather arbitrary @tugal2021. The minimal definition is part of the same family of subjectivist definitions as discoursive and performative marxist and postmarxist definitions built on #cite(<laclau2005>, form: "prose") #cite(<tugal2021>, form: "normal").  
 
-Combining the minimal definition with more substantial categories of analysis not only thickens the analytic concept but also increases its theoretical richness. #cite(<brubaker2017>, form: "prose") criticised the minimal definition for only capturing his proposed vertical dimension without acknowledging the horizontal distinctions between "the people" and outside groups. For example one thickness-increasing addition would be that left-wing populism defines "the people" economically or politically against threats like globalization and imperialism, while right-wing populism defines them culturally or ethnically against outside groups and "internal outsiders" perceived as not belonging to the nation @brubaker2017. 
+Combining the minimal definition with more substantial categories of analysis not only thickens the analytic concept but also increases its theoretical richness. #cite(<brubaker2017>, form: "prose") criticised the minimal definition for only capturing his proposed vertical dimension without acknowledging the horizontal distinctions between "the people" and outside groups. For example one thickness-increasing addition would be that left-wing populism defines "the people" economically or politically against threats like globalization and imperialism, while right-wing populism defines them culturally or ethnically against outside groups and "internal outsiders" perceived as not belonging to the nation @brubaker2017. #cite(<engesser2017>, form: "prose") use this thick definition to explore how they are used in a social media context and found that in Facebook and Twitter posts not one post contained all dimensions but that populist ideology was #quote[fragmented] across posts.
 The more terms are added and connected the stronger and thicker the assumed ideology gets. #cite(<brubaker2017>, form: "prose") for example researches 5 different elites, more outsidegroups and the heartland. This comes with the caveat that the more the concept of populism is enriched the more it #quote[lumps together] disparate political projects with disparate social bases and modes of action @brubaker2017 @medzihorsky2024. 
 
 #figure(
@@ -341,7 +366,7 @@ But engagementmetrics only report on the reactions of single users, but users in
 For Simmel a group needs at least three persons @simmel1908[Ch2]. This is mainly because when one person leaves the group it doesnt automatically dissolve like if in the case of only two persons. For three persons the group can sustain itself if a person leaves the group. That a group emerges in the real world two processes are needed, homophily for the group cohesion and repulsion of others for defined group boundaries @stadtfeld2020. Pure attraction only explains a groups expansion while a heterophob repulsion mechanism creates stable groups by defining its boundaries. #cite(<stadtfeld2020>, form: "prose") show this by calibrating a stochastic actor oriented model to 479 students from 13 schoolclasses in order to simulate how friendship and dislike networks emerge.
 In Twitter retweet networks language is used as a marker for opinion-based group formation @morselli2026. Opinion based group formation requires opinions as identity markers that individuals use to transition from holding an opinion to selfcategorizing themselves through the opinion @morselli2026. In linguistic theory the identity markers changing meaning for the ingroup is described through the distinction between esoteric and exoteric language @wray2007. Esoteric language is specialized in the sense that it is used for ingroup communication and outsiders can not understand it. Exoteric language is more selfexplanatary and is used for communication with outsiders @wray2007. The coevolution of language and social groups is already activly researched in the science of science. For example #cite(<schmitz2025>, form: "prose") trace the evolution of scientific groups in the US and German sociology through a stochastic blockmodel of a multilayer network operationalized through co-word usage, shared citations and co-authoring. 
 
-The social media studies so far were mostly largescale observational studies. Experimental studies in controlled contexts can give closer insight into the social mechanics of online group/discussion formation. #cite(<oswald2025>, form: "prose") payed participants to engage with each other about political topics in Reddit forums they moderated. Participants additionally filled out surveys regularly over a period of four weeks. When users percieved a discussion to be toxic they did not engage in the discussion. The users who engaged, engaged more when the discussion was polarized and toxic @oswald2025. With a Luhmannian read the results can be generalized to the formation of a code in the discussion as a social system. Users percieve the community as positive/negative according to their own standards and start with the second stage of communication: "Mitteilung" @luhmann1984[Ch.4]. While different persons engage according to their own evaluative codes their communication creates thematic and meaning structures @luhmann1984[Ch.4]. The social-discussion-system starts to reproduce itself. If now the discussions would start to be selfdescriptive the system starts making a distinction between itself and its environment and emerge as a differentiated unit itself @luhmann1984[Ch.4]. #cite(<oswald2025>, form: "prose")s experiment also include the persons being driven away from the discussion through e.g. the evaluation of a toxic environment. With the Luhmannian read, outside of the experimental context they would put their attention somewhere else, creating new opportunities for social systems to emerge, driving again others away. On one hand the discussion becoming more homogenous reduces complexity, but it also increases comprehensible complexity #cite(<luhmann1984>, form: "prose"). Higher connectivity (Netness) around a certain category (Catness) is equivalent to a higher amount of organization of a group @tilly1978[63]. Parties are aggregating members loyal to the category, aka political interest and communicative practice, aka code, making it distinct from its environment @tilly1978[76]. Parties are then social movement because they are mobilizing others @kusche2016a @tilly1978.
+The social media studies so far were mostly largescale observational studies. Experimental studies in controlled contexts can give closer insight into the social mechanics of online group/discussion formation. #cite(<oswald2025>, form: "prose") payed participants to engage with each other about political topics in Reddit forums they moderated. Participants additionally filled out surveys regularly over a period of four weeks. When users percieved a discussion to be toxic they did not engage in the discussion. The users who engaged, engaged more when the discussion was polarized and toxic @oswald2025. With a Luhmannian read the results can be generalized to the formation of a code in the discussion as a social system. Users percieve the community as positive/negative according to their own standards and start with the second stage of communication: "Mitteilung" @luhmann1984[Ch.4]. While different persons engage according to their own evaluative codes their communication creates thematic and meaning structures @luhmann1984[Ch.4]. The social-discussion-system starts to reproduce itself. If now the discussions would start to be selfdescriptive the system starts making a distinction between itself and its environment and emerge as a differentiated unit itself @luhmann1984[Ch.4]. #cite(<oswald2025>, form: "prose")s experiment also include the persons being driven away from the discussion through e.g. the evaluation of a toxic environment. With the Luhmannian read, outside of the experimental context they would put their attention somewhere else, creating new opportunities for social systems to emerge, driving again others away. On one hand the discussion becoming more homogenous reduces complexity, but it also increases comprehensible complexity #cite(<luhmann1984>, form: "prose"). Higher connectivity (Netness) around a certain category (Catness) is equivalent to a higher amount of organization of a group @tilly1978[63]. Parties are aggregating members loyal to the category, aka political interest and communicative practice, aka code, making it distinct from its environment @tilly1978[76]. Parties are then social movement because they are mobilizing others @kusche2016a @tilly1978. Intergroup violence is not motivated by the out-group hate but through the spiraling #quote[cheap talk] happening inside the in-group @mas2014a.
 
 
 #figure(
@@ -551,8 +576,6 @@ Engagement networks are special in the sense that they do not reflect who agrees
 // Networkanalysis (Threads, Replynetwork, ego networks) [295w, 0.6p] +38
 //                                                                   +762	
 // Summary                                             [100w, 0.2 p] +33
-
-
 //== Introduction                                        [100w, 0.2p]
 //#lorem(100) +27words
 This section describes the data, measures, and analytical strategy used to examine how populist rhetoric by German MPs shapes their engagement communities on Twitter. 
@@ -586,6 +609,27 @@ German political news from 7–14 February 2022 were dominated by the Omikron wa
 Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as #quote[two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.] @mudde2004[p.543]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
 
 This study operationalizes the core dimensions of #cite(<mudde2004>, form: "prose")'s definition, People Attitude, Elitist Attitude, and Antagonism, by instructing a large language model through an annotation prompt (see #link(<sec:app-prompt>)[Appendix]). Each dimension is defined with explicit scoring anchors: People Attitude and Elitist Attitude are measured on bidirectional scales from --3 to +3, where positive values indicate support for and negative values indicate opposition to the respective group, while Antagonism is measured on a unidirectional scale from 0 (no divide) to 6 (existential threat), with labeled thresholds distinguishing dissatisfaction (1--2), active blame (3--4), and existential threat framing (5--6). The prompt leverages chain-of-thought style reasoning and few-shot examples to guide the models annotation behaviour. To guide the models reasoning letting it question itself throughout the process lead improved the results immensly compared to hard rule-based checks.
+
+Calculating populism as a composite is necessary ...
+
+/*
+KAROLY TODO
+
+Data part. The people attitude and the elitist attitude is merged into a single measurement with antagonism, this needs more justification and discussion. I think you can make a stronger connection with Brubaker 2017 and your Figure 1. In general, argue more why to have a composite index when you could work with separate ones.
+
+*/
+
+#text(size: 1.2em,fill:red)[
+  - clarify combining dimensions
+    - just looking for anti elite is anti elitism
+    - just looking for pro people does not account for the anti elite dimension part of the literature, additionally 2 more arguments. Why pro people is not enough. maybe the group delineation is okay to include here?? Being for the ingroup might radicalize, but is not enough for clear delineation
+    - Refer to figure 1
+  - and why summing/multiplying up is done 
+    - populism is fragmented @engesser2017]
+    - why not added ==> because it doesnt make sense for antagonism
+      - why do I need antagonism? because the xyz is stronger
+      - internal validity is unimportant, it comes from psychometrics and assumes all elements of the scale measure the same thing. here this is not the case
+  
 
 The prompt follows the structure described by #cite(<liu2026>, form: "prose"). It begins with a role definition and a pre-analysis check if the text carries any content other than just a link or a user mention. It proceeds by defining #quote[People Attitude], #quote[Elite Attitude] and #quote[Antagonism]. The definition of "the people" is restricted to a broad ordinary majority and explicitly excludes named individuals, lists of specific persons, and narrow subgroups unless the text frames them as standing in for the general public. Similarly, elite criticism is only scored when the target is a generalized powerful class rather than a single individual or a specific policy disagreement.
 In the last major section the prompt invokes the chain-of-thought before assigning scores, the model must produce a holistic redescription of the post's rhetorical strategy, an actor-by-actor analysis that classifies each referenced person or group by scale (individual, institution, or generalized class) and dimension-specific explanations that articulate the reasoning behind each score. 
@@ -640,7 +684,7 @@ for pairs of expert raters with each other and the LLM annotations are calculate
 //#lorem(295) +38words
 
 == Network Analysis
-<sec:networkanalysis>
+<sec:method-networkanalysis>
 The reply threads are constructed by treating tweets as nodes that are linked through directed replies. A component in the constructed thread network is then a replythread with one rootnode that is only recieving links marking the direction of a reply. Some reply chains trace back to MP tweets posted before the collection period, so the root node has no row in the dataset. Matching the target tweets user information against the politician table recovers their authorship, recovering 2,631 of 89,561 threads (2.9%). Threads root tweet information like politician with e.g. party and followerinformation, are then stored within the reply tweets of the respective thread and aswell added to each tweet in the reply network. 
 
 The main research question requires a network of interactions plausibly representing an engagement community. A weighted user centric reply network with users as nodes and replies as directed links is constructed. The original tweet-based dataset holding politician and threadinformation served as the basis for construction with its `user_id` and `to_userid` variables. The resulting network is directed with edgeweights based on replycount. It holds 81 295 user-nodes connected through 239 502 reply-links distributed among 1865 components. A giant component holds (77 194) 94% of all nodes. 1207 users are contained in components of size 2, one original user, one replying user, as the threadsize holding the second most nodes. The second largest component held 41 (0.05%) users (see the #link(<sec:app-component-table>)[table] in appendix).
@@ -811,6 +855,8 @@ The individual dimensions are aggregated by user. By that each user is positione
 
 #ref(<fig:populism-dimensions-parties>) shows the relative count of tweets rated on each scale, grouped by party (sorted by mean populism) and by politician within party (sorted by populism score relative to tweet count). The plot visualizes not only politicians of the giant component as before but all politicians in the original dataset including politicians outside of the giant component or politicians only present in the retweet network. This allows interpretation of within- and between-party variation in the populism score and its components. The AfD has the most politicians using populist rhetoric, followed by BSW and Die Linke, while CDU and CSU sit in the middle and the least populist parties are the Greens, SPD, and FDP which made up the ruling coalition at the time of data collection. Populism scores are driven almost entirely by anti-elite and antagonism components, as pro-people rhetoric is nearly absent across all parties and therefore contributes little to the composite score. Most politicians do not use populist rhetoric on Twitter, except in the AfD, BSW, and Die Linke, where a substantial share use populism in at least 1/5 of their tweets.
 // 713
+#text(size: 1.2em,fill:red)[Woah the skew in #ref(<fig:populism-dimensions>) and party order in #ref(<fig:populism-dimensions-parties>) is external validation signal of the prompt method!!]
+
 #figure(
   image("../images/populism_stacked_dimensions_all_tweets_combined.png", width: 100%),
   caption: [Populism score and its components split by parties and sorted by mean party populism scores.],
@@ -819,45 +865,181 @@ The individual dimensions are aggregated by user. By that each user is positione
   Each bar is one politician; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("Pro People Score" + "Anti Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"Pro People Score" + "Anti Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
 ]
 
-To get a deeper insight into the content of the tweets #ref(<fig:tfidf-wordcorrelations>) displays the term-frequency inverse-document-frequency correlation network colored by populism score. Tf-idf weights a term proportionally to its in-document frequency and inversely to its corpus-wide document frequency, treating concentration as a measure for distinctivness. The top tfidf values across a corpus represent characteristic key words of the entire collection of documents, while the visualized top correlated tf-idf show distinctive words that appear together potentially revealing clusters of relevant topics. The visualized words are colored by the populism score of the words they appear in.
-
-The network's dense core is dominated by generic conversational and modal vocabulary (`geht`, `kommen`, `heute`, `tag`, `frage`, `wirklich`, `einfach`, `müssen`), while the periphery holds issue-specific tokens clustered by topic: a pandemic region (`corona`, `pandemie`, `impfpflicht`, `impfung`, `lauterbach`, `maßnahmen`), a foreign-policy edge (`ukraine`), and political-actor terms (`regierung`, `politiker`, `politik`, `deutschland`) sitting between core and periphery. Person- and group-referring tokens (`bürger`, `menschen`, `deutschen`, `unsere`) are spread across different regions. The populism correlation does not reflect spatial position. `bürger` stands out most strongly (\~0.15+), with a scattered mid-tier of actor- and in-group terms (\~0.08–0.12), while the topical periphery and the high-frequency core remain near zero.
+To get a deeper insight into the content of the tweets #ref(<fig:tfidf-wordcorrelations-split-populist-dimensions>) displays the term-frequency inverse-document-frequency correlation network colored by populism score. Tf-idf weights a term proportionally to its in-document frequency and inversely to its corpus-wide document frequency, treating concentration as a measure for distinctivness. The top tfidf values across a corpus represent characteristic key words of the entire collection of documents, while the visualized top correlated tf-idf show distinctive words that appear together potentially revealing clusters of relevant topics. The network layout is a centrality-constraint radial layout as developed by #cite(<brandes2011>, form: "prose"). It was implemented through `layout_tbl_graph_centrality(cent = closeness(GRAPH))` @pedersen2025.
 
 // 910
+/*
+
 #figure(
-  image("../images/tfidf_wordcorrelations.png", width: 110%),
-  caption: [Distribution of populism dimensions per user in the giant component;]
+  image("../images/tfidf_wordcorrelations.png", width: 100%),
+  caption: [Top 100 Tf-Idf correlated words of complete dataset.]
 )<fig:tfidf-wordcorrelations>
 #long-caption[
-  People score ($macron(p)_u$) and elite score
-  ($macron(e)_u$) are binned into 0.25-wide intervals.
-  Color visualizes mean antagonism ($macron(a)_u$) per bin;
-  height describes user count ($n = 29 thin 672$).
+  Nodes colored by the correlation of the original tweet with respective populism score; Network layed out with closeness-constrained radial layout @brandes2011. Nodes with similar shortest average distance are placed on the same circle and face the same angle by sharing common neighbors. 4024 tweets from non-populist MPs, 2275 tweets from populist MPs.
 ]
-/*
-- keine struktur ==> wir brauchen advancte methoden
-- make 3/4 separate networks with words related to anti elitism, peo people, antag and populism dimension MAYBE
+
+The network's dense core mixes generic conversational and modal vocabulary (`sogar`, `eher`, `halt`, `weniger`, `wirklich`, `gemacht`) with the issue tokens themselves: a pandemic cluster (`corona`, `pandemie`, `impfung`, `lauterbach`) and the foreign-policy anchor (`ukraine`) now sit centrally rather than on the rim, indicating broad co-occurrence across frames rather than topical isolation. The periphery instead holds reactive vocabulary (`immer`, `nie`, `leider`, `einfach`, `warum`, `frage`, `klar`) alongside policy-protest terms (`impfpflicht`, `maßnahmen`, `regierung`) and broad identity markers (`menschen`, `deutschland`, `politik`). Person- and group-referring tokens split across regions: `bürger` and `innen` cluster at the core, while `menschen`, `deutschen`, and `unsere` scatter outward. The populism correlation again does not reflect spatial position. `innen` stands out most strongly (~0.15+), with a scattered mid-tier of actor- and in-group terms (`politik`, `regierung`, `deutschen`, ~0.08–0.12), while the topical periphery and the high-frequency core remain near zero.
+
+#figure(
+  image("../images/tfidf_wordcorrelations_split.png", width: 100%),
+  caption: [Top 100 tf-Idf correlated words of politicians]
+)<fig:tfidf-wordcorrelations-split>
+#long-caption[MPs populism score > 0; MPs populism score < 0. 
+  Nodes colored by the correlation of the original tweet with respective populism score; Network layed out with strength-constrained radial layout @brandes2011. Nodes share a circle when their degree of weighted edges is comparable, and share an angular sector when they lie in the same densely connected region of the graph. 
+]
+
+#ref(<fig:tfidf-wordcorrelations-split>)'s panels' high-strength cores collapse onto the Bundespräsident election (`#bundesversammlung`, `#bundespräsident`, `#steinmeier`) joined by `frank-walter` and `glückwunsch` for non-populist MPs, and by `#afd` and `deutschland` for populist MPs. The angular sectors differ between the networks. Populist MPs cluster adversary and party hashtags (`#russland`, `#ukraine`, `#ampel`, `#spd`, `#scholz`) with policy-protest tokens (`#impfpflicht`, `maßnahmen`, `regierung`); non-populist MPs cluster ceremonial vocabulary (`demokratie`, `gesellschaft`, `freue`, `wahl`, `gemeinsam`). Group-referring terms are split with `bürger` for populist MPs (~0.15+) and `menschen` for non-populist (~0.10) with everything else near zero.
 */
-- maybe split the network into two, 
-  - one for lots of populism, one for a little populism. Then structure might arise 
+
+#figure(
+  image("../images/tfidf_wordcorrelations_populism_dimensions.png", width: 100%),
+  caption: [Top 100 tf-Idf correlated words of politicians]
+)<fig:tfidf-wordcorrelations-split-populist-dimensions>
+#long-caption[MPs populism score > 0; MPs populism score < 0. 
+  Nodes colored by the correlation of the original tweet with respective populism score; Network layed out with closeness-constrained radial layout @brandes2011. Nodes with similar shortest average distance are placed on the same circle and face the same angle by sharing common neighbors. 4024 tweets from non-populist MPs, 2275 tweets from populist MPs. 
+]
+
+The three populist categories share an actor and in-group rim of `volk`, `bürger`, `menschen`, `politiker`, `politik`, and `bevölkerung`, but the topical vocabulary they carry differs. Pro-People tweets foreground a normative-rights register (`freiheit`, `demokratie`, `staat`, `dürfen`, `bekommen`, `geld`, `millionen`) alongside pandemic terms (`corona`, `impfung`, `impfpflicht`, `maßnahmen`, `pandemie`, `lauterbach`). The arising topics are what citizens are owed and denied. Anti-Elite tweets shift to named opponents like parties (`cdu`, `fdp`, `grünen`, `spd`), `regierung`, and `lauterbach` cluster around `politiker` and `herr`, with the same pandemic vocabulary (`impfpflicht`, `maßnahmen`, `impfung`, `pandemie`) reframed as elite failure. Antagonistic tweets combine both parties, `regierung`, `lauterbach` and pandemic policy on one side while `bevölkerung`, `bürger`, `freiheit` and affective terms like `angst` on the other. This stages the people-elite confrontation directly. The non-populist (other) tweets show none of these patterns. The topics arising are about occuring political events and political procedures. (`ukraine`, `corona`, `impfung`, `impfpflicht`, `lauterbach`) appear but without any actor, surrounded by everyday vocabulary (`finde`, `gerne`, `vielleicht`, `sogar`, `eher`, `weniger`, `tweet`). 
+Across the populist panels `volk` stands out with its high above 0.20 populist-score correlation. It is followed by the medium correlating `bürger`, `bevölkerung` and `politiker`.
+
 
 
 //#lorem(510)
 == Network Analysis
 
-== Network: Descriptives & Structure [469w, 0.9p]
+//== Network: Descriptives & Structure [469w, 0.9p]
 //#lorem(469)
 
-== Network: Hierarchy Deepdive	     [386w, 0.7p]
+The analysis now turns to the structure of the reply network as the relational substrate on which politicians and citizens meet. @tab:network-descriptives summarizes it as a directed weighted network anchored in politicians' threads as described in @sec:method-networkanalysis.
+
+#figure(
+  block(width: 70%,
+    include "../tables/network_structure_descriptives.typ"
+  ),
+  caption: [Descriptive Statistics of the reply network.]
+)<tab:network-descriptives>
+#long-caption[The reply network connects users with each other through weighted edges capturing the count of replies sent to each other. It is created from reply trees connecting tweets with each other when they reply to a original tweet or another reply of that original tweet.]
+
+As described in @sec:method-networkanalysis only the giant component of the network is further is analysed. 
+
+The giant component contains 68 240 users and 237 264 directed reply edges at a density of 0.0001, the expected baseline for largescale online networks where any given pair is overwhelmingly unlikely to be connected. Mean degree of 6.95 places the typical user at a handful of replies while the standard deviation of 70.37 is an order of magnitude larger, marking hubs that absorb and produce orders of magnitude more, structurally the politicians themselves. Reciprocity at 0.13 shows replies flow oneway: citizens reply at politicians, politicians rarely reply back. A clustering coefficient of 0.13 leaves local cohesion thin, two users replying to the same politician only seldomly form a tie themselves and triangles remain rare. Degree assortativity at -0.10 is negative, highdegree nodes connect to lowdegree nodes rather than to each other. Average shortest path of 4.35 against a diameter of 47 shows the hubs compress topological distance such that despite the sparsity any two users sit only a short reply chain apart, while the max kcore of 24 marks a small dense core embedded in an otherwise sparse periphery.
+
+#figure(
+  image("../images/3-degree-distribution.png", width: 100%),
+  caption: [In and outdegree distributions of the giant component on log-log scale]
+)<fig:degree-distributions>
+#long-caption[
+  Frequency of users with a given in or outdegree in the giant component (n $= 68thin 240$). Indegree counts replies received per user, outdegree counts replies sent. Both axes log scaled. The outdegree distribution truncates at roughly 30 while the indegree tail extends past $10^3$, identifying politicians as the structural hubs of the reply network.
+]
+
+@fig:degree-distributions splits the degree distribution into its directed components and reveals two qualitatively different shapes that cross. Outdegree starts high at degree one with roughly $2 dot 10^4$ users sending a single reply, decays steeply across the loglog plane, and truncates near 30 with no user sending substantially more. Indegree starts an order of magnitude lower at degree one, decays more gradually, and the two curves cross around degree 10 to 20 where indegree overtakes outdegree and continues into a heavy tail reaching past $10^3$. In short the majority of users has a high outdegree and low indegree, so post more than they recieve, but only few users have a high indegree. This consolidates the picture from the @tab:network-descriptives.
+
+//== Network: Hierarchy Deepdive	     [386w, 0.7p]
 //#lorem(386)
+To confirm the core-periphery network structure @fig:coreness-vs-nodes a k-core decomposition of the giant component peels the least connected nodes of the network network layer by layer, revealing how nodes distribute across the depth from periphery to dense core  @seidman1983.
 
-== Network: ego networks	             [457w, 0.9p]	
+#figure(
+  image("../images/3-coreness-x-nodes.png", width: 80%),
+  caption: [K-core decomposition of the giant component.]
+)<fig:coreness-vs-nodes>
+#long-caption[
+  Nodecount $n$ per coreness shell $k$ for the giant component, on log--log axes. Each point gives the number of nodes whose maximum coreness equals $k$. The dashed line is a linear fit for reference. The approximately linear trend across more than three orders of magnitude indicates that shell sizes decay roughly as a power of $k$.
+]
+Shell sizes decline steeply and monotonically with coreness, spanning more than two orders of magnitude. The decomposition reveals a continuous gradient from a large periphery to a small dense core, without a sharp core/periphery boundary.
+
+#figure(
+  image("../images/network_inset.png", width: 115%),
+  caption: [Giant Component of Reply Network]
+)<fig:network-inset>
+#long-caption[
+  Reply Network layed out with thr DrL Algorithm @martin2007. Nodesizes scale with degree, politicians are colored by their partycolor. The zoomed inset highlights the directed edges between alters in Alice Weidels' egonetwork.   
+]
+
+@fig:network-inset visualises the giant component of the reply network. The layout is produced with the Distributed Recursive Layout (DrL) algorithm @martin2007. At first a force directed network is layed out, which is then iterativly hierarchically clustered into fewer nodes until a sufficiently small network is created. In the end the finer graphs are drawn in again. 
+
+Structurally a comparatively small set of high-degree politicians functions as a dense core of the network. Each politician is surrounded by a close reply-community. Some of the communitymembers are then also active in other politicians reply networks connecting them with the core. It almost seems like an ideal hierarcical network in @ravasz2002's sense, with the difference that this network has very low clustering (@tab:network-descriptives) due to broadcasting structure around each politician.
+
+The hub-periphery structure is divided by a political boundary. Politicians of the parliamentary opposition (Die Linke, BSW, CDU/CSU, AfD) populate the left half of the figure, while members of the governing coalition (SPD, Grüne, FDP) cluster in the dense core and extend toward the right. Politicians whose audiences overlap with those of governing MPs are pulled into the centre, whereas those embedded primarily within partisan audiences are displaced toward the periphery, so that the layout itself recovers a coarse government--opposition distinction. 
+
+The inset zooms into Alice Weidel's egonetwork and displays the broadcast pattern at the local level. The overwhelming majority of her alters are connected to her by direct replies to Weidel, but a non-trivial share of edges runs between alters themselves. This within-ego connectivity indicates that beyond pure dyadic broadcasting, smaller communities of repliers also interact with one another, hinting at community activity.
+
+//== Network: ego networks	             [457w, 0.9p]	
 //#lorem(457)
+#figure(
+  image("../images/egonet_top_2_alice_weidel.png", width: 110%),
+  caption: [Ego Network - Alice Weidel]
+)<fig:egonetwork-alice-weidel>
+#long-caption[
+  Egonetwork up to order 5. All reply-links created beneath other politicians original-tweets removed from a respective politicians egonetwork. 
+]
 
-== H1: Model/Means	                 [767w, 1.5p]
+@fig:egonetwork-alice-weidel decomposes Alice Weidel's egonetwork up to order 5 once all reply-links produced beneath other politicians original tweets have been pruned, so that only the ties formed within Weidel's own conversational threads remain. The majority of Weidel's engagement-community do not interact with one another within her reply space. At the same time, the connected component and the handful of intermediate structures indicate some interaction patterns among the community. Remember, that all of the alters visualized also have replied to weidel at some point in the observed week. 
+
+#let labeled(letter, path) = box[
+  #image(path, width: 100%)
+  #place(
+    top + left,
+    dx: 8pt,
+    dy: 20pt,
+  )[
+    #text(weight: "bold", size: 12pt)[#letter]
+  ]
+]
+
+#figure(
+  grid(
+    columns: 2,
+    rows: 2,
+    gutter: 4pt,
+    labeled("A", "../images/egonet_christian_lindner.png"),
+    labeled("B", "../images/egonet_katja_kipping.png"),
+    labeled("C", "../images/egonet_top_7_stephan_günther_brandner.png"),
+    labeled("D", "../images/egonet_top_9_sahra_wagenknecht.png"),
+  ),
+  caption: [Ego Networks of four Politicians]
+)<fig:egonetwork-grid>
+#long-caption[
+  Egonetworks up to order 5 for (A) Christian Lindner, (B) Katja Kipping, (C) Stephan Brandner and (D) Sahra Wagenknecht. All reply-links created beneath other politicians' original tweets have been removed from each respective politician's egonetwork.
+]
+
+== Egonetwork Analysis
+//== H1: Model/Means	                 [767w, 1.5p]
 //#lorem(767)
+In order to investigate the connection between politicians populist language and the manifestation of the people ingroup in their respective engagement community regression models are estimated. 
 
-== Alter-Alter Mechanisms	                   [531w, 1.0p]	
+- why binarize populism
+
+- explain model setup
+  - The outcome variable is mean alter degree ...
+    - discuss robustness check 
+  - control variables, what and why
+
+- go interpret, go nuts
+- do not forget table and checks in the appendix
+
+#figure(
+  image("../images/5-H1_egonet_models.png", width: 100%),
+  caption: [Estimating Mean Alter Degree with Politicians Populist Language]
+)<fig:regression>
+#long-caption[
+]
+
+Predicted values
+
+#figure(
+  image("../images/5-H1_predicted_values.png", width: 50%),
+  caption: []
+)<fig:predicted-values>
+#long-caption[
+]
+
+Oh my god we have only useable egonetworks from X populist politicians of 147 in the giant component in general!!! 
+
+Skewed distribution does not allow a conclusive decision due to sparse data.
+
+This is all great but this only controlled for ego variables. Is it possible to maybe distinguish the alter-alter connections created in populist vs. nonpopulist networks? Who replies to whom under politicians tweets?
+
+//== Alter-Alter Mechanisms	                   [531w, 1.0p]	
 //#lorem(531)
 
 #figure(
@@ -905,7 +1087,7 @@ The network's dense core is dominated by generic conversational and modal vocabu
     - populist ego networks show slightly more tweet-driven heterophily and activity effects 
     but the qualitative signatures are remarkably similar. The recurring mean–median divergence in the follower facet for non-populist networks traces to a small number of high-visibility ego networks.
 
-== Summary                          [100w, 0.2 p]
+//== Summary                          [100w, 0.2 p]
 //#lorem(100)
 
 
@@ -936,7 +1118,7 @@ The network's dense core is dominated by generic conversational and modal vocabu
                                                                                               
 
 // ====================================================================================================
-// = Discussion
+= Discussion
 // REQUIREMENTS:
 // - How do findings taken together provide support/evidence for hypothesis/theoretical perspectives
 // - Speaks to approaches of literature review section
@@ -955,22 +1137,22 @@ The network's dense core is dominated by generic conversational and modal vocabu
 
 
 
-== Introduction                                        [100w, 0.2p]
+//== Introduction                                        [100w, 0.2p]
 //#lorem(100)
 
-== Summary of Results	                                  [347w, 0.7p]
+//== Summary of Results	                                  [347w, 0.7p]
 //#lorem(347)
 
-== Interpretation (Relate Results to Literature Review)	[387w,	0.7p]
+//== Interpretation (Relate Results to Literature Review)	[387w,	0.7p]
 //#lorem(387)
 
-== Implications (e.g. Significance of Findings, What side is supported, Gap filled)	[372w, 0.7p]
+//== Implications (e.g. Significance of Findings, What side is supported, Gap filled)	[372w, 0.7p]
 //#lorem(372)
 
-== Limitations & Future Work	                          [394w, 0.8p]
+//== Limitations & Future Work	                          [394w, 0.8p]
 //#lorem(394)
 
-== Summary                                             [100w, 0.2 p]
+//== Summary                                             [100w, 0.2 p]
 //#lorem(100)
 
 
@@ -1173,6 +1355,14 @@ For swapping labels (0,1) F Scores are not symetric.
 == Create Descriptive Statistics and Diagrams
 #text(size: 8pt)[
   #raw(read("../analysis/30_descriptives.R"), lang: "R", block: true)
+]
+== Create Descriptive Parties
+#text(size: 8pt)[
+  #raw(read("../analysis/31_descriptives_parties.R"), lang: "R", block: true)
+]
+== TF-IDF Correlation Networks
+#text(size: 8pt)[
+  #raw(read("../analysis/34_descriptive_tweettopics_split_populistdimensions.R"), lang: "R", block: true)
 ]
 == Plot Egonets
 #text(size: 8pt)[
