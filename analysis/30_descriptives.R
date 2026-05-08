@@ -29,7 +29,7 @@ setDTthreads(0)
 # === Load Data ===
 d <- read_parquet("../data/d.parquet")
 g <- readRDS("../data/nets/g.rds") # largest component
-#g <- readRDS("../data/g_full.rds")
+#g <- readRDS("../data/nets/g_full.rds")
 # === META ===
 DPI = 300
 
@@ -427,7 +427,7 @@ if(FALSE){
 
 # === Net Descriptive Statistics ===
 # Set TRUE to calculate ressourceintense statistics
-if(FALSE){
+if(F){
   library(future.apply)
   
   deg      <- igraph::degree(g, mode = "all")

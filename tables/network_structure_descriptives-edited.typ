@@ -1,4 +1,4 @@
-align(center)[#table(
+#table(
   columns: 2,
   align: (col, row) => (left,left,).at(col),
   inset: 6pt,

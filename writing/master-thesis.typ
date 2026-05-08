@@ -375,7 +375,7 @@ But engagementmetrics only report on the reactions of single users, but users in
 For Simmel a group needs at least three persons @simmel1908[Ch2]. This is mainly because when one person leaves the group it doesnt automatically dissolve like if in the case of only two persons. For three persons the group can sustain itself if a person leaves the group. That a group emerges in the real world two processes are needed, homophily for the group cohesion and repulsion of others for defined group boundaries @stadtfeld2020. Pure attraction only explains a groups expansion while a heterophob repulsion mechanism creates stable groups by defining its boundaries. #cite(<stadtfeld2020>, form: "prose") show this by calibrating a stochastic actor oriented model to 479 students from 13 schoolclasses in order to simulate how friendship and dislike networks emerge.
 In Twitter retweet networks language is used as a marker for opinion-based group formation @morselli2026. Opinion based group formation requires opinions as identity markers that individuals use to transition from holding an opinion to selfcategorizing themselves through the opinion @morselli2026. In linguistic theory the identity markers changing meaning for the ingroup is described through the distinction between esoteric and exoteric language @wray2007. Esoteric language is specialized in the sense that it is used for ingroup communication and outsiders can not understand it. Exoteric language is more selfexplanatary and is used for communication with outsiders @wray2007. The coevolution of language and social groups is already activly researched in the science of science. For example #cite(<schmitz2025>, form: "prose") trace the evolution of scientific groups in the US and German sociology through a stochastic blockmodel of a multilayer network operationalized through co-word usage, shared citations and co-authoring. 
 
-The social media studies so far were mostly largescale observational studies. Experimental studies in controlled contexts can give closer insight into the social mechanics of online group/discussion formation. #cite(<oswald2025>, form: "prose") payed participants to engage with each other about political topics in Reddit forums they moderated. Participants additionally filled out surveys regularly over a period of four weeks. When users percieved a discussion to be toxic they did not engage in the discussion. The users who engaged, engaged more when the discussion was polarized and toxic @oswald2025. With a Luhmannian read the results can be generalized to the formation of a code in the discussion as a social system. Users percieve the community as positive/negative according to their own standards and start with the second stage of communication: "Mitteilung" @luhmann1984[Ch.4]. While different persons engage according to their own evaluative codes their communication creates thematic and meaning structures @luhmann1984[Ch.4]. The social-discussion-system starts to reproduce itself. If now the discussions would start to be selfdescriptive the system starts making a distinction between itself and its environment and emerge as a differentiated unit itself @luhmann1984[Ch.4]. #cite(<oswald2025>, form: "prose")s experiment also include the persons being driven away from the discussion through e.g. the evaluation of a toxic environment. With the Luhmannian read, outside of the experimental context they would put their attention somewhere else, creating new opportunities for social systems to emerge, driving again others away. On one hand the discussion becoming more homogenous reduces complexity, but it also increases comprehensible complexity #cite(<luhmann1984>, form: "prose"). Higher connectivity (Netness) around a certain category (Catness) is equivalent to a higher amount of organization of a group @tilly1978[63]. Parties are aggregating members loyal to the category, aka political interest and communicative practice, aka code, making it distinct from its environment @tilly1978[76]. Parties are then social movement because they are mobilizing others @kusche2016a @tilly1978. Intergroup violence is not motivated by the out-group hate but through the spiraling #quote[cheap talk] happening inside the in-group @mas2014a.
+The social media studies so far were mostly largescale observational studies. Experimental studies in controlled contexts can give closer insight into the social mechanics of online group/discussion formation. #cite(<oswald2025>, form: "prose") payed participants to engage with each other about political topics in Reddit forums they moderated. Participants additionally filled out surveys regularly over a period of four weeks. When users percieved a discussion to be toxic they did not engage in the discussion. The users who engaged, engaged more when the discussion was polarized and toxic @oswald2025. With a Luhmannian read the results can be generalized to the formation of a code in the discussion as a social system. Users percieve the community as positive/negative according to their own standards and start with the second stage of communication: "Mitteilung" @luhmann1984[Ch.4]. While different persons engage according to their own evaluative codes their communication creates thematic and meaning structures @luhmann1984[Ch.4]. The social-discussion-system starts to reproduce itself. If now the discussions would start to be selfdescriptive the system starts making a distinction between itself and its environment and emerge as a differentiated unit itself @luhmann1984[Ch.4]. #cite(<oswald2025>, form: "prose")s experiment also include the persons being driven away from the discussion through e.g. the evaluation of a toxic environment. With the Luhmannian read, outside of the experimental context they would put their attention somewhere else, creating new opportunities for social systems to emerge, driving again others away. On one hand the discussion becoming more homogenous reduces complexity, but it also increases comprehensible complexity #cite(<luhmann1984>, form: "prose"). Higher connectivity (Netness) around a certain category (Catness) is equivalent to a higher amount of organization of a group @tilly1978[63] @white2008. Parties are aggregating members loyal to the category, aka political interest and communicative practice, aka code, making it distinct from its environment @tilly1978[76]. Parties are then social movement because they are mobilizing others @kusche2016a @tilly1978. Intergroup violence is not motivated by the out-group hate but through the spiraling #quote[cheap talk] happening inside the in-group @mas2014a.
 
 
 #figure(
@@ -723,14 +723,9 @@ As a robustness check, the fragmentation ratio
 $ "Fragmentation" = frac("component count", n_"alters") $
 is tested as an alternative dependent variable using the same specification as the full model. Where mean alter degree captures the intensity of alter interconnectedness, fragmentation captures its inverse: the degree to which the ego network consists of isolated clusters. A consistent result across both measures strengthens the claim that populist rhetoric is associated with more cohesive engagement communities instead of an artifact of the chosen operationalization.
 
-To further shed light on which social mechanisms explain a difference in alter interconnectedness, observed edge statistics are compared with a random baseline within each politician's ego network. 
-For every ego network, three alter-level attributes are considered: follower count, tweet count, and the composite populism score. Follower count and tweet count proxy platform visibility and activity level, testing whether tie formation is driven by status homophily or preferential attachment among high-activity users. The composite populism score tests the substantively central mechanism: whether alters under populist politicians connect along ideological lines, forming ties with others who express similar levels of populist rhetoric.
-
-Two ERGM-inspired statistics are computed for each attribute. 
-\ The absolute-difference statistic captures homophily. For every connected alter pair the mean absolute attribute difference $overline(|x_i - x_j|)_"obs"$ and for every possible alter pair $overline(|x_i - x_j|)_"rand"$ are calculated. A negative relative deviation signals that connected alters are more similar than chance would predict. 
-\ The sum statistic captures preferential activity. The mean attribute sum across connected pairs $overline(x_i + x_j)_"obs"$ is compared to the mean across all possible pairs $overline(x_i + x_j)_"rand"$, with positive deviation indicating that edges disproportionately link high-attribute alters. 
-\ Both statistics are expressed as relative deviations from the random baseline $(o - r) slash r$ and summarized by median and mean across populist and non-populist ego networks to identify possible systematic group-level patterns in tie formation.
-
+The outlined regression models only control for ego attributes, but the role of alters is left open.
+To explore the interaction between alters further, the egonetworks are summarized by their edges. The resulting table holds all edges of all ego networks. To meaningfully compare edges across ego networks of varying size and alter composition, each observed edge statistic is contrasted against a baseline, computed of random-pairings within the same ego network. Following ERGM conventions, two statistics are calculated for each continuous alter attribute (follower count, tweet count, populism score): the mean absolute difference between connected alters (`absdiff`, $overline(|x_i - x_j|)_"obs"$) captures homophily, while the mean sum across edges (`nodecov`, $overline(x_i + x_j)_"obs"$) captures preferential activity. The same quantities are then evaluated over all possible unordered alter pairs in the ego network ($overline(|x_i - x_j|)_"rand"$ and $overline(x_i + x_j)_"rand"$), yielding the expectation under uniform random pairing.
+The observed value is finally expressed as a relative deviation from this baseline, $("obs" - "rand") slash "rand"$. For `absdiff`, a negative deviation signals that connected alters are more similar than a random pairing of the same alters would produce; for `nodecov`, a positive deviation indicates that edges disproportionately link high-attribute alters. By holding the alter pool fixed within each ego, this normalization isolates the structural signal carried by the observed edges from variation in alter composition and ego network size, making the resulting deviations comparable across politicians. Both statistics are summarized by median and mean across populist and non-populist ego networks to identify possible systematic group-level patterns in tie formation.
 //== Summary                                             [100w, 0.2 p]
 //#lorem(100) +33
 /*
@@ -862,7 +857,7 @@ The individual dimensions are aggregated by user. By that each user is positione
 
 #ref(<fig:populism-dimensions-parties>) shows the relative count of tweets rated on each scale, grouped by party (sorted by mean populism) and by politician within party (sorted by populism score relative to tweet count). The plot visualizes not only politicians of the giant component as before but all politicians in the original dataset including politicians outside of the giant component or politicians only present in the retweet network. This allows interpretation of within- and between-party variation in the populism score and its components. The AfD has the most politicians using populist rhetoric, followed by BSW and Die Linke, while CDU and CSU sit in the middle and the least populist parties are the Greens, SPD, and FDP which made up the ruling coalition at the time of data collection. Populism scores are driven almost entirely by anti-elite and antagonism components, as pro-people rhetoric is nearly absent across all parties and therefore contributes little to the composite score. Most politicians do not use populist rhetoric on Twitter, except in the AfD, BSW, and Die Linke, where a substantial share use populism in at least 1/5 of their tweets.
 // 713
-#text(size: 1.2em,fill:red)[Woah the skew in #ref(<fig:populism-dimensions>) and party order in #ref(<fig:populism-dimensions-parties>) is external validation signal of the prompt method!!]
+//#text(size: 1.2em,fill:red)[Woah the skew in #ref(<fig:populism-dimensions>) and party order in #ref(<fig:populism-dimensions-parties>) is external validation signal of the prompt method!!]
 
 #figure(
   image("../images/populism_stacked_dimensions_all_tweets_combined.png", width: 100%),
@@ -929,7 +924,7 @@ The analysis now turns to the structure of the reply network as the relational s
 
 As described in @sec:method-networkanalysis only the giant component of the network is further is analysed. 
 
-The giant component contains 68 240 users and 237 264 directed reply edges at a density of 0.0001, the expected baseline for largescale online networks where any given pair is overwhelmingly unlikely to be connected. Mean degree of 6.95 places the typical user at a handful of replies while the standard deviation of 70.37 is an order of magnitude larger, marking hubs that absorb and produce orders of magnitude more, structurally the politicians themselves. Reciprocity at 0.13 shows replies flow oneway: citizens reply at politicians, politicians rarely reply back. A clustering coefficient of 0.13 leaves local cohesion thin, two users replying to the same politician only seldomly form a tie themselves and triangles remain rare. Degree assortativity at -0.10 is negative, highdegree nodes connect to lowdegree nodes rather than to each other. Average shortest path of 4.35 against a diameter of 47 shows the hubs compress topological distance such that despite the sparsity any two users sit only a short reply chain apart, while the max kcore of 24 marks a small dense core embedded in an otherwise sparse periphery.
+The giant component contains 29,672 users and 60,117 directed reply edges at a density of 0.0001, the expected baseline for largescale online networks where any given pair is overwhelmingly unlikely to be connected. Mean degree of 4.05 places the typical user at a handful of replies while the standard deviation of 55.90 is an order of magnitude larger, marking hubs that absorb and produce orders of magnitude more, structurally the politicians themselves. Reciprocity at 0.0034 shows replies flow oneway almost without exception. Citizens reply at politicians, politicians essentially never reply back. A clustering coefficient of 0.036 leaves local cohesion vanishingly thin, two users replying to the same politician hardly ever form a tie themselves and triangles are essentially absent. Degree assortativity at -0.066 is mildly negative, highdegree nodes connect to lowdegree nodes rather than to each other. Average shortest path of 4.21 against a diameter of 139 shows the hubs compress typical distance such that any two users sit only a short reply chain apart on average, even as a few peripheral paths stretch substantially longer, while the max kcore of 13 marks a small dense core embedded in an otherwise sparse periphery. Walktrap modularity of 0.498 confirms the network partitions cleanly into well-separated communities, consistent with replies clustering around individual politicians and their respective audiences.
 
 #figure(
   image("../images/3-degree-distribution.png", width: 100%),
@@ -1009,7 +1004,7 @@ The inset zooms into Alice Weidel's egonetwork and displays the broadcast patter
 //#lorem(767)
 In order to investigate the connection between politicians populist language and the manifestation of the people ingroup in their respective engagement community regression models are estimated. 
 
-The models are estimated on the summarized egonetworks of the full network. Of 250 politicians in the retweet network that were part of the 19th,20th or 21st German Bundestag only 148 started a reply thread in the observed week of 7th to 14th Februrary 2022. Of those 148 only 10 had a populism score above 0.
+The models are estimated on the summarized egonetworks of the full network. Of 250 politicians in the retweet network that were part of the 19th, 20th or 21st German Bundestag only 148 started a reply thread in the observed week of 7th to 14th Februrary 2022. Of those 148 only 10 had a populism score above 0.
 
 #figure(
   block(width: 70%,
@@ -1050,8 +1045,7 @@ The visibly wider confidence interval around the populism estimate, contrasted w
 
 While this answers the main hypothesis the next part takes a step further and attempts to explain the "effect" further through investigating the role of alters. The regression models only controlled for ego characteristics. Could there be differences between users engaging with populist content compared to users who engage with non-populist politicians?
 
-To explore the interaction between alters further, the egonetworks are summarized by their edges. The resulting table holds all edges of all ego networks. To meaningfully compare edges across ego networks of varying size and alter composition, each observed edge statistic is contrasted against a baseline computed of random-pairings within the same ego network. Following ERGM conventions, two statistics are calculated for each continuous alter attribute (follower count, tweet count, populism score): the mean absolute difference between connected alters (`absdiff`) and the mean sum across edges (`nodecov`). The same quantities are then evaluated over all possible unordered alter pairs in the ego network, yielding the expectation under uniform random pairing. 
-The observed value is finally expressed as a relative deviation from this baseline, $("obs" - "rand") / "rand"$. Negative deviations then indicate that connected alters differ less, than a random pairing of the same alters would produce. Positive deviations indicate the reverse. By holding the alter pool fixed within each ego, this normalization isolates the structural signal carried by the observed edges from variation in alter composition and ego network size, making the resulting deviations comparable across politicians.
+To probe this, the alter edge-level analysis contrasts each observed statistic if it is driven by homphily/heterophily (`absdiff`) and activity/prestige (`nodecov`) pairs against a random-pairing baseline within the same ego network. Finally yielding in relative deviations that are comparable across politicians and can be aggregated by group.
 
 //== Alter-Alter Mechanisms	                   [531w, 1.0p]	
 //#lorem(531)
@@ -1138,41 +1132,99 @@ This paints a picture of reply networks around politicians as ideologically narr
 // Implications (e.g. Significance of Findings, What side is supported, Gap filled)	[372w, 0.7p]
 // Limitations & Future Work	                          [394w, 0.8p]
 // Summary                                             [100w, 0.2 p]
+/*
+- data
+  - Tweets of german MPs with the replies and replies to replies beneath them -> reply threads
+  - All tweets between 7th Feb to 14th Feb 2022
+  - from this a reply network is build connecting users by their replies to each toher.
+  - the week was dominated by covid19s omikron wave and russia-ukraine crisis. Scholz and was invested in both topics, while justice minister Buschmann critisized Scholzs proposed law. 
+- Textanalysis
+  - populism is a fuzzy concept @fig:prompt-validation
+  - @fig:populism-dimensions
+    - most users do not score on the elite score 
+    - quasi all users who do score are against the elite 
+    - of those there is a tendency to also be for the people
+    - anti-elitism and antagonism drive the populism score
+  - @fig:populism-dimensions-parties
+    - most populist parties are afd, bsw, linke in that order, not populist are csu, cdu, fdp, spd and grüne.
+      - government - opposition structure
+      - within parties there are often only few very populist politicians. cdu, fdp and afd stand out here with a few outlier politicians being extremely populist
+  - @fig:tfidf-wordcorrelations-split-populist-dimensions
+    - Same in-group/actor vocabulary across populist categories, but topics differ
+      - Pro-People = rights (freiheit, demokratie)
+      - Anti-Elite = named opponents (parties, regierung, lauterbach)
+      - Antagonistic = direct people-vs-elite confrontation
+      - non-populist tweets lack actors.
+    - `volk` correlates strongest with populist score (>0.20), followed by `bürger`, `bevölkerung`, `politiker`.
+- Network analysis
+  - @tab:network-descriptives
+    - Sparse, hub-driven topology
+      - a small set of high-degree politicians absorbs replies from a vast low-degree periphery, with edges flowing almost entirely one way and high-degree nodes connecting to low-degree ones rather than to each other.
+      - Small-world despite sparsity
+         - typical users sit only a short reply chain apart, though a long tail of peripheral paths stretches much further, and local cohesion is essentially absent with triangles barely forming.
+      - Modular core–periphery structure
+        - a dense core sits embedded in an otherwise sparse network, and the graph partitions cleanly into well-separated communities, consistent with replies clustering around individual politicians and their audiences.
+  - @fig:degree-distributions, @fig:coreness-vs-nodes
+    - hub-periphery with a few senders and a lot of recievers
+  - @fig:network-inset
+    - hub periphery divides the network in government - opposition. core is full of elite and the marco buschmann 
+  - @fig:egonetwork-grid, @fig:egonetwork-alice-weidel
+    - Engagement communities of alter reply network show some interesting structures, even though most users only reply to the politician and not to other users.
+- Egonetwork analysis
+  - there are only 148 politicians in the network of the 19th, 20th or 21st Bundestag in the one week covering network. Of those 148 only 10 politicians scored on the populism scale - so tweeted against the elite and for the people. They are from AfD, BsW, Linke and SPD. 
+    - @tab:top-populism-tweets
+  - regression models show that more connections between alters (higher mean alter degree) is driven by a higher populism score controlling for ego degree, followers and mean thread size
+    - the result is limited big time by the small number of populist egonetworks
+  - exploring alters contribution to the them forming connections through comparing attributes of alter-pairs that formed edges with random alter pairs of the respective egonetwork
+    - Only difference between populist and nonpopulist networks is that in populist politicians engagementcommunities users of different tweetvolumes tend to connect more to each other, while in nonpopulist networks its the other way around or closer to just the random baseline
+    - generally all connected alterpairs spark connections between users of similar populism scores but bring together accounts of different size,visibility and reach. more active accounts pull in the rest.    
+*/
 
-
-In the predicted values I wrote "Additionally to the data being sparse a lot of politicians only get extremely few replies.". Mention here that with more data testing the effect with a hurdle model to replicate @oswald2025 would be super cool. 
 //== Introduction                                        [100w, 0.2p]
 //#lorem(100)
 
 //== Summary of Results	                                  [347w, 0.7p]
 //#lorem(347)
+The discussion first summarizes the results and continues with a short summary of the literature review. It ends with interpreting the results through the literature review and in the end adresses the most relevant limitations.
+
+The used data covers reply threads to German MPs' tweets from 7--14 February 2022, a week shaped by the Omicron wave and the war between Russia and Ukraine. Replies form a directed network linking users by their interactions. LLM-based scoring (@fig:prompt-validation) shows populism is mostly driven by anti-elitism and antagonism and less by pro-people attitudes. Most users do not score on the elite dimension, but those who do are almost all anti-elite and often also pro-people (@fig:populism-dimensions). Party scores reproduce the government–opposition split, with AfD, BSW and Linke most populist and CDU/CSU, FDP, SPD and Grüne least, while outlier politicians in CDU, FDP and AfD pull far above their party mean (@fig:populism-dimensions-parties). Actor vocabulary is shared across populist subcategories but topics differ (@fig:tfidf-wordcorrelations-split-populist-dimensions). `volk` correlates most strongly with the populism score (>0.20), followed by `bürger`, `bevölkerung` and `politiker`.
+
+The reply network is sparse, hub-driven and exhibits a giant component (@tab:network-descriptives). A small set of high-degree politicians absorbs replies from a vast low-degree periphery, edges flow almost entirely one way, and high-degree nodes connect to low-degree ones rather than to each other. The network is sparse and local cohesion is essentially absent. A modular core--periphery structure sits on top, partitioning cleanly into well-separated communities (@fig:degree-distributions, @fig:coreness-vs-nodes). While the giant component is globally divided by a government--opposition structure the core holds politicians of government parties like Marco Buschmann (@fig:network-inset, @fig:egonetwork-grid).
+
+Of the 148 MPs active in this window, only ten score as populist, drawn from AfD, BSW, Linke and SPD (@tab:top-populism-tweets). OLS regressions of ego networks on mean alter degree suggest higher populism scores are linked to denser alter--alter connectivity, though small N limits the result. Quasi-ERGM comparisons show connected alter pairs generally share populism scores but bridge differences in account size, visibility and reach, indicating more active accounts pull the periphery into engagement. The one populist/non-populist divergence lies in tweet volume, where populist engagement communities connect users of differing activity levels more than non-populist ones do.
 
 //== Interpretation (Relate Results to Literature Review)	[387w,	0.7p]
 //#lorem(387)
+Populism in this thesis is understood through a minimal definition as the moral divide between the good, powerless people that stand against the corrupt, powerful elite @mudde2004.
+Previous research already found social media as a low affordance alternative media for populists to broadcast their ideas @gildezuniga2020. This usage of alternative media has become part of populist group identity @stier2025. Politicians use social media to campaign rather than discuss policies, probably because populist frames performed well compared to other strategies in terms of engagement metrics @stier2018 @cassell2021. It has been shown that Dutch politicians usually broadcast their information rather than interact with their community @jacobs2019.
+Their audience selfselects themselves in or out of the conversation based on their own evaluations of the situation @oswald2025 @luhmann1987 @tilly1978 @white2008. In order to form a cohesive group (1) a homogenization process is needed that draws people in and (2) a repulsive process is needed to define clear group boundaries @stadtfeld2020. Extending the purely singular engagementmetric based findings this thesis formed an expectation on the meso level:
+#align(center)[
+  German MPs who use populist rhetoric have higher interconnected alters in their reply ego networks compared to MPs using less populist rhetoric.
+]
 
-//== Implications (e.g. Significance of Findings, What side is supported, Gap filled)	[372w, 0.7p]
-//#lorem(372)
+The results of the ego network analysis support to this expectation. OLS regressions of mean alter degree show a positive association with populism scores, indicating that populist MPs do sit in more interconnected reply communities than less populist ones. The alter effects on reply formation in the ego network add texture to the result. Connected alter pairs generally share populism scores but bridge differences in account size, visibility and reach, and the one feature on which populist and non-populist engagement communities diverge is tweet volume, where populist communities connect users of differing activity levels more than non-populist ones do. Read through the dual logic of group formation @stadtfeld2020, this pattern looks like homogenization on the dimension that defines the in-group, namely the populism frame itself, paired with a repulsive boundary that distinguishes populist from non-populist communities while leaving size and activity heterogeneous on the inside. The populist frame thus appears to be what allows a low-activity periphery to attach itself to a high-activity core in the first place, knitting otherwise unequal users together around a shared antagonism.
 
-//== Limitations & Future Work	                          [394w, 0.8p]
-//#lorem(394)
+At the macro level the network displays the broadcasting logic that previous research has attributed to political communication on social media @jacobs2019. A sparse, hub-driven topology with negligible reciprocity or local clustering is exactly what one expects when politicians use the platform to campaign rather than deliberate @stier2018. The clean partition into well-separated communities along the government and opposition divide fits self-selection into closed observation contexts. Populist rhetoric concentrating in AfD, BSW and Linke, with outliers in CDU, FDP and AfD far above their party mean, matches the finding that populist framings have become part of a group identity. Beyond the selfselection this global network structure aswell as textual framing captures the moral loading of the representative democratic systems structures of the german parliament. Taken together, the macro broadcasting logic, the meso ego network density, and the lexical centrality of antagonism point to social media functioning as the low affordance alternative arena described in earlier work @gildezuniga2020, where populist accounts not only broadcast louder but also organise a denser and more cohesive audience structure around themselves.
 
-//== Summary                                             [100w, 0.2 p]
-//#lorem(100)
+Three implications follow. 
+First, populism online is not just a louder broadcast but an organising principle, since the ego network connectivity result shows the populist frame builds audience structure on the meso level and not only stay at the engagement-metric level.
+Second, the homogenisation and repulsion selection logic holds for political publics on Twitter but homogenises on topic/politician, while tolerating heterogeneity on activity. So shared antagonism rather than shared platform behaviour binds these communities. 
+Third, the macro broadcasting topology combined with the government and opposition partition shows that social-media platforms reproduce parliamentary structure rather than dissolve it. Populist rhetoric maps onto opposition position which is morally loaded. This mapping is driven by individual politicians that are found more often in the usually as "populist" described parties than in government parties, even though also these have populist posting actors. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+- Limitations
+  - Few data
+    - one week, there could have been special external effects or the real populists didnt post 
+    - ego network analysis is limited by the small number of populist MPs in the window (ten of 148) limits how strongly this can be claimed.
+      - If there were more data testing the effect with a hurdle model to replicate @oswald2025 would be super cool.
+    - textanalyse
+      - if one tweet is for the people and another is for the elite, they adress different topics. therefore a small populism_score could just be an accident. When most tweets of someone are populist tho, the claim gets stronger that this politician uses populism as strategic communication
+    - social media
+      - no inference on real world
+        - algorithm has impact (collaborative filtering was mentioned)
+        - only certain persons were on twitter 2022
+*/
+The analysis comes with several limitations. First of all the dataset only spanned one week giving room to external events impacting the discourse on the platform, possibly distorting the signal of the text analysis. Additionally there were only a small number of populist posting MPs captured during this week. This limits the interpretability of the ego network analysis drastically and reduces the finding to a pointer. Future work could replicate #cite(<oswald2025>, form: "prose")s experimental result in a real-world setting estimating a similar hurdle model. The text analysis is limited by the aggregation of tweets on the actor level. It could be that politicians anti-elitist tweets are about unrelated topics in comparison to pro-people tweets. Still for politicians with a high share of populist tweets the presumption of a political communicative strategy gets stronger. As with all social media studies no inference to the analog world is sufficiently possible because of the impact of the algorithm aswell as the selfselection of users being active on the platform.
 
 
 /*
@@ -1183,10 +1235,7 @@ In the predicted values I wrote "Additionally to the data being sparse a lot of 
 ░██        ░██    ░██ ░██    ░██ ░██        ░██ ░██    ░██  ░███████  ░██░██    ░██ ░██    ░██ 
  ░██   ░██ ░██    ░██ ░██    ░██ ░██    ░██ ░██ ░██   ░███        ░██ ░██░██    ░██ ░██    ░██ 
   ░██████   ░███████  ░██    ░██  ░███████  ░██  ░█████░██  ░███████  ░██ ░███████  ░██    ░██ 
-*/                                                                                             
-                                                                                               
-                                                                                               
-
+*/                           
 // ====================================================================================================
 = Conclusion
 // REQUIREMENTS:
@@ -1197,6 +1246,18 @@ In the predicted values I wrote "Additionally to the data being sparse a lot of 
 
 // Conclusion [538w, 1.0p]	
 //#lorem(538)
+Populism research has been divided about the interpretative meaning of populism as an ideology, communicative practice or political strategy @hunger2022 @tugal2021 @yates2026. The thesis has shown that reducing populism to a type of communication captures its necessary essence to understand its impact on communities. Just as any other rhetorical style, opinion or charismatic leader populism should be understood as a type of information. Information that gives opportunity for groupformation processes. Users selfselect themselves in and out of populist discourse and communities themselves. What still distinguishes populist messages from other information is its usage by politicians as a mobilizing strategy successfully forming those communities. As any other ingroup around any topic it can lead to extremization. 
+- outgroup contact and cooperation can reduce arising prejudice.   
+- blabla
+
+
+
+
+
+
+
+
+
 
 // =================================================
 #pagebreak()
@@ -1308,17 +1369,17 @@ For swapping labels (0,1) F Scores are not symetric.
 == Regression Model checks <sec:app-regression-model-checks>
 
 #figure(
-  image("../images/5-modelcheck_m0.png", width: 85%),
+  image("../images/5-modelcheck_m0.png", width: 100%),
   caption: [Assumption Check - M0 (Baseline)],
 )
 
 #figure(
-  image("../images/5-modelcheck_m1.png", width: 85%),
+  image("../images/5-modelcheck_m1.png", width: 100%),
   caption: [Assumption Check - M1 (Full Model)],
 )
 
 #figure(
-  image("../images/5-modelcheck_r1.png", width: 85%),
+  image("../images/5-modelcheck_r1.png", width: 100%),
   caption: [Assumption Check - R1 (Robustness)],
 )
 /*
@@ -1352,7 +1413,7 @@ For swapping labels (0,1) F Scores are not symetric.
                                             
                                             
 */
-= Appendix B: Code
+//= Appendix B: Code
 // REQUIRED: Must contain code used to process datasets for examination
 
 /*
