@@ -46,7 +46,7 @@ Data were collected via Twitter's streaming API using two parallel strategies to
 #align(center)[#image("./images/1-gu-componentsize-frequency.png", width: 90%)]
 - There is one Giant Component
 The giant component holds 95\% of all nodes in the network
-#include "tables/component_table.typ"
+#include "tables/component_table-edited.typ"
 
 = Largest Component
 #include "tables/network_structure_descriptives.typ"

@@ -1,0 +1,13 @@
+Table: 
+
+|**Variable**     | **Mean / n**| **Standard
+Deviation**|
+|:----------------|------------:|---------------------:|
+|Populism score   |         1.03|                  1.35|
+|People score     |         0.36|                  0.29|
+|Elite score      |        -0.50|                  0.34|
+|Antagonism score |         0.80|                  0.68|
+|AfD              |            6|                     —|
+|BSW              |            1|                     —|
+|Linke            |            2|                     —|
+|SPD              |            1|                     —|

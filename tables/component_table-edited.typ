@@ -1,9 +1,6 @@
 #table(
   columns: 4,
-  align: (right, right, right, left),
-  table.header(
-    [Component Size], [Number of Components], [Total Nodes], [\% of Network],
-  ),
+  table.header([*Component Size*], [*Number of Components*], [*Total Nodes*], [*% of Network*]),
   [77194], [1], [77194], [94.96%],
   [41], [1], [41], [0.05%],
   [34], [1], [34], [0.04%],
@@ -25,3 +22,4 @@
   [2], [1207], [2414], [2.97%],
   [1], [359], [359], [0.44%],
 )
+

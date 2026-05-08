@@ -49,6 +49,7 @@
 
 #show link: it => underline(text(fill: blue)[#it])
 #show figure.caption: set text(size: 10pt)
+
 #let long-caption(width: 80%, body) = {
   v(-0.6em)
   align(center)[
@@ -59,6 +60,14 @@
     ]
   ]
 }
+
+#let long-caption(body) = figure(
+  kind: "long-caption",
+  caption: body,
+  outlined: false,
+  numbering: none,
+  []
+)
 
 
 // DIVIDING SECTION WORDS TOOL
@@ -356,7 +365,7 @@ If populism arises from the elite-people code of representative democracy, socia
 To summarize, populism is a style of communication that constructs the divide between the people and the elite with usually rule-destabilizing consequences. Even though we can not know the individuals motivations or reasons behind usage of populist rhetoric, what is sure is the role politicians assign themselves to and what being a politician implicates. From a point of political communication politicians use this language in order to put themselves into a position to mobilize and govern.
 
 
-== Language and the Meso Level
+== Language and the Meso Level <sec:language-and-the-meso-level>
 
 Up until now it was established that populist language is used by politicians on social media platforms and that it has been connected to certain language aswell as engagementmetrics.
 
@@ -699,8 +708,6 @@ To definitly deliniate the dataset to replies from politicians tweets reply-edge
 //+762words
 == Ego Network Analysis
 A descriptive exploratory analysis describes first the results of the textanalysis and second the networkstructure. 
-#text(fill: red)[its all graphbased, except the partyplot and the tweettopics plot]
-The textanalysis is conducted with tweets contained in the largest component of the retweet network, that also serves as the basis for the network analysis. Exceptions are the comparison of populism by parties and a wordcorrelation network to infer the tweets content, which are based on the entire tweetdataset including retweets and referenced tweets in order to capture the broader political discourse during the week.
 
 Following that the reply network structure is explored through a visualization using the Distributed Recursive Graph Layout and validated through closer inspection of degree and local clustering distributions @martin2007. 
 The Distributed Recursive Graph Layout (DrL) lays out a graph by applying repulsion and attraction forces between nodes to prevent overlap and keeping connected nodes close. Beginning with randomness so nodes can move freely and avoid poor configurations, gradually reducing movement until positions stabilize. Once positioned, spatially close nodes are merged into representative summary nodes producing a coarser version of the graph. The cycle of coarsening and repositioning repeats until the graph is sufficiently small to lay out directly. Finally the process is reversed, expanding each simplified graph back one level at a time, using the prior layout as an initial arrangement.
@@ -862,7 +869,7 @@ The individual dimensions are aggregated by user. By that each user is positione
   caption: [Populism score and its components split by parties and sorted by mean party populism scores.],
 )<fig:populism-dimensions-parties>
 #long-caption[
-  Each bar is one politician; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("Pro People Score" + "Anti Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"Pro People Score" + "Anti Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
+  Each bar is one politician in the giant component; the x-axis shows the share of their tweets at each score level assigned by Qwen3-235B-A22B-Instruct-2507-FP8 with the expert level annotation prompt. The composite populism score equals $("Pro People Score" + "Anti Elitism Score") times "Antagonism Score"$ when $"Antagonism Score" > 0$, otherwise $"Pro People Score" + "Anti Elite Score"$. Dimensions visualized for direction which is increasing the populism score. Parties sorted by descending mean populism score; politicians sorted within party by non-zero share.
 ]
 
 To get a deeper insight into the content of the tweets #ref(<fig:tfidf-wordcorrelations-split-populist-dimensions>) displays the term-frequency inverse-document-frequency correlation network colored by populism score. Tf-idf weights a term proportionally to its in-document frequency and inversely to its corpus-wide document frequency, treating concentration as a measure for distinctivness. The top tfidf values across a corpus represent characteristic key words of the entire collection of documents, while the visualized top correlated tf-idf show distinctive words that appear together potentially revealing clusters of relevant topics. The network layout is a centrality-constraint radial layout as developed by #cite(<brandes2011>, form: "prose"). It was implemented through `layout_tbl_graph_centrality(cent = closeness(GRAPH))` @pedersen2025.
@@ -914,7 +921,7 @@ The analysis now turns to the structure of the reply network as the relational s
 
 #figure(
   block(width: 70%,
-    include "../tables/network_structure_descriptives.typ"
+    include "../tables/network_structure_descriptives-edited.typ"
   ),
   caption: [Descriptive Statistics of the reply network.]
 )<tab:network-descriptives>
@@ -948,14 +955,14 @@ To confirm the core-periphery network structure @fig:coreness-vs-nodes a k-core 
 Shell sizes decline steeply and monotonically with coreness, spanning more than two orders of magnitude. The decomposition reveals a continuous gradient from a large periphery to a small dense core, without a sharp core/periphery boundary.
 
 #figure(
-  image("../images/network_inset.png", width: 115%),
+  image("../images/network_inset.png", width: 125%),
   caption: [Giant Component of Reply Network]
 )<fig:network-inset>
 #long-caption[
   Reply Network layed out with thr DrL Algorithm @martin2007. Nodesizes scale with degree, politicians are colored by their partycolor. The zoomed inset highlights the directed edges between alters in Alice Weidels' egonetwork.   
 ]
 
-@fig:network-inset visualises the giant component of the reply network. The layout is produced with the Distributed Recursive Layout (DrL) algorithm @martin2007. At first a force directed network is layed out, which is then iterativly hierarchically clustered into fewer nodes until a sufficiently small network is created. In the end the finer graphs are drawn in again. 
+@fig:network-inset visualises the giant component of the reply network. The network is layed out with the Distributed Recursive Layout (DrL) algorithm @martin2007. At first a force directed network is layed out, which is then iterativly hierarchically clustered into fewer nodes until a sufficiently small network is created. In the end the finer graphs are drawn in again. 
 
 Structurally a comparatively small set of high-degree politicians functions as a dense core of the network. Each politician is surrounded by a close reply-community. Some of the communitymembers are then also active in other politicians reply networks connecting them with the core. It almost seems like an ideal hierarcical network in @ravasz2002's sense, with the difference that this network has very low clustering (@tab:network-descriptives) due to broadcasting structure around each politician.
 
@@ -974,15 +981,10 @@ The inset zooms into Alice Weidel's egonetwork and displays the broadcast patter
 ]
 
 @fig:egonetwork-alice-weidel decomposes Alice Weidel's egonetwork up to order 5 once all reply-links produced beneath other politicians original tweets have been pruned, so that only the ties formed within Weidel's own conversational threads remain. The majority of Weidel's engagement-community do not interact with one another within her reply space. At the same time, the connected component and the handful of intermediate structures indicate some interaction patterns among the community. Remember, that all of the alters visualized also have replied to weidel at some point in the observed week. 
-
-#let labeled(letter, path) = box[
-  #image(path, width: 100%)
-  #place(
-    top + left,
-    dx: 8pt,
-    dy: 20pt,
-  )[
-    #text(weight: "bold", size: 12pt)[#letter]
+#let labeled(name, path) = box[
+  #image(path, width: 110%)
+  #place(top + left, dx: 8pt, dy: 15pt)[
+    #text(font: "Roboto", size: 8pt)[#name]
   ]
 ]
 
@@ -991,15 +993,15 @@ The inset zooms into Alice Weidel's egonetwork and displays the broadcast patter
     columns: 2,
     rows: 2,
     gutter: 4pt,
-    labeled("A", "../images/egonet_christian_lindner.png"),
-    labeled("B", "../images/egonet_katja_kipping.png"),
-    labeled("C", "../images/egonet_top_7_stephan_günther_brandner.png"),
-    labeled("D", "../images/egonet_top_9_sahra_wagenknecht.png"),
+    labeled("Christian Lindner", "../images/egonet_christian_lindner.png"),
+    labeled("Katja Kipping", "../images/egonet_katja_kipping.png"),
+    labeled("Stephan Brandner", "../images/egonet_top_7_stephan_günther_brandner.png"),
+    labeled("Sahra Wagenknecht", "../images/egonet_top_9_sahra_wagenknecht.png"),
   ),
   caption: [Ego Networks of four Politicians]
 )<fig:egonetwork-grid>
 #long-caption[
-  Egonetworks up to order 5 for (A) Christian Lindner, (B) Katja Kipping, (C) Stephan Brandner and (D) Sahra Wagenknecht. All reply-links created beneath other politicians' original tweets have been removed from each respective politician's egonetwork.
+  Egonetworks up to order 5 for Christian Lindner, Katja Kipping, Stephan Brandner and Sahra Wagenknecht. All reply-links created beneath other politicians' original tweets have been removed from each respective politician's egonetwork.
 ]
 
 == Egonetwork Analysis
@@ -1007,15 +1009,25 @@ The inset zooms into Alice Weidel's egonetwork and displays the broadcast patter
 //#lorem(767)
 In order to investigate the connection between politicians populist language and the manifestation of the people ingroup in their respective engagement community regression models are estimated. 
 
-- why binarize populism
+The models are estimated on the summarized egonetworks of the full network. Of 250 politicians in the retweet network that were part of the 19th,20th or 21st German Bundestag only 148 started a reply thread in the observed week of 7th to 14th Februrary 2022. Of those 148 only 10 had a populism score above 0.
 
-- explain model setup
-  - The outcome variable is mean alter degree ...
-    - discuss robustness check 
-  - control variables, what and why
+#figure(
+  block(width: 70%,
+    include "../tables/table_populists-edited.typ"
+  ),
+  caption: [Descriptive statistics of the 10 populists politicians starting a reply thread.]
+)<tab:populists-descriptives>
+#long-caption[]
 
-- go interpret, go nuts
-- do not forget table and checks in the appendix
+Since the aim of the analysis is to investigate the impact of populist language on local structures the most feasable way is to binarize the populism score. Thereby the regression models compare the mean connectivity between populist and nonpopulist networks. 
+
+All models regress mean alter degree on the binarized populism score, comparing average alter interconnectedness between populist and non-populist ego networks. Mean alter degree is chosen as a measure, because it is less size-dependent than density which is important since the ego networks size varies quite a lot across politicians. Density is inversely related to network size, making cross-ego comparisons unreliable. As a robustness check, the same specification is re-estimated with the fragmentation ratio as the dependent variable, validating the increased connectivity through another proxy variable capturing how connected alters are among each other.
+
+Three control variables are included. 
+Ego degree captures the politician's structural prominence in the reply network and accounts for the possibility that highly central politicians attract denser alter communities simply by virtue of their position. 
+Follower count proxies platform-level visibility and controls for popularity effects driven by the platforms functionality and the algorithm. 
+Mean thread size of the politician's reply threads controls for the mechanical fact that longer threads provide more opportunities for alter-alter interaction to occur.
+Assumption checks of the linear regressions are attached in the #link(<sec:app-regression-model-checks>)[Appendix].
 
 #figure(
   image("../images/5-H1_egonet_models.png", width: 100%),
@@ -1024,69 +1036,61 @@ In order to investigate the connection between politicians populist language and
 #long-caption[
 ]
 
-Predicted values
+Across all three specifications the binarized populism score emerges as the only substantively meaningful predictor of mean alter degree. The baseline places the effect around 0.25, and the inclusion of the three controls in the full model leaves both magnitude and significance essentially unchanged. Ego degree and mean thread size are statistically significant but with coefficients near zero not contributing explanatory weight. Follower count is indistinguishable from zero throughout. The robustness specification, regressing the fragmentation ratio on the same predictors, reproduces the populism coefficient at comparable magnitude and significance, indicating that the structural signal is not an artefact of the chosen connectivity measure. \
+The visibly wider confidence interval around the populism estimate, contrasted with the tight bounds on the controls, reflects the small number of populist ego networks in the sample and points toward an effect that is stable in direction across specifications but identified off a limited subset of cases.
+
 
 #figure(
   image("../images/5-H1_predicted_values.png", width: 50%),
-  caption: []
+  caption: [Predicted Values of Mean Alter Degree by politicians (ego) binarized populism score from Full Model. 95% confidence intervals are included in the visualization of the means.]
 )<fig:predicted-values>
-#long-caption[
-]
+#long-caption[]
 
-Oh my god we have only useable egonetworks from X populist politicians of 147 in the giant component in general!!! 
+@fig:predicted-values visualizes the predicted means from the full model with the `prediction` function of the marginal effects package @arel-bundock2026. It visualizes the discreptancy of means and samplesizes between the populist and non-populist ego networks. The figure makes the impact of populist vocabulary tangible. Populist rated politicians produce almost three times as connected engagement-communities compared to non populist politicians. The limitations of the small sample size are clearly visible -- the few displayed populist egonetworks could very well be an $alpha$ (Type I) error and have occured by random chance. Additionally to the data being sparse a lot of politicians only get extremely few replies. 
 
-Skewed distribution does not allow a conclusive decision due to sparse data.
+While this answers the main hypothesis the next part takes a step further and attempts to explain the "effect" further through investigating the role of alters. The regression models only controlled for ego characteristics. Could there be differences between users engaging with populist content compared to users who engage with non-populist politicians?
 
-This is all great but this only controlled for ego variables. Is it possible to maybe distinguish the alter-alter connections created in populist vs. nonpopulist networks? Who replies to whom under politicians tweets?
+To explore the interaction between alters further, the egonetworks are summarized by their edges. The resulting table holds all edges of all ego networks. To meaningfully compare edges across ego networks of varying size and alter composition, each observed edge statistic is contrasted against a baseline computed of random-pairings within the same ego network. Following ERGM conventions, two statistics are calculated for each continuous alter attribute (follower count, tweet count, populism score): the mean absolute difference between connected alters (`absdiff`) and the mean sum across edges (`nodecov`). The same quantities are then evaluated over all possible unordered alter pairs in the ego network, yielding the expectation under uniform random pairing. 
+The observed value is finally expressed as a relative deviation from this baseline, $("obs" - "rand") / "rand"$. Negative deviations then indicate that connected alters differ less, than a random pairing of the same alters would produce. Positive deviations indicate the reverse. By holding the alter pool fixed within each ego, this normalization isolates the structural signal carried by the observed edges from variation in alter composition and ego network size, making the resulting deviations comparable across politicians.
 
 //== Alter-Alter Mechanisms	                   [531w, 1.0p]	
 //#lorem(531)
 
 #figure(
-  image("../images/6-quasi_ergm_absdiff.png", width: 100%),
-  caption: [absdiff (Alter Similarity)],
-)<fig:label>
+  image("../images/6-quasi_ergm_absdiff.png", width: 90%),
+  caption: [Edge-level alter homophily relative to random pairs of the same alters, separated by ego type.]
+)<fig:absdiff>
 
-- What is shown
-  - For each ego network, the mean absolute difference on a given attribute is computed once over all observed alter–alter ties and once over all possible alter–alter dyads. The ratio (observed − random) / random yields one value per ego network. The circle shows the median across all ego networks in each group, the triangle shows the mean.
-- Alter Follower Count
-  - Medians are slightly positive for both groups (~35% non-populist, ~25% populist). 
-  - Connected alters tend to be more different in follower count than random pairs — mild heterophily. 
-  - The non-populist mean explodes to ~330% while the median stays low, indicating a heavily right-skewed distribution driven by a handful of ego networks where very high- and very low-follower alters disproportionately connect. The populist distribution is far more compact (mean ≈ median).
-- Alter Populism Score
-  - The strongest signal. Both medians sit near −90%, meaning connected alters hold nearly identical populism scores compared to what random pairing would produce. 
-  - This is strong, consistent populism homophily across both network types. 
-  - The non-populist mean is pulled upward to roughly −15%, again indicating right skew from a few outlier ego networks; the populist mean and median nearly overlap, suggesting a tight, well-behaved distribution.
-- Alter Tweet Count
-  - Medians hover near zero for non-populists (~−10%) and slightly positive for populists (~+30%). 
-  - There is no strong homophily or heterophily on tweet volume for non-populist ego networks, while populist ego networks show a mild tendency for connected alters to differ in tweet activity. Mean and median are close in both groups, so the distributions are relatively symmetric.
+@fig:absdiff shows the absolute differences between alters on a given statistic. This allows for the exploration of homophilic/heterophilic interactions in the alternetworks.
+
+On the follower count, both ego types display heterophily. The absolute difference between connected alters lies roughly 25-35% above random at the median for both populist (+28%) and non-populist (+34%) egos, while the non-populist mean (+329%) is heavily inflated by a few outlier networks. Connected alters differ \~30% more than random pairs in follower count across both ego types, with a small set of non-populist networks pushing the mean far above this. Users who reply to each other thus tend to span different audience sizes, large and small accounts mix on edges rather than clustering with their own kind.
+
+On the populism score, both ego types display strong homophily. The absolute difference between connected alters falls \~90% below random in populist ego networks (median and mean) and at the median for non-populists, though the non-populist mean (-14%) is pulled toward zero by a few outliers. Connected alters' populism scores differ ~90% less than random pairs in both populist and non-populist ego networks, though a few non-populist outliers pull their mean to -14%. In both populist and non-populist politicians' ego networks, users who reply to each other almost always share similar populism levels. Cross-populism exchanges between alters are rare.
+
+On the tweet count, the patterns diverge by ego type. Populist ego networks show heterophily of ~30% above random at both median and mean, while non-populist ego networks sit close to baseline, slight homophily at the median (-16%) and essentially zero at the mean (+4%). Connected alters differ ~30% more than random pairs in tweet count in populist ego networks, but only at roughly random levels in non-populist ones. In populist egonetworks, replies tend to bridge users with very different posting volumes, while in non-populist threads users mix across activity levels about as much as chance would predict.
+
 
 #figure(
-  image("../images/6-quasi_ergm_nodecov.png", width: 100%),
-  caption: [nodecov (Alter Activity)],
-)<fig:label>
+  image("../images/6-quasi_ergm_nodecov.png", width: 90%),
+  caption: [Edge-level alter activity relative to random pairs of the same alters, separated by ego type.],
+)<fig:nodecov>
 
-- What is shown
-  - Instead of the absolute difference, the sum of both alters' attribute values is computed per tie and per possible dyad. Positive deviation means ties preferentially form among alters with higher attribute values.
-- Alter Follower Count
-  - Both medians are positive (~45% non-populist, ~35% populist). 
-  - Alters with more followers connect to each other at higher-than-expected rates — a preferential attachment or popularity effect. The non-populist mean is again far above the median (~315%), confirming the same small set of outlier ego networks seen in the absdiff plot.
-- Alter Populism Score
-  - Both medians are strongly negative (~−80% to −90%), meaning ties form among alters with lower combined populism scores. 
-  - The more populist an alter pair is, the less likely they are to be connected. This mirrors the absdiff finding: connections cluster among ideologically similar, low-populism alters.
-- Alter Tweet Count
-  - Both groups are positive (medians ~35% non-populist, ~50% populist). High-volume tweeters connect more than expected. 
-  - The effect is somewhat stronger in populist ego networks. Mean and median are close in both groups, indicating stable distributions without extreme outliers.
+@fig:nodecov shows the sum of attribute values of two connected alters. This allows for the exploration of activity or prestige effects in the alternetworks.
 
-- Summary
-  - structure is the same across populist and non-populist ego networks!
-    - strong populism homophily
-    - mild follower heterophily
-    - preferential connectivity among active and popular users
-  - degree difference
-    - populist ego networks show slightly more tweet-driven heterophily and activity effects 
-    but the qualitative signatures are remarkably similar. The recurring mean–median divergence in the follower facet for non-populist networks traces to a small number of high-visibility ego networks.
+On the combined follower count, both ego types show positive deviations. Populist ego networks lie \~33% above random for both median and mean, while non-populist egos reach +41% at the median and +313% at the mean, again driven by a few extreme cases. Connected alters' combined follower counts are 30-40% higher than random pairs in both ego types, with non-populist outliers inflating the mean. Replies thus tend to involve at least one well-followed account, engagement clusters around higher-visibility users rather than at the periphery.
 
+On the combined populism score, both ego types show strongly negative deviations. Populist ego networks fall \~95% (median) and \~91% (mean) below random, while non-populist egos reach -83% at the median but only -15% at the mean. Combined populism scores on connected edges are ~90% lower than random pairs in populist ego networks and similarly low at the median for non-populist ones, with outliers again pulling the non-populist mean toward zero. Reply pairs thus both sit at low populism. The homophily observed in @fig:absdiff plays out specifically at the non-populist end of the scale, not through mutual high-populism interaction.
+
+On the combined tweet count, both ego types show positive deviations. Populist ego networks lie \~44% (median) to \~56% (mean) above random, non-populist ones around +34% at both. Connected alters' combined tweet counts are 30-55% higher than random pairs in both ego types, more pronounced in populist networks. Replies thus cluster around the more active users in each thread. High-volume posters draw disproportionately many of the connections.
+
+Across both populist and non-populist politicians, the alters who reply to each other share three traits at the edge level. 
+First, they sit at similar points on the populism scale, overwhelmingly at the low end, so cross-populism exchanges between alters are rare in either ego type. 
+Second, replies bridge rather than match audience sizes. Connected alters differ in follower count more than random pairs would. 
+Third, combined follower and tweet counts on connected edges lie well above random, meaning edges carry more visibility and posting volume than chance would predict. 
+Conversations thus happen mostly between users who agree on populism, but bring together accounts that differ a lot in size and activity, with the more visible and frequently posting users taking part in a disproportionate share of replies.
+The two ego types diverge only on alter tweet count. Populist networks show heterophily, with replies bridging users of different posting volumes, while non-populist networks sit close to random on this dimension. In threads around populist politicians, replies tend to connect heavy posters with more occasional ones, while in non-populist threads users of all posting volumes mix about as much as chance would predict.
+
+This paints a picture of reply networks around politicians as ideologically narrow but socially mixed spaces, where users overwhelmingly engage with others who share their populism stance but where the conversation is anchored by a smaller set of high-visibility, high-activity accounts pulling in a wider range of audience sizes - a pattern that holds uniformly around populist politicians and, with the exception of tweet-volume mixing, around non-populist ones as well.
 //== Summary                          [100w, 0.2 p]
 //#lorem(100)
 
@@ -1136,7 +1140,7 @@ This is all great but this only controlled for ego variables. Is it possible to 
 // Summary                                             [100w, 0.2 p]
 
 
-
+In the predicted values I wrote "Additionally to the data being sparse a lot of politicians only get extremely few replies.". Mention here that with more data testing the effect with a hurdle model to replicate @oswald2025 would be super cool. 
 //== Introduction                                        [100w, 0.2p]
 //#lorem(100)
 
@@ -1276,7 +1280,7 @@ For swapping labels (0,1) F Scores are not symetric.
 <sec:app-component-table>
 #figure(
   block(width: 70%,
-    include "../tables/component_table.typ"
+    include "../tables/component_table-edited.typ"
   ),
   caption: [Component size distribution of the reply network]
 )<fig:prompt-accuracy>
@@ -1301,6 +1305,22 @@ For swapping labels (0,1) F Scores are not symetric.
   People score ($macron(p)_u$) and elite score ($macron(e)_u$) are binned into 0.25-wide intervals. Color visualizes mean antagonism ($macron(a)_u$) per bin; opacity describes user count ($n = 29 thin 672$).
 ]
 
+== Regression Model checks <sec:app-regression-model-checks>
+
+#figure(
+  image("../images/5-modelcheck_m0.png", width: 85%),
+  caption: [Assumption Check - M0 (Baseline)],
+)
+
+#figure(
+  image("../images/5-modelcheck_m1.png", width: 85%),
+  caption: [Assumption Check - M1 (Full Model)],
+)
+
+#figure(
+  image("../images/5-modelcheck_r1.png", width: 85%),
+  caption: [Assumption Check - R1 (Robustness)],
+)
 /*
 ░█████████                                                    ░██    
 ░██     ░██                                                   ░██    

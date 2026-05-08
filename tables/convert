@@ -1,12 +1,136 @@
 #!/bin/bash
+# Convert markdown tables to bare Typst #table(...) calls.
+# No #figure wrapper, no caption — caller wraps in their own #figure in the main doc.
 
+set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+convert_one() {
+    local md="$1"
+    local out="$2"
+
+    awk '
+    BEGIN {
+        in_table = 0
+        ncols = 0
+        nrows = 0
+        # rows[r,c] holds cell content
+    }
+
+    # Trim leading/trailing whitespace
+    function trim(s) {
+        sub(/^[[:space:]]+/, "", s)
+        sub(/[[:space:]]+$/, "", s)
+        return s
+    }
+
+    # Escape a cell for Typst content: backslash and bracket characters.
+    function esc(s) {
+        gsub(/\\/, "\\\\", s)
+        gsub(/\[/, "\\[", s)
+        gsub(/\]/, "\\]", s)
+        return s
+    }
+
+    # Split a markdown table row "| a | b | c |" into cells[1..n]
+    function split_row(line, cells,    n, raw, i, parts) {
+        raw = line
+        sub(/^[[:space:]]*\|/, "", raw)
+        sub(/\|[[:space:]]*$/, "", raw)
+        n = split(raw, parts, /\|/)
+        for (i = 1; i <= n; i++) cells[i] = trim(parts[i])
+        return n
+    }
+
+    # Detect a separator row like |---|:--:|---:|
+    function is_sep(line,    raw) {
+        raw = line
+        sub(/^[[:space:]]*\|/, "", raw)
+        sub(/\|[[:space:]]*$/, "", raw)
+        gsub(/[[:space:]]/, "", raw)
+        return (raw ~ /^[:|-]+$/) && (raw ~ /-/)
+    }
+
+    # Detect potential table row (starts with |)
+    function is_pipe_row(line) {
+        return (line ~ /^[[:space:]]*\|/)
+    }
+
+    function flush_table(    r, c, line) {
+        if (nrows == 0) return
+        print "#table("
+        printf "  columns: %d,\n", ncols
+        # Header row: bold the cells if we saw a separator
+        if (has_header) {
+            line = "  table.header("
+            for (c = 1; c <= ncols; c++) {
+                if (c > 1) line = line ", "
+                line = line "[*" rows[1, c] "*]"
+            }
+            line = line "),"
+            print line
+            r_start = 2
+        } else {
+            r_start = 1
+        }
+        for (r = r_start; r <= nrows; r++) {
+            line = "  "
+            for (c = 1; c <= ncols; c++) {
+                if (c > 1) line = line ", "
+                line = line "[" rows[r, c] "]"
+            }
+            line = line ","
+            print line
+        }
+        print ")"
+        print ""
+        # reset
+        in_table = 0
+        ncols = 0
+        nrows = 0
+        has_header = 0
+        delete rows
+    }
+
+    {
+        line = $0
+        if (is_pipe_row(line)) {
+            if (is_sep(line)) {
+                # Separator: marks previous accumulated row(s) as header
+                if (nrows >= 1) has_header = 1
+                next
+            }
+            split_row(line, cells)
+            n = 0
+            for (k in cells) n++
+            if (ncols == 0) ncols = n
+            else if (n > ncols) ncols = n
+            nrows++
+            for (i = 1; i <= n; i++) rows[nrows, i] = esc(cells[i])
+            for (i = n + 1; i <= ncols; i++) rows[nrows, i] = ""
+            in_table = 1
+            delete cells
+            next
+        }
+
+        # Non-table line
+        if (in_table) flush_table()
+        print line
+    }
+
+    END {
+        if (in_table) flush_table()
+    }
+    ' "$md" > "$out"
+}
+
+count=0
 for md_file in "$DIR"/*.md; do
     [ -f "$md_file" ] || continue
     typ_file="${md_file%.md}.typ"
     echo "Converting: $(basename "$md_file") → $(basename "$typ_file")"
-    pandoc "$md_file" -t typst -o "$typ_file"
+    convert_one "$md_file" "$typ_file"
+    count=$((count + 1))
 done
 
-echo "Done."
+echo "Done. Converted $count file(s)."

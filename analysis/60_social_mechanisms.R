@@ -12,7 +12,8 @@ setwd("~/Github/masterthesis/analysis")
 DPI <- 300
 
 # === Load Data ===
-g <- readRDS("../data/nets/g.rds")
+#g <- readRDS("../data/nets/g.rds")
+g <- readRDS("../data//nets/g_full.rds")
 
 # === Get Ego Nets ===
 politician_ids <- which(!is.na(V(g)$politician_name))
@@ -25,9 +26,11 @@ ego <- lapply(politician_ids, function(v) {
 names(ego) <- V(g)$politician_name[politician_ids]
 
 # === For each ego net: observed stat vs random baseline (parallel) ===
+# Negative values mean the observed network shows less of the quantity than a random pairing of the same alters would 
 safe_rel <- function(obs, rand) ifelse(rand == 0, NA_real_, (obs - rand) / rand)
 
 ego_stats <- future_map_dfr(seq_along(ego), function(k) {
+  # Remove Ego and only keep alters
   eg  <- ego[[k]]
   pid <- politician_ids[k]
   ego_screen <- V(g)$user_screen_name[pid]
@@ -36,18 +39,24 @@ ego_stats <- future_map_dfr(seq_along(ego), function(k) {
   alter_g <- delete_vertices(eg, ego_vid)
   if (vcount(alter_g) < 2 || ecount(alter_g) == 0) return(tibble())
   
+  # binarize populism label
   pop_bin <- as.integer(!is.na(V(g)$populism_score[pid]) & V(g)$populism_score[pid] > 0)
   
+  # get alter attributes
   alter_names <- V(alter_g)$name
   idx <- match(alter_names, V(g)$name)
   followers <- as.double(V(g)$user_followers[idx])
   tweets    <- as.double(V(g)$user_tweets[idx])
   pop_score <- as.double(V(g)$populism_score[idx])
   
+  
+  # create every unaltered pair of alters. 
   all_pairs <- t(combn(seq_along(alter_names), 2))
+  # get expected abs diff under uniform random pairing (ERGM absdiff)
   rand_absdiff_fol <- mean(abs(followers[all_pairs[,1]] - followers[all_pairs[,2]]), na.rm = TRUE)
   rand_absdiff_tw  <- mean(abs(tweets[all_pairs[,1]]    - tweets[all_pairs[,2]]),    na.rm = TRUE)
   rand_absdiff_pop <- mean(abs(pop_score[all_pairs[,1]] - pop_score[all_pairs[,2]]), na.rm = TRUE)
+  # ERGM style nodecov
   rand_sum_fol     <- mean(followers[all_pairs[,1]] + followers[all_pairs[,2]], na.rm = TRUE)
   rand_sum_tw      <- mean(tweets[all_pairs[,1]]    + tweets[all_pairs[,2]],    na.rm = TRUE)
   rand_sum_pop     <- mean(pop_score[all_pairs[,1]] + pop_score[all_pairs[,2]], na.rm = TRUE)
@@ -84,11 +93,6 @@ plan(sequential)
 
 
 
-
-
-
-
-
 # === absdiff (homophily) ===
 d_absdiff <- ego_stats |>
   select(politician_name, ego_label, starts_with("absdiff_")) |>
@@ -117,16 +121,23 @@ ggplot(d_absdiff, aes(x = ego_label, y = value, shape = stat)) +
                      breaks = breaks_abs,
                      limits = c(-sym_lim_abs, sym_lim_abs)) +
   facet_wrap(~ metric) +
+  annotate("text", x = 1.5, y =  sym_lim_abs * 0.97, vjust = -0.8,
+           label = "(more heterophily)",
+           color = "gray33", size = 2.5, fontface = "italic") +
+  annotate("text", x = 1.5, y = -sym_lim_abs * 0.97, vjust = 1.8,
+           label = "(more homophily)",
+           color = "gray33", size = 2.5, fontface = "italic") +
+  coord_cartesian(clip = "off") +
   labs(x = NULL,
-       y = "Alter Similarity: (Observed − Random) / Random",
+       y = "Relative deviation from random pairing",
        shape = NULL) +
   theme_bw() +
   theme(legend.position = "bottom",
         panel.grid = element_blank(),
+        plot.margin = margin(20, 10, 10, 10),
         strip.background = element_rect(fill = "white", color = "black", linewidth = 1),
         panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
-ggsave("../images/6-quasi_ergm_absdiff.png", bg = "white", width = 8, height = 4, dpi = DPI)
-
+ggsave("../images/6-quasi_ergm_absdiff.png", bg = "white", width = 7, height = 4.5, dpi = DPI)
 
 
 # === nodecov / sum (activity) ===
@@ -157,12 +168,21 @@ ggplot(d_nodecov, aes(x = ego_label, y = value, shape = stat)) +
                      breaks = breaks_nod,
                      limits = c(-sym_lim_nod, sym_lim_nod)) +
   facet_wrap(~ metric) +
+  annotate("text", x = 1.5, y =  sym_lim_nod * 0.97, vjust = -0.8,
+           label = "(higher combined values)",
+           color = "gray33", size = 2.5, fontface = "italic") +
+  annotate("text", x = 1.5, y = -sym_lim_nod * 0.97, vjust = 1.8,
+           label = "(lower combined values)",
+           color = "gray33", size = 2.5, fontface = "italic") +
+  coord_cartesian(clip = "off") +
   labs(x = NULL,
-       y = "Alter Activity: (Observed − Random) / Random",
+       y = "Relative deviation from random pairing",
        shape = NULL) +
   theme_bw() +
   theme(legend.position = "bottom",
         panel.grid = element_blank(),
+        plot.margin = margin(20, 10, 10, 10),
         strip.background = element_rect(fill = "white", color = "black", linewidth = 1),
         panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
-ggsave("../images/6-quasi_ergm_nodecov.png", bg = "white", width = 8, height = 4, dpi = DPI)
+ggsave("../images/6-quasi_ergm_nodecov.png", bg = "white", width = 7, height = 4.5, dpi = DPI)
+

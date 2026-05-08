@@ -1,30 +1,19 @@
-#figure(
-align(center)[#table(
+Table: 
+
+#table(
   columns: 2,
-  align: (col, row) => (left,right,).at(col),
-  inset: 6pt,
-  [#strong[Metric];], [#strong[Value];],
-  [Nodes],
-  [68240],
-  [Links],
-  [$237 thin 264$],
-  [Density],
-  [0.0001],
-  [Degree - Mean],
-  [6.95],
-  [Degree - Standard Deviation],
-  [70.37],
-  [Reciprocity],
-  [0.13],
-  [Assortativity \(Degree)],
-  [-0.10],
-  [Average Shortest Path \(sampled)],
-  [4.35],
-  [Diameter \(sampled)],
-  [47],
-  [Clustering Coefficient],
-  [0.1267],
-  [Max K-Core],
-  [24],
-)]
+  table.header([*Metric*], [*Value*]),
+  [Nodes], [29672],
+  [Links], [60117],
+  [Density], [0.0001],
+  [Mean Degree], [4.05],
+  [SD Degree], [55.90],
+  [Reciprocity], [0.0034],
+  [Assortativity (Degree)], [-0.066],
+  [Average Shortest Path], [4.21],
+  [Diameter], [139],
+  [Clustering Coefficient], [0.036],
+  [Max K-Core], [13],
+  [Modularity (Walktrap)], [0.498],
 )
+

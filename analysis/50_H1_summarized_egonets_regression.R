@@ -11,14 +11,15 @@ library(ggraph)
 
 library(easystats)
 
+library(gt)
 library(gtsummary)
 library(broom)
 setwd("~/Github/masterthesis/analysis")
 
 # === Load Data ===
 d <- read_parquet("../data/d.parquet")
-g <- readRDS("../data/nets/g.rds") # largest component
-#g <- readRDS("../data/g_full.rds")
+#g <- readRDS("../data/nets/g.rds") # largest component
+g <- readRDS("../data//nets/g_full.rds")
 
 DPI = 300
 
@@ -172,6 +173,40 @@ d_ego <- map_dfr(names(ego), function(nm) {
 
 
 
+tab_pops <- bind_rows(
+  d_ego |>
+    filter(populism_score > 0) |>
+    summarise(across(
+      c(populism_score, people_score, elite_score, antag_score),
+      list(Mean = ~mean(.x, na.rm = TRUE),
+           SD   = ~sd(.x,   na.rm = TRUE)),
+      .names = "{.col}__{.fn}"
+    )) |>
+    pivot_longer(everything(),
+                 names_to = c("Variable", ".value"),
+                 names_sep = "__") |>
+    mutate(Variable = recode(Variable,
+                             populism_score = "Populism score",
+                             people_score   = "People score",
+                             elite_score    = "Elite score",
+                             antag_score    = "Antagonism score"),
+           Mean = sprintf("%.2f", Mean),
+           SD   = sprintf("%.2f", SD)),
+  d_ego |>
+    filter(populism_score > 0) |>
+    count(party, name = "Mean") |>
+    mutate(Mean = as.character(Mean),
+           SD = "—",
+           Variable = party) |>
+    select(Variable, Mean, SD)
+)
+
+kable(tab_pops,
+      format = "markdown",
+      col.names = c("**Variable**", "**Mean / n**", "**Standard\nDeviation**"),
+      align = c("l", "r", "r"),
+      caption = "") |>
+  writeLines("../tables/table_populists.md")
 
 
 # ==== MODEL POPULISM ====
@@ -299,7 +334,9 @@ ggplot(aes(x = estimate, y = term, color = sig)) +
        #title = "Coefficient Plot: Predicting Mean Alter Degree"
        ) +
   theme_bw() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        strip.background = element_rect(fill = "white", color = "black", linewidth = 1),
+        panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
 
 ggsave("../images/5-H1_egonet_models.png", bg = "white", width = 8, height = 3, dpi = DPI)
 

@@ -864,7 +864,7 @@ p_main <-
                  size = 2.9, repel = TRUE,
                  bg.color = "white", bg.r = 0.1) +
   scale_size_continuous(name = "Degree", range = c(1.1, 5)) +
-  scale_fill_manual(name = "Politician of Party",
+  scale_fill_manual(name = "Party of Politician",
                     values = c("CDU" = "black",    "CSU"   = "navy",
                                "SPD" = "#E3000F",  "Grüne" = "forestgreen",
                                "FDP" = "#FFED00",  "Linke" = "#BE3075",
@@ -882,8 +882,9 @@ p_main <-
   theme(legend.position       = "bottom",
         legend.title.position = "top",
         legend.title          = element_text(face = "bold"),
-        legend.text.position  = "left")
-p_main
+        legend.text.position  = "left",
+        legend.spacing.x = unit(8, "cm"))
+#p_main
 # --- Zoomed inset -> p_inset ---
 # Find Weidel's node index
 weidel_idx <- which(V(g_core)$politician_name == "Alice Elisabeth Weidel")
@@ -943,7 +944,7 @@ p_inset <- ggraph(lay_inset) +
   theme(legend.position = "none",
         plot.background = element_rect(fill = "white", color = "grey30", linewidth = 0.8),
         plot.margin = margin(6, 6, 6, 6))
-p_inset
+#p_inset
 # --- Combine and save ---
 p_combined <- p_main + 
   #theme_bw() +
@@ -952,7 +953,7 @@ p_combined <- p_main +
                 bottom = 0.05, top = 0.35,
                 align_to = "panel") 
 
-p_combined
+#p_combined
 
 ggsave("../images/network_inset.png", p_combined,
        bg = "white", width = 10, height = 10, dpi = DPI)
