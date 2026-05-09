@@ -33,7 +33,7 @@
     #text(size: 10pt)[
       Supervisor: Károly Takács \
       External supervisor: Philipp Lorenz-Spreen \
-      Examiner: #text(fill: red)[Examiner]
+      Examiner: Miriam Hurtado Bodell
     ]
   ]
 ]

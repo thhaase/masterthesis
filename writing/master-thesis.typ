@@ -224,12 +224,24 @@ Read together, the two frameworks suggest that populist rhetoric on Twitter is a
 */
 Populism research is divided over whether populism is a thin or a thick ideology. The minimal definition reads it as a vertical antagonism between a homogeneous people and a homogeneous elite @mudde2004, often enriched with a horizontal dimension constructing the people additionally against outside groups @brubaker2017. What unifies all perspectives is the minimal definition as a common denominator and the intuition that populism is system-destabilizing @lorenz-spreen2022. The definitions of populism implicitly are connected to representative democracy. Democracy selects its communications through the Government/Opposition distinction @luhmann1987, and populism is then the reproduction of this distinction at the level of a social movement (Elite/People) attempting to place itself as a valid democratic group. Social media amplifies this code @lorenz-spreen2022 and Twitter in particular is not a neutral arena in which rhetoric is received but a medium whose recommender architecture actively structures who encounters whom @x2026. Parties are then movements competing for political power in this attention environment @tilly1978[117] @simon1971, and populist rhetoric constructs the distinction of the pure people against a corrupt elite. This gives encounters a distinction around which they can stabilize. Engagement in this medium is not agreement @morselli2026 but a structural fact, users repeatedly showing up in the same place around the same politician whatever their reason for doing so, and whether such stabilization actually occurs is then a question about communication and not about speakers.
 
+#text(fill: red, size: 2em)[- RENEW THE FOLLOWING PARAGRAPH]
+
 The methodological approach translates the outlined theoretical ideas by using a twitter reply network to operationalize social interactions on social media. Compared to retweets and mentions replies are a way of directly answering to a message another person published. The dataset contains politicians tweets and their replies to construct such a replynetwork. To explore the effect of a politician using populist rhetoric on their community all tweets are labeled by the amount of populist attitude they communicate. This textanalysis is achieved through a fewshot LLM Qwen3-235B annotation using an expert validated systemprompt. The egonetworks of politicians are extracted and their structure compared by their usage of populist rhetoric to explore if the expected relationship can be observed. 
+The results-section first describes a the results of the textanalysis and the validation of the prompt. After that the structure of the reply network is described. In the end the egonetworks are analysed, regression results are reported and alter impact for tie formation is assessed. 
+The discussion answers the question by framing the findings in terms of the chosen theoretical approach and learnings of the literature review. In the end a final conclusion is drawn.
 
-- Results & Discussion
 
+/*
+CLAUDES IDEA: 
 
+The methodology operationalizes social interactions on social media through a Twitter reply network. Replies, unlike retweets and mentions, directly answer a message another user published. The dataset contains politicians' tweets and their replies, which form the reply network. All tweets are labeled by their degree of populist attitude to assess the effect of populist rhetoric on a politician's community. The text analysis uses few shot annotation with the LLM Qwen3-235B and an expert validated system prompt. Politicians' ego networks are extracted and compared by populism score to test the expected relationship.
 
+The results section first reports the text analysis findings and the prompt validation. The reply network structure follows. The final part analyses the ego networks, reports regression results, and assesses alter impact on tie formation.
+
+The discussion frames the findings within the chosen theoretical approach and the literature review to answer the research question. A conclusion closes the work.
+
+A few notes on the changes: split "translates the theoretical ideas by using" into a direct verb ("operationalizes"), fixed the compound spellings (reply network, ego networks, text analysis, system prompt), removed the duplicate "In the end", and replaced "are a way of directly answering to" with the more direct "directly answer". If you want "few shot" with the conventional hyphen reinstated for technical correctness, that's the one place I'd consider an exception, since "few-shot" is the standard ML term.
+*/
 
 /*
 ░██         ░██   ░██                                      ░██                                   
@@ -274,6 +286,7 @@ The methodological approach translates the outlined theoretical ideas by using a
 
 
 Populism research is divided over one main question: Is populism a thin or thick ideology? And if it is thick, how so? The following section provides an overview of the conflict and explains the implicit theoretical source of the conflict. The second half proposes a new generalizing perspective on the topic motivated through already observed micro mechanisms. 
+
 == Populist Theories of Populism
 //== Horizontal vs. Vertical Populism
 2004 Cas Mudde proposed a minimal definition of populism as an ideology where a message is framed in a way that the powerless homogenous people stand against a ruling homogenous elite as antagonistic groups @mudde2004. 
@@ -617,18 +630,18 @@ German political news from 7–14 February 2022 were dominated by the Omikron wa
 
 //== Operationalization & Measure                         [500w. 1p]
 //#lorem(500) +143words
-Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as #quote[two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.] @mudde2004[p.543]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
+Current studies almost uniformly base their understanding of populism on #cite(<mudde2004>,form: "prose")'s definition of populism as #quote[two homogeneous and antagonistic groups, ‘the pure people’ versus ‘the corrupt elite’, and which argues that politics should be an expression of the volonté générale (general will) of the people.] @mudde2004[542]. While all operationalizations include a #quote[pro-people] and #quote[anti-elite] one of multiple third dimensions is often implemented aswell like the inclusion of anti-pluralist attitudes, the distinction between leftwing and rightwing populism or agitating against horizontal outgroups like minorities @aalberg2017 @castanhosilva2020 @meyer2025. Populist Attitudes are not only measured through surveys @castanhosilva2020, but also through observational studies of political discourse on social media @meyer2025 leveraging LLMs.  
 
 This study operationalizes the core dimensions of #cite(<mudde2004>, form: "prose")'s definition, People Attitude, Elitist Attitude, and Antagonism, by instructing a large language model through an annotation prompt (see #link(<sec:app-prompt>)[Appendix]). Each dimension is defined with explicit scoring anchors: People Attitude and Elitist Attitude are measured on bidirectional scales from --3 to +3, where positive values indicate support for and negative values indicate opposition to the respective group, while Antagonism is measured on a unidirectional scale from 0 (no divide) to 6 (existential threat), with labeled thresholds distinguishing dissatisfaction (1--2), active blame (3--4), and existential threat framing (5--6). The prompt leverages chain-of-thought style reasoning and few-shot examples to guide the models annotation behaviour. To guide the models reasoning letting it question itself throughout the process lead improved the results immensly compared to hard rule-based checks.
 
-Calculating populism as a composite is necessary ...
-
+The combination of dimensions is necessary to capture all parts of #cite(<mudde2004>, form: "prose")'s minimal definition visualized in @fig:populism-axes. All parts are necessary because anti-elitism is its own concept, it might be a good proxy for populism but does not capture the essence of the constructed ingroup. Only observing pro-people attitudes does not account for the delineating differentiation of the people from the elite. Both groups are rhetorically presented as actors that and are emotionally evaluated @klingelhofer2026. Both an ingroup and outgroup are needed to induce a lasting social structure @stadtfeld2020. The strength of the motivated moralization and emotionalisation of the groups as actors is represented as a rhetorical distance constructed between the groups through the `antagonism score`.
+Only the combination of all three makes up the minimal populism found in the literature. By that the system prompt directly translates the definition into an operationalized measure. 
+Populism for the analysis is aggregated at a user level, not only because politicians as users are the unit of analysis, but also because populism on social media is fragmented @engesser2017. Politicians share crumbs of their ideology at different places and only the combination can indicate a communicative rhetorical strategy.
 /*
 KAROLY TODO
 
 Data part. The people attitude and the elitist attitude is merged into a single measurement with antagonism, this needs more justification and discussion. I think you can make a stronger connection with Brubaker 2017 and your Figure 1. In general, argue more why to have a composite index when you could work with separate ones.
 
-*/
 
 #text(size: 1.2em,fill:red)[
   - clarify combining dimensions
@@ -641,6 +654,7 @@ Data part. The people attitude and the elitist attitude is merged into a single 
       - why do I need antagonism? because the xyz is stronger
       - internal validity is unimportant, it comes from psychometrics and assumes all elements of the scale measure the same thing. here this is not the case
   
+*/
 
 The prompt follows the structure described by #cite(<liu2026>, form: "prose"). It begins with a role definition and a pre-analysis check if the text carries any content other than just a link or a user mention. It proceeds by defining #quote[People Attitude], #quote[Elite Attitude] and #quote[Antagonism]. The definition of "the people" is restricted to a broad ordinary majority and explicitly excludes named individuals, lists of specific persons, and narrow subgroups unless the text frames them as standing in for the general public. Similarly, elite criticism is only scored when the target is a generalized powerful class rather than a single individual or a specific policy disagreement.
 In the last major section the prompt invokes the chain-of-thought before assigning scores, the model must produce a holistic redescription of the post's rhetorical strategy, an actor-by-actor analysis that classifies each referenced person or group by scale (individual, institution, or generalized class) and dimension-specific explanations that articulate the reasoning behind each score. 
@@ -915,6 +929,7 @@ Across the populist panels `volk` stands out with its high above 0.20 populist-s
 //#lorem(469)
 
 The analysis now turns to the structure of the reply network as the relational substrate on which politicians and citizens meet. @tab:network-descriptives summarizes it as a directed weighted network anchored in politicians' threads as described in @sec:method-networkanalysis.
+After this filter and isolate removal, 29,672 users remain, 99.3% of whom (29,474) sit in a single connected component. The 96 residual micro-components, all of size 2 or 3, are retained for the descriptives below. Their inclusion does not affect any reported statistic at the precision shown.
 
 #figure(
   block(width: 70%,
@@ -1065,7 +1080,12 @@ On the populism score, both ego types display strong homophily. The absolute dif
 
 On the tweet count, the patterns diverge by ego type. Populist ego networks show heterophily of ~30% above random at both median and mean, while non-populist ego networks sit close to baseline, slight homophily at the median (-16%) and essentially zero at the mean (+4%). Connected alters differ ~30% more than random pairs in tweet count in populist ego networks, but only at roughly random levels in non-populist ones. In populist egonetworks, replies tend to bridge users with very different posting volumes, while in non-populist threads users mix across activity levels about as much as chance would predict.
 
-
+/*
+@fig:absdiff shows the absolute differences between alters on a given statistic. This allows for the exploration of homophilic/heterophilic interactions in the alternetworks. 
+On follower count, connected alters differ \~30% more than random pairs across both ego types, with a small set of non-populist networks pushing the mean far above this. Users who reply to each other tend to span different audience sizes, large and small accounts mix on edges rather than clustering with their own kind. 
+On populism score, connected alters differ \~90% less than random pairs in both populist and non-populist ego networks, though a few non-populist outliers pull their mean to -14%. Users who reply to each other almost always share similar populism levels, and cross-populism exchanges between alters are rare. 
+On tweet count, connected alters differ \~30% more than random pairs in populist ego networks but only at roughly random levels in non-populist ones. In populist egonetworks replies tend to bridge users with very different posting volumes, while in non-populist threads users mix across activity levels about as much as chance would predict.
+*/
 #figure(
   image("../images/6-quasi_ergm_nodecov.png", width: 90%),
   caption: [Edge-level alter activity relative to random pairs of the same alters, separated by ego type.],
@@ -1079,14 +1099,28 @@ On the combined populism score, both ego types show strongly negative deviations
 
 On the combined tweet count, both ego types show positive deviations. Populist ego networks lie \~44% (median) to \~56% (mean) above random, non-populist ones around +34% at both. Connected alters' combined tweet counts are 30-55% higher than random pairs in both ego types, more pronounced in populist networks. Replies thus cluster around the more active users in each thread. High-volume posters draw disproportionately many of the connections.
 
+/*
+@fig:nodecov shows the sum of attribute values of two connected alters. This allows for the exploration of activity or prestige effects in the alternetworks. 
+On combined follower count, connected alters' combined follower counts are 30--40% higher than random pairs in both ego types, with non-populist outliers inflating the mean. Replies then tend to involve at least one well-followed account, engagement clusters around higher-visibility users rather than at the periphery. 
+On combined populism score connected edges are \~90% lower than random pairs in populist ego networks and similarly low at the median for non-populist ones, with outliers pulling the non-populist mean toward zero. Reply pairs thus both sit at low populism, meaning the homophily observed in @fig:absdiff plays out specifically at the non-populist end of the scale, not through mutual high-populism interaction.
+On combined tweet count, connected alters' combined tweet counts are 30--55% higher than random pairs in both ego types, more pronounced in populist networks. Replies cluster around the more active users in each thread, and high-volume posters draw disproportionately many of the connections.
+*/
+
 Across both populist and non-populist politicians, the alters who reply to each other share three traits at the edge level. 
 First, they sit at similar points on the populism scale, overwhelmingly at the low end, so cross-populism exchanges between alters are rare in either ego type. 
 Second, replies bridge rather than match audience sizes. Connected alters differ in follower count more than random pairs would. 
 Third, combined follower and tweet counts on connected edges lie well above random, meaning edges carry more visibility and posting volume than chance would predict. 
 Conversations thus happen mostly between users who agree on populism, but bring together accounts that differ a lot in size and activity, with the more visible and frequently posting users taking part in a disproportionate share of replies.
-The two ego types diverge only on alter tweet count. Populist networks show heterophily, with replies bridging users of different posting volumes, while non-populist networks sit close to random on this dimension. In threads around populist politicians, replies tend to connect heavy posters with more occasional ones, while in non-populist threads users of all posting volumes mix about as much as chance would predict.
+The two ego types diverge only on alter tweet count. Populist networks show heterophily, with replies bridging users of different posting volumes, while non-populist networks sit close to ranmicdom on this dimension. In threads around populist politicians, replies tend to connect heavy posters with more occasional ones, while in non-populist threads users of all posting volumes mix about as much as chance would predict.
 
 This paints a picture of reply networks around politicians as ideologically narrow but socially mixed spaces, where users overwhelmingly engage with others who share their populism stance but where the conversation is anchored by a smaller set of high-visibility, high-activity accounts pulling in a wider range of audience sizes - a pattern that holds uniformly around populist politicians and, with the exception of tweet-volume mixing, around non-populist ones as well.
+
+/*
+At the edge level, alters who reply to each other share three traits across both ego types. 
+They sit at similarly low points on the populism scale, they differ in follower count more than random pairs would, and their combined follower and tweet counts lie well above random. Conversations happen mostly between users who agree on populism but bring together accounts differing in size and activity, with high-visibility and high-posting users taking a disproportionate share of replies. The two ego types diverge only on tweet count: populist networks show heterophily, bridging heavy posters with occasional ones, while non-populist networks sit close to random.
+
+Reply networks around politicians appear as ideologically narrow but socially mixed spaces, anchored by a small set of high-visibility, high-activity accounts that pull in a wider range of audience sizes — a pattern holding uniformly around populist politicians and, except for tweet-volume mixing, around non-populist ones as well.
+*/
 //== Summary                          [100w, 0.2 p]
 //#lorem(100)
 
@@ -1193,7 +1227,7 @@ The used data covers reply threads to German MPs' tweets from 7--14 February 202
 
 The reply network is sparse, hub-driven and exhibits a giant component (@tab:network-descriptives). A small set of high-degree politicians absorbs replies from a vast low-degree periphery, edges flow almost entirely one way, and high-degree nodes connect to low-degree ones rather than to each other. The network is sparse and local cohesion is essentially absent. A modular core--periphery structure sits on top, partitioning cleanly into well-separated communities (@fig:degree-distributions, @fig:coreness-vs-nodes). While the giant component is globally divided by a government--opposition structure the core holds politicians of government parties like Marco Buschmann (@fig:network-inset, @fig:egonetwork-grid).
 
-Of the 148 MPs active in this window, only ten score as populist, drawn from AfD, BSW, Linke and SPD (@tab:top-populism-tweets). OLS regressions of ego networks on mean alter degree suggest higher populism scores are linked to denser alter--alter connectivity, though small N limits the result. Quasi-ERGM comparisons show connected alter pairs generally share populism scores but bridge differences in account size, visibility and reach, indicating more active accounts pull the periphery into engagement. The one populist/non-populist divergence lies in tweet volume, where populist engagement communities connect users of differing activity levels more than non-populist ones do.
+Of the 148 MPs active in this window, only ten score as populist, drawn from AfD, BSW, Linke and SPD (@tab:top-populism-tweets). OLS regressions of ego networks on mean alter degree suggest higher populism scores are linked to denser alter--alter connectivity, though small N limits the result. Alters effect on reply-edge formation show connected alter pairs generally share populism scores but bridge differences in account size, visibility and reach, indicating more active accounts pull the periphery into engagement. The one populist/non-populist divergence lies in tweet volume, where populist engagement communities connect users of differing activity levels more than non-populist ones do.
 
 //== Interpretation (Relate Results to Literature Review)	[387w,	0.7p]
 //#lorem(387)
