@@ -1,4 +1,6 @@
 #import "@preview/cetz:0.3.4"
+#import "@preview/hidden-bib:0.1.1": hidden-cite, hidden-citations
+
 
 // ===== SETUP =====
 #set page(
@@ -1205,12 +1207,6 @@ Their audience selfselects themselves in or out of the conversation based on the
 The results of the ego network analysis support to this expectation. OLS regressions of mean alter degree show a positive association with populism scores, indicating that populist MPs do sit in more interconnected reply communities than less populist ones. The alter effects on reply formation in the ego network add texture to the result. Connected alter pairs generally share populism scores but bridge differences in account size, visibility and reach, and the one feature on which populist and non-populist engagement communities diverge is tweet volume, where populist communities connect users of differing activity levels more than non-populist ones do. Read through the dual logic of group formation @stadtfeld2020, this pattern looks like homogenization on the dimension that defines the in-group, namely the populism frame itself, paired with a repulsive boundary that distinguishes populist from non-populist communities while leaving size and activity heterogeneous on the inside. The populist frame thus appears to be what allows a low-activity periphery to attach itself to a high-activity core in the first place, knitting otherwise unequal users together around a shared antagonism.
 
 At the macro level the network displays the broadcasting logic that previous research has attributed to political communication on social media @jacobs2019. A sparse, hub-driven topology with negligible reciprocity or local clustering is exactly what one expects when politicians use the platform to campaign rather than deliberate @stier2018. The clean partition into well-separated communities along the government and opposition divide fits self-selection into closed observation contexts. Populist rhetoric concentrating in AfD, BSW and Linke, with outliers in CDU, FDP and AfD far above their party mean, matches the finding that populist framings have become part of a group identity. Beyond the selfselection this global network structure aswell as textual framing captures the moral loading of the representative democratic systems structures of the german parliament. Taken together, the macro broadcasting logic, the meso ego network density, and the lexical centrality of antagonism point to social media functioning as the low affordance alternative arena described in earlier work @gildezuniga2020, where populist accounts not only broadcast louder but also organise a denser and more cohesive audience structure around themselves.
-
-Three implications follow. 
-First, populism online is not just a louder broadcast but an organising principle, since the ego network connectivity result shows the populist frame builds audience structure on the meso level and not only stay at the engagement-metric level.
-Second, the homogenisation and repulsion selection logic holds for political publics on Twitter but homogenises on topic/politician, while tolerating heterogeneity on activity. So shared antagonism rather than shared platform behaviour binds these communities. 
-Third, the macro broadcasting topology combined with the government and opposition partition shows that social-media platforms reproduce parliamentary structure rather than dissolve it. Populist rhetoric maps onto opposition position which is morally loaded. This mapping is driven by individual politicians that are found more often in the usually as "populist" described parties than in government parties, even though also these have populist posting actors. 
-
 /*
 - Limitations
   - Few data
@@ -1246,10 +1242,14 @@ The analysis comes with several limitations. First of all the dataset only spann
 
 // Conclusion [538w, 1.0p]	
 //#lorem(538)
-Populism research has been divided about the interpretative meaning of populism as an ideology, communicative practice or political strategy @hunger2022 @tugal2021 @yates2026. The thesis has shown that reducing populism to a type of communication captures its necessary essence to understand its impact on communities. Just as any other rhetorical style, opinion or charismatic leader populism should be understood as a type of information. Information that gives opportunity for groupformation processes. Users selfselect themselves in and out of populist discourse and communities themselves. What still distinguishes populist messages from other information is its usage by politicians as a mobilizing strategy successfully forming those communities. As any other ingroup around any topic it can lead to extremization. 
-- outgroup contact and cooperation can reduce arising prejudice.   
-- blabla
 
+The analysis revealed that politicians using populist rhetoric on twitter are surrounded by a stronger connected engagement community compared to non-populist politicians. While populist rhethoric is morally charged, the populist landscape on social media is shaped by existing government--opposition structures.
+
+Three implications follow from the conducted analysis. 
+First, populism online is not just a louder broadcast but an organising principle, since the ego network connectivity result shows the populist frame builds audience structure on the meso level and not only stay at the engagement-metric level.
+Second, politicians provide opportunity for homogenisation around them based on topics and rhetoric. It seems that shared antagonism rather than shared platform behaviour binds populist communities. 
+Third, social-media platforms reproduce parliamentary structure rather than dissolve it. Populist rhetoric morally charges structural positions imprinting them in users spacial positions. This mapping is driven by individual politicians that are found more often in the usually as "populist" described parties than in government parties, even though also these have populist posting actors. 
+The results emphasize the advantages of studying populism as a type of communication connecting observational studied with classical sociology exploring the social with a focus on the meso scale.
 
 
 
@@ -1311,6 +1311,8 @@ Populism research has been divided about the interpretative meaning of populism 
                                                                                            
 */
 = Appendix A: Additional Tables, Figures and Equations
+
+
 
 == Symetry of F1 Score for swapping raters
 <sec:app-symetry-of-f1-score>
@@ -1415,6 +1417,37 @@ For swapping labels (0,1) F Scores are not symetric.
 */
 //= Appendix B: Code
 // REQUIRED: Must contain code used to process datasets for examination
+
+
+// Cite all R packages
+#hidden-citations[
+  @richardson2026
+  @wickham2023
+  @gamer2019
+  @chirico2026
+  @barrett2026
+  @csardi2026
+  @bojanowski2024
+  @zhuaut2024
+  @pedersen2025
+  @campitelli2025
+  @slowikowski2026
+  @attali2025
+  @morgan-wall2024
+  @wilke2025
+  @ooms2026
+  @pedersen2025b
+  @benoit2018
+  @yixuanqiu2024
+  @qiu2026
+  @sjoberg2025
+  @iannone2026
+  @robinson2026
+  @vaughan2026
+  @wickham2025
+  @wickham2026
+  @haase2026
+]
 
 /*
 == Annotating on Cluster 
