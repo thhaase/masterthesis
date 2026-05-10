@@ -19,6 +19,7 @@
   depth: 3,
 )
 #pagebreak()
+#pagebreak()
 
 // List of Figures
 #align(center)[
