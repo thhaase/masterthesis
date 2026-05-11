@@ -221,6 +221,7 @@ map_dfr(pairs, \(p) {
   theme(
     legend.position = "bottom",
     strip.text = element_text(face = "bold", size = 11),
+    strip.background = element_rect(fill = NA),
     plot.title = element_text(face = "bold"),
     panel.grid.major.x = element_blank()
   )

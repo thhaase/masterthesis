@@ -7,7 +7,7 @@
   #set text(font: "Georgia", size: 12pt)
   Linköping University | Institute for Analytical Sociology \
   Master's thesis, 30 ECTS | Computational Social Science \
-  2026 |// #text(fill: red)[ISRN]
+  2026 | //#text(fill: red)[ISRN has not been provided yet]
 ]
 #v(50mm)
 

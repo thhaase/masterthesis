@@ -135,8 +135,10 @@ ggplot(d_absdiff, aes(x = ego_label, y = value, shape = stat)) +
   theme(legend.position = "bottom",
         panel.grid = element_blank(),
         plot.margin = margin(20, 10, 10, 10),
-        strip.background = element_rect(fill = "white", color = "black", linewidth = 1),
-        panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
+        strip.background = element_rect(fill = NA, linewidth = 0.6),
+        panel.border = element_rect(fill = NA, linewidth = 0.3),
+        strip.text = element_text(size = 10)
+        )
 ggsave("../images/6-quasi_ergm_absdiff.png", bg = "white", width = 7, height = 4.5, dpi = DPI)
 
 
@@ -182,7 +184,9 @@ ggplot(d_nodecov, aes(x = ego_label, y = value, shape = stat)) +
   theme(legend.position = "bottom",
         panel.grid = element_blank(),
         plot.margin = margin(20, 10, 10, 10),
-        strip.background = element_rect(fill = "white", color = "black", linewidth = 1),
-        panel.border = element_rect(color = "black", fill = NA, linewidth = 1))
+        strip.background = element_rect(fill = NA, linewidth = 0.6),
+        panel.border = element_rect(fill = NA, linewidth = 0.3),
+        strip.text = element_text(size = 10)
+  )
 ggsave("../images/6-quasi_ergm_nodecov.png", bg = "white", width = 7, height = 4.5, dpi = DPI)
 

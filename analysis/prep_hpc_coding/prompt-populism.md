@@ -127,7 +127,7 @@ _OUTPUT:_
 **Example 3: Ambiguous / Mild Signal**
 
 _INPUT TEXT TO ANALYZE:_
-> "Another satisfsatisfying satisfying satisfying satisfying satisfying day of the government announcing new taxes while somehow never fixing the roads or the schools. But sure, keep telling us everything is fine. We're not blind."
+> "Another satisfying day of the government announcing new taxes while somehow never fixing the roads or the schools. But sure, keep telling us everything is fine. We're not blind."
 
 _OUTPUT:_
 ```json
